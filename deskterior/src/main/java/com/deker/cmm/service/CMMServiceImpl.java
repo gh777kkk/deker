@@ -18,7 +18,6 @@ public class CMMServiceImpl implements CMMService {
 
     @Override
     public List<CMM> getCode(CMMConditions conditions){
-        IDSUtil.nextId("memId");
         return cmmMapper.selectCode(conditions);
     }
 }
