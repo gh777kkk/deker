@@ -5,6 +5,7 @@ import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
 import com.deker.cmm.model.ResponseData;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AcctController {
 
     private final AcctService acctService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello() {
@@ -27,12 +30,12 @@ public class AcctController {
     }
 
     // TODO 중복회원가입, 비밀번호 암호화, 프로필 사진, 테그, 익셉션 세분화 처리 해야함
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/nmb/test", method = RequestMethod.GET)
     public ResponseData test(AcctConditions conditions) {
         ResponseData result = new ResponseData();
-        conditions.setPlatformCode("P03");
+        conditions.setPlatformCode("P01");
         conditions.setId("wkdrjswkd@test.com");
-        conditions.setPassword("a12345678");
+        conditions.setPassword(passwordEncoder.encode("a12345678"));
         conditions.setNickName("아무거나왈왈");
         conditions.setJobCode("J03");
         conditions.setSocialId("12345678");

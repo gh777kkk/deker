@@ -19,7 +19,6 @@ public class AcctServiceImpl implements AcctService {
     @Override
     public void regMember(AcctConditions conditions){
         conditions.setMemId(IDSUtil.nextId("memId"));
-        conditions.setProfileImg("pro_5678901234567890");
         if(conditions.getPlatformCode().equals("P01")){
             acctMapper.insertMember(conditions);
             acctMapper.insertDekerMember(conditions);

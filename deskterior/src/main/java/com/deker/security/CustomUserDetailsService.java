@@ -1,6 +1,7 @@
 package com.deker.security;
 
 import com.deker.acct.mapper.AcctMapper;
+import com.deker.acct.model.AcctConditions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String memId) throws UsernameNotFoundException {
-        return new SecurityUser();
+        AcctConditions condition = new AcctConditions();
+        condition.setMemId(memId);
+        return new SecurityUser(condition);
     }
 }

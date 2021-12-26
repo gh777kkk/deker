@@ -1,11 +1,18 @@
 package com.deker.security;
 
+import com.deker.acct.model.Acct;
+import com.deker.acct.model.AcctConditions;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class SecurityUser implements UserDetails {
+    private AcctConditions user;
+
+    SecurityUser(AcctConditions user){
+        this.user = user;
+    }
 
     //field 영역
 
@@ -21,7 +28,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getMemId();
     }
 
     @Override
