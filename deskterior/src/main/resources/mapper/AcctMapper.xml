@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deker.acct.mapper.AcctMapper">
+
+    <insert id="insertMember" parameterType="AcctConditions">
+        INSERT INTO MEMBER
+        (
+                MEM_ID
+            ,   ID
+            ,   PROFILE_IMG
+            ,   NICK_NAME
+            ,   JOB_CODE
+            ,   AGREE_YN
+            ,   CREATE_ID
+            ,   UPDATE_ID
+         )
+         VALUES
+        (
+                #{memId}
+            ,   #{id}
+            ,   #{profileImg}
+            ,   #{nickName}
+            ,   #{jobCode}
+            ,   #{agreeYn}
+            ,   #{memId}
+            ,   #{memId}
+        )
+    </insert>
+
+    <insert id="insertDekerMember" parameterType="AcctConditions">
+        INSERT INTO DEKER_MEMBER
+        (
+                MEM_ID
+            ,   PASSWORD
+        )
+        VALUES (
+                #{memId}
+            ,   #{password}
+        )
+    </insert>
+
+    <insert id="insertSocialMember" parameterType="AcctConditions">
+        INSERT INTO SOCIAL_MEMBER
+        (
+                MEM_ID
+            ,   PLATFORM_CODE
+            ,   SOCIAL_ID
+        )
+        VALUES
+        (
+                #{memId}
+            ,   #{platformCode}
+            ,   #{socialId}
+        )
+    </insert>
+
+</mapper>
