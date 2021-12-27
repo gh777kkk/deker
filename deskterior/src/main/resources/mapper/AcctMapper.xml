@@ -55,4 +55,11 @@
         )
     </insert>
 
+    <select id="selectMemId" parameterType="AcctConditions" resultType="Acct">
+        SELECT MEM_ID memId
+        FROM MEMBER
+        WHERE MEM_ID = #{memId}
+    </select>
+
+
 </mapper>

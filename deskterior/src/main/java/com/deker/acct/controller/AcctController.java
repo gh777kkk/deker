@@ -4,6 +4,7 @@ import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
 import com.deker.cmm.model.ResponseData;
+import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +20,14 @@ public class AcctController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello() {
         return "Hello World!";
     }
 
-    @RequestMapping(value = "/nmb/cmm/get/job-code", method = RequestMethod.GET)
+    @RequestMapping(value = "/mb/cmm/get/job-code", method = RequestMethod.GET)
     public String getJobCode() {
         return "Hello World!";
     }
@@ -53,6 +56,7 @@ public class AcctController {
 
     @RequestMapping(value = "/mb/acct/get/member", method = RequestMethod.GET)
     public void login(@RequestBody AcctConditions conditions) {
+        customUserDetailsService.loadUserByUsername("");
     }
 
     @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)

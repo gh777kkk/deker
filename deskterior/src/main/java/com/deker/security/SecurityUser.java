@@ -1,34 +1,42 @@
 package com.deker.security;
 
-import com.deker.acct.model.Acct;
-import com.deker.acct.model.AcctConditions;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SecurityUser implements UserDetails {
-    private AcctConditions user;
 
-    SecurityUser(AcctConditions user){
-        this.user = user;
+    private String username;
+    private Collection<? extends GrantedAuthority> authorities;
+
+    public SecurityUser(String username, List<String> roles) {
+        this.username = username;
+        this.authorities = Optional.ofNullable(roles)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
-
-    //field 영역
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return "test";
     }
 
     @Override
     public String getUsername() {
-        return user.getMemId();
+        return "test";
     }
 
     @Override

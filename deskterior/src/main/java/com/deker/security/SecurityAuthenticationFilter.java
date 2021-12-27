@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,11 +23,15 @@ public class SecurityAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        UserDetails authentication = customUserDetailsService.loadUserByUsername("memId_00000000000015");
-        UsernamePasswordAuthenticationToken auth =
-                //여기있는 super.setAuthenticated(true); 를 타야함.
-                new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, null);
+        String username = "test";
+
+        UserDetails authentication = customUserDetailsService.loadUserByUsername(username);
+
+        //여기있는 super.setAuthenticated(true); 를 타야함.
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication, "test", authentication.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(auth);
+        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         filterChain.doFilter(request, response);
     }
 }
