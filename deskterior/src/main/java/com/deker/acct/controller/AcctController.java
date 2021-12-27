@@ -51,6 +51,10 @@ public class AcctController {
         return result;
     }
 
+    @RequestMapping(value = "/mb/acct/get/member", method = RequestMethod.GET)
+    public void login(@RequestBody AcctConditions conditions) {
+    }
+
     @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
     public void regMember(@RequestBody AcctConditions conditions) {
     }

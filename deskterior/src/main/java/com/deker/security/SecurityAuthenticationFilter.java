@@ -1,6 +1,7 @@
 package com.deker.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,13 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 @RequiredArgsConstructor
 public class SecurityAuthenticationFilter extends OncePerRequestFilter {
-    private final CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        UserDetails authentication = customUserDetailsService.loadUserByUsername("memId_00000000000014");
+        UserDetails authentication = customUserDetailsService.loadUserByUsername("memId_00000000000015");
         UsernamePasswordAuthenticationToken auth =
                 //여기있는 super.setAuthenticated(true); 를 타야함.
                 new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, null);

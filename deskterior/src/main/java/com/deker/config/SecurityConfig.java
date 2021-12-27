@@ -1,5 +1,6 @@
 package com.deker.config;
 
+import com.deker.security.SecurityAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,10 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    public SecurityAuthenticationFilter securityAuthenticationFilter() {
+        return new SecurityAuthenticationFilter();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,10 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/nmb/**").permitAll()
                 .antMatchers("/mb/**").authenticated()
                 .antMatchers("/**").authenticated()
-                .anyRequest().permitAll()
                 .and()
                 .formLogin().disable()
         ;
+        http
+                .addFilterBefore(securityAuthenticationFilter(),
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
