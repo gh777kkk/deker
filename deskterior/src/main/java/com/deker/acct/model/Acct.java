@@ -8,4 +8,7 @@ import lombok.Setter;
 public class Acct {
     private String memId;
     private String id;
+    private String password;
+    private String socialId;
+    private String platformCode;
 }

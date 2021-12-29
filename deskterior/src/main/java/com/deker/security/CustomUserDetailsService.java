@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String memId) throws UsernameNotFoundException {
-        if (!memId.equals("test")) throw new UsernameNotFoundException("해당 유저가 존재하지 않습니다.");
+//        if (!memId.equals("memId_00000000000025")) throw new UsernameNotFoundException("해당 유저가 존재하지 않습니다.");
         return new SecurityUser(memId, Arrays.asList("ROLE_AUTH"));
     }
 }

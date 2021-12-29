@@ -20,7 +20,7 @@ import java.io.OutputStream;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private static ExceptionResponse exceptionResponse =
-            new ExceptionResponse(HttpStatus.FORBIDDEN.value(), "Forbidden!!!", null);
+            new ExceptionResponse(HttpStatus.FORBIDDEN.value(), "권한 없음", null);
 
     @Override
     public void handle(HttpServletRequest httpServletRequest,

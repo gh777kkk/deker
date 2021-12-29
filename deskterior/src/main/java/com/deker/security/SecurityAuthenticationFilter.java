@@ -18,20 +18,20 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+//    @Autowired
+//    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String username = "test";
-
-        UserDetails authentication = customUserDetailsService.loadUserByUsername(username);
-
-        //여기있는 super.setAuthenticated(true); 를 타야함.
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication, "test", authentication.getAuthorities());
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//        String username = "memId_00000000000025";
+//
+//        UserDetails authentication = customUserDetailsService.loadUserByUsername(username);
+//
+//        //여기있는 super.setAuthenticated(true); 를 타야함.
+//        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication, "test", authentication.getAuthorities());
+//
+//        SecurityContextHolder.getContext().setAuthentication(auth);
+//        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         filterChain.doFilter(request, response);
     }
 }

@@ -11,6 +11,7 @@
             ,   PROFILE_IMG
             ,   NICK_NAME
             ,   JOB_CODE
+            ,   PLATFORM_CODE
             ,   AGREE_YN
             ,   CREATE_ID
             ,   UPDATE_ID
@@ -22,6 +23,7 @@
             ,   #{profileImg}
             ,   #{nickName}
             ,   #{jobCode}
+            ,   #{platformCode}
             ,   #{agreeYn}
             ,   #{memId}
             ,   #{memId}
@@ -55,10 +57,16 @@
         )
     </insert>
 
-    <select id="selectMemId" parameterType="AcctConditions" resultType="Acct">
-        SELECT MEM_ID memId
-        FROM MEMBER
-        WHERE MEM_ID = #{memId}
+    <select id="selectMemCheck" parameterType="AcctConditions" resultType="Acct">
+        SELECT      MEM.MEM_ID          memId
+                ,   MEM.PLATFORM_CODE   platformCode
+                ,   DM.PASSWORD         password
+                ,   SM.SOCIAL_ID        socialId
+        FROM MEMBER MEM
+        LEFT OUTER JOIN DEKER_MEMBER DM ON MEM.MEM_ID = DM.MEM_ID
+        LEFT OUTER JOIN SOCIAL_MEMBER SM ON MEM.MEM_ID = SM.MEM_ID
+        WHERE   ID = #{id}
+        AND     PLATFORM_CODE = #{platformCode}
     </select>
 
 

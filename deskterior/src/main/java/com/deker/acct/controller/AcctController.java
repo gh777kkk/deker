@@ -4,13 +4,26 @@ import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
 import com.deker.cmm.model.ResponseData;
+import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
+import com.deker.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +33,15 @@ public class AcctController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final CustomUserDetailsService customUserDetailsService;
+//    private final CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    private final JwtProvider jwtProvider;
+
+    private final AuthenticationManager authenticationManager;
+
+    private static final Logger logger = LoggerFactory.getLogger(AcctController.class);
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello() {
@@ -54,16 +75,41 @@ public class AcctController {
         return result;
     }
 
-    @RequestMapping(value = "/mb/acct/get/member", method = RequestMethod.GET)
-    public void login(@RequestBody AcctConditions conditions) {
-        customUserDetailsService.loadUserByUsername("");
-    }
-
     @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
-    public void regMember(@RequestBody AcctConditions conditions) {
+    public ResponseData regMember(@RequestBody AcctConditions conditions) {
+        ResponseData result = new ResponseData();
+        conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
+        try{
+            acctService.regMember(conditions);
+            result.setResponseCode("200");
+            result.setMessage("회원가입 성공");
+        }catch (Exception e) {
+            logger.error("회원가입 실패: {}", e);
+            result.setResponseCode("400");
+            result.setMessage("회원가입 실패");
+        }
+        return result;
     }
 
     @RequestMapping(value = "/nmb/acct/get/member", method = RequestMethod.POST)
-    public void getMember(@RequestBody AcctConditions conditions) {
+    public String login(@RequestBody AcctConditions conditions, SecurityUser user) {
+        Acct acct = acctService.getMemId(conditions);
+        UserDetails authentication =customUserDetailsService.loadUserByUsername(acct.getMemId());
+        String jwt = jwtProvider.generateJwtToken(authentication);
+        try{
+            if (acct.getPlatformCode().equals("P01")){
+                if(acct.getPassword().equals(passwordEncoder.encode(conditions.getPassword()))){
+                    logger.info("로그인 성공");
+                }else new IllegalArgumentException("비밀번호가 다릅니다.");
+            }else {
+                if(acct.getPlatformCode().equals(conditions.getPlatformCode())){
+                    logger.info("로그인 성공");
+                }else new IllegalArgumentException("플렛폼 정보가 다릅니다.");
+            }
+//            return jwtProvider.generateJwtToken();
+        }catch (Exception e){
+            logger.error("로그인 실패: {}", e);
+        }
+        return jwt;
     }
 }

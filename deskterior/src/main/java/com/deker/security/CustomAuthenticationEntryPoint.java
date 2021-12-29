@@ -20,17 +20,17 @@ import java.io.OutputStream;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private static ExceptionResponse exceptionResponse =
-            new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "UnAuthorized!!!", null);
+            new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "유효한 토큰값이 아닙니다", null);
 
     @Override
-    public void commence(HttpServletRequest httpServletRequest,
-                         HttpServletResponse httpServletResponse,
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
                          AuthenticationException e) throws IOException, ServletException {
 //        log.error("UnAuthorizaed!!! message : " + e.getMessage());
         //response에 넣기
-        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-        try (OutputStream os = httpServletResponse.getOutputStream()) {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(os, exceptionResponse);
             os.flush();

@@ -11,5 +11,5 @@ public interface AcctMapper {
     void insertMember(AcctConditions conditions);
     void insertDekerMember(AcctConditions conditions);
     void insertSocialMember(AcctConditions conditions);
-    List<Acct> selectMemId(AcctConditions conditions);
+    Acct selectMemCheck(AcctConditions conditions);
 }
