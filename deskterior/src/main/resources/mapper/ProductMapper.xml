@@ -10,75 +10,20 @@
         order by s.PRODUCT_SALE desc limit 8
     </select>
 
-    <select id="getDecoProductList" resultType="com.deker.mkt.model.ProductModel">
+    <select id="getBestCategoryProductList" resultType="com.deker.mkt.model.ProductModel">
         select *
         from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='a'
+        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='${code}'
         order by s.PRODUCT_SALE desc limit 8
     </select>
 
-    <select id="getNewDecoProductList" resultType="com.deker.mkt.model.ProductModel">
+    <select id="getNewCategoryProductList" resultType="com.deker.mkt.model.ProductModel">
         select *
         from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='a'
+        where p.PRODUCT_CATEGORY='${code}'
         order by p.PRODUCT_REGISTRATION desc limit 8
     </select>
 
-    <select id="getFurnitureProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='b'
-        order by s.PRODUCT_SALE desc limit 8
-    </select>
-
-    <select id="getNewFurnitureProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='b'
-        order by p.PRODUCT_REGISTRATION desc limit 8
-    </select>
-
-    <select id="getHomeAppliancesProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='c'
-        order by s.PRODUCT_SALE desc limit 8
-    </select>
-
-    <select id="getNewHomeAppliancesProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='c'
-        order by p.PRODUCT_REGISTRATION desc limit 8
-    </select>
-
-    <select id="getLampProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='d'
-        order by s.PRODUCT_SALE desc limit 8
-    </select>
-
-    <select id="getNewLampProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='d'
-        order by p.PRODUCT_REGISTRATION desc limit 8
-    </select>
-
-    <select id="getStationeryProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='e'
-        order by s.PRODUCT_SALE desc limit 8
-    </select>
-
-    <select id="getNewStationeryProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='e'
-        order by p.PRODUCT_REGISTRATION desc limit 8
-    </select>
 
 
 

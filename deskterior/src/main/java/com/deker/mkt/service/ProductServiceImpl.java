@@ -20,54 +20,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public List<ProductModel> getDecoProductList(){
+    public List<ProductModel> getBestCategoryProductList(String code){
 
-        return productMapper.getDecoProductList();
+        return productMapper.getBestCategoryProductList(code);
     }
 
-    public List<ProductModel> getNewDecoProductList(){
+    public List<ProductModel> getNewCategoryProductList(String code){
 
-        return productMapper.getNewDecoProductList();
+        return productMapper.getNewCategoryProductList(code);
     }
 
-
-    public List<ProductModel> getFurnitureProductList(){
-
-        return productMapper.getFurnitureProductList();
-    }
-
-    public List<ProductModel> getNewFurnitureProductList(){
-
-        return productMapper.getNewFurnitureProductList();
-    }
-
-    public List<ProductModel> getHomeAppliancesProductList(){
-
-        return productMapper.getHomeAppliancesProductList();
-    }
-
-    public List<ProductModel> getNewHomeAppliancesProductList(){
-
-        return productMapper.getNewHomeAppliancesProductList();
-    }
-
-    public List<ProductModel> getLampProductList(){
-
-        return productMapper.getLampProductList();
-    }
-
-    public List<ProductModel> getNewLampProductList(){
-
-        return productMapper.getNewLampProductList();
-    }
-
-    public List<ProductModel> getStationeryProductList(){
-
-        return productMapper.getStationeryProductList();
-    }
-
-    public List<ProductModel> getNewStationeryProductList(){
-
-        return productMapper.getNewStationeryProductList();
-    }
 }

@@ -9,19 +9,8 @@ import java.util.List;
 public interface ProductMapper {
     List<ProductModel> getBestSaleProductList();
 
-    List<ProductModel> getDecoProductList();
-    List<ProductModel> getNewDecoProductList();
+    List<ProductModel> getBestCategoryProductList(String code);
+    List<ProductModel> getNewCategoryProductList(String code);
 
-    List<ProductModel> getFurnitureProductList();
-    List<ProductModel> getNewFurnitureProductList();
-
-    List<ProductModel> getHomeAppliancesProductList();
-    List<ProductModel> getNewHomeAppliancesProductList();
-
-    List<ProductModel> getLampProductList();
-    List<ProductModel> getNewLampProductList();
-
-    List<ProductModel> getStationeryProductList();
-    List<ProductModel> getNewStationeryProductList();
 }
 
