@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class ProductModel {
 
-    private char MKT_PRODUCT_ID;
+    private String MKT_PRODUCT_ID;
     private int PRODUCT_PRICE;
     private int PRODUCT_QUANTITY;
     private String PRODUCT_CATEGORY;
