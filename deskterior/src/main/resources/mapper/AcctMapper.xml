@@ -21,7 +21,7 @@
                 #{memId}
             ,   #{id}
             ,   #{profileImg}
-            ,   #{nickName}
+            ,   #{nickname}
             ,   #{jobCode}
             ,   #{platformCode}
             ,   #{agreeYn}

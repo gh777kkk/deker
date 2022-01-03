@@ -60,7 +60,7 @@ public class AcctController {
         conditions.setPlatformCode("P01");
         conditions.setId("wkdrjswkd@test.com");
         conditions.setPassword(passwordEncoder.encode("a12345678"));
-        conditions.setNickName("아무거나왈왈");
+        conditions.setNickname("아무거나왈왈");
         conditions.setJobCode("J03");
         conditions.setSocialId("12345678");
         conditions.setAgreeYn("Y");
@@ -78,16 +78,19 @@ public class AcctController {
     @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
     public ResponseData regMember(@RequestBody AcctConditions conditions) {
         ResponseData result = new ResponseData();
-        conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
-        try{
-            acctService.regMember(conditions);
+        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
+        int state = acctService.regMember(conditions);
+        if (state == 1){
             result.setResponseCode("200");
             result.setMessage("회원가입 성공");
-        }catch (Exception e) {
-            logger.error("회원가입 실패: {}", e);
+        }else if (state == 2 ){
             result.setResponseCode("400");
-            result.setMessage("회원가입 실패");
+            result.setMessage("이미 가입한 회원");
+        }else {
+            result.setResponseCode("400");
+            result.setMessage("원인 불명 회원가입 실패");
         }
+
         return result;
     }
 
@@ -111,5 +114,10 @@ public class AcctController {
             logger.error("로그인 실패: {}", e);
         }
         return jwt;
+    }
+
+    @RequestMapping(value = "/nmb/acct/email/test", method = RequestMethod.POST)
+    public void emailTest() throws Exception {
+        String confirm = acctService.sendSimpleMessage("wkdrjswkd5@naver.com");
     }
 }

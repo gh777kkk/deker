@@ -35,8 +35,17 @@ dependencies {
 	compile group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtime group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtime group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	// mail 관련 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {
 	useJUnitPlatform()
+}
+
+bootJar {
+	archiveBaseName = 'deker'
+	archiveFileName = 'deker.jar'
+	archiveVersion = '0.0.0'
 }

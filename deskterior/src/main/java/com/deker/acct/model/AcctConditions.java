@@ -11,7 +11,7 @@ public class AcctConditions {
     private String memId;
     private String id;
     private String profileImg;
-    private String nickName;
+    private String nickname;
     private String jobCode;
     private String agreeYn;
     private String password;
