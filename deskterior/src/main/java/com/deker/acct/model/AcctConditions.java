@@ -17,4 +17,5 @@ public class AcctConditions {
     private String password;
     private String platformCode;
     private String socialId;
+    private String checkString;
 }

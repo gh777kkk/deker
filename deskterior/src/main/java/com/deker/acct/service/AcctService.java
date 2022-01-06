@@ -8,5 +8,5 @@ import java.util.List;
 public interface AcctService {
     int regMember(AcctConditions conditions);
     Acct getMemId(AcctConditions conditions);
-    String sendSimpleMessage(String to)throws Exception;
+    int memberIdEmailSend(String to)throws Exception;
 }

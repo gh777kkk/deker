@@ -69,5 +69,14 @@
         AND     PLATFORM_CODE = #{platformCode}
     </select>
 
+<!--    <update id="updateIds" parameterType="AcctConditions">-->
+<!--        INSERT INTO IDS-->
+<!--        (ID)-->
+<!--        VALUES (#{tableName},0)-->
+<!--        ON DUPLICATE KEY UPDATE-->
+<!--        TABEL_NAME = #{tableName},-->
+<!--        NEXT_ID = NEXT_ID+1-->
+<!--    </update>-->
+
 
 </mapper>

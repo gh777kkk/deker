@@ -3,7 +3,9 @@ package com.deker.acct.controller;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
+import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.ResponseData;
+import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import com.deker.security.SecurityUser;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -116,8 +119,23 @@ public class AcctController {
         return jwt;
     }
 
-    @RequestMapping(value = "/nmb/acct/email/test", method = RequestMethod.POST)
-    public void emailTest() throws Exception {
-        String confirm = acctService.sendSimpleMessage("wkdrjswkd5@naver.com");
+    @RequestMapping(value = "/nmb/acct/member/email-send", method = RequestMethod.POST)
+    public ResponseEntity<Result> emailTest(@RequestBody AcctConditions conditions) throws Exception {
+        acctService.memberIdEmailSend(conditions.getId());
+        int state = 0;
+        if (state == 1) return ResponseEntity.ok(new Result("200","메일 발송 완료"));
+        if (state == 2) return ResponseEntity.ok(new Result("201","이미 가입된 아이디"));
+        return ResponseEntity.ok(new Result("400","알수 없는 에러"));
+    }
+
+    @RequestMapping(value = "/nmb/acct/get/member/email/check", method = RequestMethod.POST)
+    public ResponseEntity<Result> emailCheck(@RequestBody AcctConditions conditions) throws Exception {
+        acctService.memberIdEmailSend(conditions.getId());
+        int state = 0;
+        if (state == 1) return ResponseEntity.ok(new Result("200","메일 발송 완료"));
+        if (state == 2) return ResponseEntity.ok(new Result("201","틀린 문자 입력"));
+        if (state == 3) return ResponseEntity.ok(new Result("202","없는 아이디"));
+        return ResponseEntity.ok(new Result("400","알수 없는 에러"));
+
     }
 }

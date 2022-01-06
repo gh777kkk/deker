@@ -53,25 +53,29 @@ public class AcctServiceImpl implements AcctService {
 
 
     @Override
-    public String sendSimpleMessage(String to)throws Exception {
-        // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
-        try{//예외처리
+    public int memberIdEmailSend(String id)throws Exception {
+        AcctConditions conditions = new AcctConditions();
+        conditions.setId(id);
+        conditions.setPlatformCode("P01");
+        Acct acct = acctMapper.selectMemCheck(conditions);
+        if (acct != null) return 2;
+
+
+        MimeMessage message = createMessage(id);
+        try{
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return 1;
     }
 
 
-    private MimeMessage createMessage(String to)throws Exception{
-        System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
+    private MimeMessage createMessage(String id)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 
-        message.addRecipients(MimeMessage.RecipientType.TO, to);//보내는 대상
+        message.addRecipients(MimeMessage.RecipientType.TO, id);//보내는 대상
         message.setSubject("Deker회원가입 이메일 인증");//제목
 
         String msgg="";
@@ -89,7 +93,7 @@ public class AcctServiceImpl implements AcctService {
         msgg+= ePw+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("","Deker"));//보내는 사람
+        message.setFrom(new InternetAddress("Deker","Deker"));//보내는 사람
 
         return message;
     }
