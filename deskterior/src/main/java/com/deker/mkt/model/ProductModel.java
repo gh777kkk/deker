@@ -8,10 +8,13 @@ import lombok.Setter;
 @Setter
 public class ProductModel {
 
-    private String MKT_PRODUCT_ID;
-    private int PRODUCT_PRICE;
-    private int PRODUCT_QUANTITY;
-    private String PRODUCT_CATEGORY;
-    private String PRODUCT_EXPLAIN;
-    private String PRODUCT_NAME;
+    private String mktProductId;
+    private int productPrice;
+    private int productQuantity;
+    private String productCategory;
+    private String productExplain;
+    private String productName;
+    private String bestProduct;
+    private String newProduct;
+
 }
