@@ -21,12 +21,12 @@ public class MBMarketController {
                 productService.getBestSaleProductList());
     }
 
-    @RequestMapping( value = "/category/{code}",  method = RequestMethod.GET)
-    public ResponseEntity<?> getDecoProduct(@PathVariable("code") String code) {
+    @RequestMapping( value = "/get/category",  method = RequestMethod.POST)
+    public ResponseEntity<?> getDecoProduct(@RequestBody String codeId) {
 
         return ResponseEntity.ok(
-                Stream.concat(productService.getBestCategoryProductList(code).stream(),
-                        productService.getNewCategoryProductList(code).stream())
+                Stream.concat(productService.getBestCategoryProductList(codeId).stream(),
+                        productService.getNewCategoryProductList(codeId).stream())
                         .collect(Collectors.toList())
         );
 

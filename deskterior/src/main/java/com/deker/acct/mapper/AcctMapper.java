@@ -12,4 +12,7 @@ public interface AcctMapper {
     void insertDekerMember(AcctConditions conditions);
     void insertSocialMember(AcctConditions conditions);
     Acct selectMemCheck(AcctConditions conditions);
+    void updateMailCheck(AcctConditions conditions);
+    List<String> selectNicknameCheck(AcctConditions conditions);
+    Acct selectMailCheckString(AcctConditions conditions);
 }

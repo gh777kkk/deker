@@ -36,65 +36,21 @@ public class AcctController {
 
     private final PasswordEncoder passwordEncoder;
 
-//    private final CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     private final JwtProvider jwtProvider;
 
-    private final AuthenticationManager authenticationManager;
-
     private static final Logger logger = LoggerFactory.getLogger(AcctController.class);
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String hello() {
-        return "Hello World!";
-    }
-
-    @RequestMapping(value = "/mb/cmm/get/job-code", method = RequestMethod.GET)
-    public String getJobCode() {
-        return "Hello World!";
-    }
-
-    // TODO 중복회원가입, 비밀번호 암호화, 프로필 사진, 테그, 익셉션 세분화 처리 해야함
-    @RequestMapping(value = "/nmb/test", method = RequestMethod.GET)
-    public ResponseData test(AcctConditions conditions) {
-        ResponseData result = new ResponseData();
-        conditions.setPlatformCode("P01");
-        conditions.setId("wkdrjswkd@test.com");
-        conditions.setPassword(passwordEncoder.encode("a12345678"));
-        conditions.setNickname("아무거나왈왈");
-        conditions.setJobCode("J03");
-        conditions.setSocialId("12345678");
-        conditions.setAgreeYn("Y");
+    @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
+    public ResponseEntity<Result> regMember(@RequestBody AcctConditions conditions) throws Exception {
+        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
         try{
             acctService.regMember(conditions);
-            result.setResponseCode("200");
-            result.setMessage("회원가입 성공");
-        }catch (Exception e) {
-            result.setResponseCode("400");
-            result.setMessage("회원가입 실패");
+            return ResponseEntity.ok(new Result("200","회원가입 성공"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new Result("410","회원가입 실패"));
         }
-        return result;
-    }
-
-    @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
-    public ResponseData regMember(@RequestBody AcctConditions conditions) {
-        ResponseData result = new ResponseData();
-        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
-        int state = acctService.regMember(conditions);
-        if (state == 1){
-            result.setResponseCode("200");
-            result.setMessage("회원가입 성공");
-        }else if (state == 2 ){
-            result.setResponseCode("400");
-            result.setMessage("이미 가입한 회원");
-        }else {
-            result.setResponseCode("400");
-            result.setMessage("원인 불명 회원가입 실패");
-        }
-
-        return result;
     }
 
     @RequestMapping(value = "/nmb/acct/get/member", method = RequestMethod.POST)
@@ -119,23 +75,23 @@ public class AcctController {
         return jwt;
     }
 
-    @RequestMapping(value = "/nmb/acct/member/email-send", method = RequestMethod.POST)
-    public ResponseEntity<Result> emailTest(@RequestBody AcctConditions conditions) throws Exception {
-        acctService.memberIdEmailSend(conditions.getId());
-        int state = 0;
-        if (state == 1) return ResponseEntity.ok(new Result("200","메일 발송 완료"));
-        if (state == 2) return ResponseEntity.ok(new Result("201","이미 가입된 아이디"));
-        return ResponseEntity.ok(new Result("400","알수 없는 에러"));
+    @RequestMapping(value = "/nmb/acct/member/mail-send", method = RequestMethod.POST)
+    public ResponseEntity<Result> memberMailSend(@RequestBody AcctConditions conditions) throws Exception {
+        try {
+            acctService.memberIdEmailSend(conditions.getId());
+            return ResponseEntity.ok(new Result("200","메일 발송 완료"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new Result("410","메일 발송 실패"));
+        }
     }
 
-    @RequestMapping(value = "/nmb/acct/get/member/email/check", method = RequestMethod.POST)
-    public ResponseEntity<Result> emailCheck(@RequestBody AcctConditions conditions) throws Exception {
-        acctService.memberIdEmailSend(conditions.getId());
-        int state = 0;
-        if (state == 1) return ResponseEntity.ok(new Result("200","메일 발송 완료"));
-        if (state == 2) return ResponseEntity.ok(new Result("201","틀린 문자 입력"));
-        if (state == 3) return ResponseEntity.ok(new Result("202","없는 아이디"));
-        return ResponseEntity.ok(new Result("400","알수 없는 에러"));
-
+    @RequestMapping(value = "/nmb/acct/get/member/mail/check", method = RequestMethod.POST)
+    public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions) throws Exception {
+        try {
+            acctService.memberMailCheck(conditions);
+            return ResponseEntity.ok(new Result("200","정상"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new Result("410","메일 체크 실패"));
+        }
     }
 }

@@ -9,7 +9,7 @@
                 MEM_ID
             ,   ID
             ,   PROFILE_IMG
-            ,   NICK_NAME
+            ,   NICKNAME
             ,   JOB_CODE
             ,   PLATFORM_CODE
             ,   AGREE_YN
@@ -58,8 +58,10 @@
     </insert>
 
     <select id="selectMemCheck" parameterType="AcctConditions" resultType="Acct">
+        <![CDATA[
         SELECT      MEM.MEM_ID          memId
                 ,   MEM.PLATFORM_CODE   platformCode
+                ,   MEM.NICKNAME        nickname
                 ,   DM.PASSWORD         password
                 ,   SM.SOCIAL_ID        socialId
         FROM MEMBER MEM
@@ -67,16 +69,38 @@
         LEFT OUTER JOIN SOCIAL_MEMBER SM ON MEM.MEM_ID = SM.MEM_ID
         WHERE   ID = #{id}
         AND     PLATFORM_CODE = #{platformCode}
+        AND     MEM.LAST_DT > '9999-12-30'
+        ]]>
     </select>
 
-<!--    <update id="updateIds" parameterType="AcctConditions">-->
-<!--        INSERT INTO IDS-->
-<!--        (ID)-->
-<!--        VALUES (#{tableName},0)-->
-<!--        ON DUPLICATE KEY UPDATE-->
-<!--        TABEL_NAME = #{tableName},-->
-<!--        NEXT_ID = NEXT_ID+1-->
-<!--    </update>-->
+    <update id="updateMailCheck" parameterType="AcctConditions">
+        INSERT INTO ACCT_MAIL_CHECK
+        (
+                ID
+            ,   CHECK_STRING
+            ,   UPDATE_DT
+        )
+        VALUES
+        (
+                #{id}
+            ,   #{checkString}
+            ,   SYSDATE())
+        ON DUPLICATE KEY UPDATE
+                CHECK_STRING = #{checkString}
+            ,   UPDATE_DT = SYSDATE()
+    </update>
 
+    <select id="selectNicknameCheck" parameterType="AcctConditions" resultType="String">
+        SELECT      NICKNAME        nickname
+        FROM MEMBER
+        WHERE NICKNAME = #{nickname}
+    </select>
+
+    <select id="selectMailCheckString" parameterType="AcctConditions" resultType="Acct">
+        SELECT ID id
+        FROM ACCT_MAIL_CHECK
+        WHERE ID = #{id}
+        AND CHECK_STRING = #{checkString}
+    </select>
 
 </mapper>

@@ -23,7 +23,7 @@ public class NMBMarketController {
     }
 
 
-    @RequestMapping( value = "/category/{code}",  method = RequestMethod.GET)
+    @RequestMapping( value = "/get/category/{code}",  method = RequestMethod.GET)
     public ResponseEntity<?> getDecoProduct(@PathVariable("code") String code) {
 
         return ResponseEntity.ok(

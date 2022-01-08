@@ -4,6 +4,10 @@ import com.deker.acct.mapper.AcctMapper;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
 import com.deker.cmm.util.IDSUtil;
+import com.deker.exception.AlreadyMemberException;
+import com.deker.exception.AlreadyNicknameException;
+import com.deker.exception.MailCheckNotFoundException;
+import com.deker.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,9 +34,12 @@ public class AcctServiceImpl implements AcctService {
     public static final String ePw = createKey();
 
     @Override
-    public int regMember(AcctConditions conditions){
+    public void regMember(AcctConditions conditions) throws Exception {
         Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct != null) return 2;
+        List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
+        if (acct != null) throw new AlreadyMemberException();
+        if (nicknameCheck.size() > 0) throw new AlreadyNicknameException();
+
         conditions.setMemId(IDSUtil.nextId("memId"));
         if(conditions.getPlatformCode().equals("P01")){
             acctMapper.insertMember(conditions);
@@ -41,7 +48,6 @@ public class AcctServiceImpl implements AcctService {
             acctMapper.insertMember(conditions);
             acctMapper.insertSocialMember(conditions);
         }
-        return 1;
     }
     
     @Override
@@ -51,24 +57,24 @@ public class AcctServiceImpl implements AcctService {
         return acct;
     }
 
-
     @Override
-    public int memberIdEmailSend(String id)throws Exception {
+    public void memberIdEmailSend(String id)throws Exception {
         AcctConditions conditions = new AcctConditions();
         conditions.setId(id);
         conditions.setPlatformCode("P01");
         Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct != null) return 2;
-
+        if (acct != null) throw new AlreadyMemberException();
 
         MimeMessage message = createMessage(id);
-        try{
-            emailSender.send(message);
-        }catch(MailException es){
-            es.printStackTrace();
-            throw new IllegalArgumentException();
-        }
-        return 1;
+        conditions.setCheckString(ePw);
+        acctMapper.updateMailCheck(conditions);
+        emailSender.send(message);
+    }
+
+    @Override
+    public void memberMailCheck(AcctConditions conditions)throws Exception {
+        Acct mailCheck = acctMapper.selectMailCheckString(conditions);
+        if (mailCheck == null) throw new MailCheckNotFoundException();
     }
 
 

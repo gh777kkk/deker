@@ -11,7 +11,7 @@ import org.springframework.validation.FieldError;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExceptionResponse {
-    private Integer status;
+    private Integer responseCode;
 
     private String error;
 
@@ -20,14 +20,14 @@ public class ExceptionResponse {
     private String path;
 
     public ExceptionResponse(HttpStatus httpStatus, BindingResult bindingResult, String path) {
-        this.status = httpStatus.value();
+        this.responseCode = httpStatus.value();
         this.error = httpStatus.name();
         this.message = createErrorMessage(bindingResult);
         this.path = path;
     }
 
     public ExceptionResponse(Integer httpStatus, String reason, String path) {
-        this.status = httpStatus;
+        this.responseCode = httpStatus;
         this.message = reason;
         this.path = path;
     }
