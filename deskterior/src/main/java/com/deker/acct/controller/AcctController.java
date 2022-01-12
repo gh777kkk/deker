@@ -6,6 +6,7 @@ import com.deker.acct.service.AcctService;
 import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.ResponseData;
 import com.deker.cmm.model.Result;
+import com.deker.exception.AlreadyMemberException;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import com.deker.security.SecurityUser;
@@ -20,10 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,13 +42,7 @@ public class AcctController {
 
     @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
     public ResponseEntity<Result> regMember(@RequestBody AcctConditions conditions) throws Exception {
-        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
-        try{
-            acctService.regMember(conditions);
-            return ResponseEntity.ok(new Result("200","회원가입 성공"));
-        }catch (Exception e){
-            return ResponseEntity.ok(new Result("410","회원가입 실패"));
-        }
+        return ResponseEntity.ok(new Result("200","회원가입 성공",acctService.regMember(conditions)));
     }
 
     @RequestMapping(value = "/nmb/acct/get/member", method = RequestMethod.POST)
@@ -77,21 +69,13 @@ public class AcctController {
 
     @RequestMapping(value = "/nmb/acct/member/mail-send", method = RequestMethod.POST)
     public ResponseEntity<Result> memberMailSend(@RequestBody AcctConditions conditions) throws Exception {
-        try {
-            acctService.memberIdEmailSend(conditions.getId());
-            return ResponseEntity.ok(new Result("200","메일 발송 완료"));
-        }catch (Exception e){
-            return ResponseEntity.ok(new Result("410","메일 발송 실패"));
-        }
+        acctService.memberIdEmailSend(conditions.getId());
+        return ResponseEntity.ok(new Result("200","메일 발송 완료"));
     }
 
     @RequestMapping(value = "/nmb/acct/get/member/mail/check", method = RequestMethod.POST)
     public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions) throws Exception {
-        try {
-            acctService.memberMailCheck(conditions);
-            return ResponseEntity.ok(new Result("200","정상"));
-        }catch (Exception e){
-            return ResponseEntity.ok(new Result("410","메일 체크 실패"));
-        }
+        acctService.memberMailCheck(conditions);
+        return ResponseEntity.ok(new Result("200","정상"));
     }
 }

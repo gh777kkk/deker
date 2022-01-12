@@ -11,6 +11,7 @@ import com.deker.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +32,12 @@ public class AcctServiceImpl implements AcctService {
 
     private final JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void regMember(AcctConditions conditions) throws Exception {
+    @Transactional
+    public List<?> regMember(AcctConditions conditions) throws Exception {
+        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
         Acct acct = acctMapper.selectMemCheck(conditions);
         List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
         if (acct != null) throw new AlreadyMemberException();
@@ -48,6 +51,7 @@ public class AcctServiceImpl implements AcctService {
             acctMapper.insertMember(conditions);
             acctMapper.insertSocialMember(conditions);
         }
+        return null;
     }
     
     @Override
@@ -65,7 +69,8 @@ public class AcctServiceImpl implements AcctService {
         Acct acct = acctMapper.selectMemCheck(conditions);
         if (acct != null) throw new AlreadyMemberException();
 
-        MimeMessage message = createMessage(id);
+        String ePw = createKey();
+        MimeMessage message = createMessage(id,ePw);
         conditions.setCheckString(ePw);
         acctMapper.updateMailCheck(conditions);
         emailSender.send(message);
@@ -78,7 +83,7 @@ public class AcctServiceImpl implements AcctService {
     }
 
 
-    private MimeMessage createMessage(String id)throws Exception{
+    private MimeMessage createMessage(String id, String ePw)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, id);//보내는 대상
@@ -104,7 +109,7 @@ public class AcctServiceImpl implements AcctService {
         return message;
     }
 
-    public static String createKey() {
+    public String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 

@@ -30,11 +30,11 @@ public class ExceptionController {
         return ResponseEntity.ok(new Result("400","실패"));
     }
     @ExceptionHandler({ RuntimeException.class })
-    public ResponseEntity<Result> handleRuntimeException() {
-        return ResponseEntity.ok(new Result("420","에러 code : 1"));
+    public ResponseEntity<Result> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.ok(new Result("410",e.toString()));
     }
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<Result> handleException() {
-        return ResponseEntity.ok(new Result("430","에러 code : 2"));
+    public ResponseEntity<Result> handleException(Exception e) {
+        return ResponseEntity.ok(new Result("420",e.toString()));
     }
 }

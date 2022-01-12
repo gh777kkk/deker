@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .exposedHeaders("X-AUTH-TOKEN")
                 .allowCredentials(true)
-                .allowedOrigins("http://**");
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST");
     }
 }
