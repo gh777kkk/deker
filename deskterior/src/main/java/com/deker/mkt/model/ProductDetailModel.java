@@ -6,15 +6,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductModel {
+public class ProductDetailModel {
 
     private String mktProductId;
-    private int productPrice;
-    private int productQuantity;
-    private String productCategory;
-    private String productExplain;
     private String productName;
-    private String bestProduct;
-    private String newProduct;
+    private int productPrice;
+    private String option1;
+    private String option1Data;
+    private String option2;
+    private String option2Data;
+    private int productQuantity;
+    private String productExplain;
+
+
+
+
+
 
 }

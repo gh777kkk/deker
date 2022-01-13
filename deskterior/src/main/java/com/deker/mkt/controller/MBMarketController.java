@@ -5,12 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/mb/mkt")
+@RequestMapping(path = "/mb/mkt/get")
 public class MBMarketController {
 
     public final ProductService productService;
@@ -21,7 +22,8 @@ public class MBMarketController {
                 productService.getBestSaleProductList());
     }
 
-    @RequestMapping( value = "/get/category",  method = RequestMethod.POST)
+
+    @RequestMapping( value = "/category",  method = RequestMethod.POST)
     public ResponseEntity<?> getDecoProduct(@RequestBody String codeId) {
 
         return ResponseEntity.ok(
@@ -29,8 +31,6 @@ public class MBMarketController {
                         productService.getNewCategoryProductList(codeId).stream())
                         .collect(Collectors.toList())
         );
-
-
     }
 
 
