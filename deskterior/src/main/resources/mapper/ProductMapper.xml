@@ -10,16 +10,14 @@
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
-               PRODUCT_NAME AS productName,
-               DIVISION AS bestProduct
-        from study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID in
-            (select o.PRODUCT_ID, COUNT(o.ORDER_ID)
-            from study_gh.MY_ORDER o
-            where o.ORDER_CONFIRM = 'Y'
-            group by o.PRODUCT_ID
-            order by COUNT(o.ORDER_ID) desc )
-        order by p.MKT_PRODUCT_ID desc limit 8
+               PRODUCT_NAME AS productName
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc limit 8) o
+        where p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
     </select>
 
     <select id="getBestCategoryProductList" resultType="ProductModel">
@@ -28,11 +26,15 @@
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
-               PRODUCT_NAME AS productName,
-               DIVISION AS bestProduct
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY=#{code}
-        order by s.PRODUCT_SALE desc limit 8
+               PRODUCT_NAME AS productName
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY=#{code} and p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
+        order by p.CREATE_DT limit 8
     </select>
 
     <select id="getNewCategoryProductList" resultType="ProductModel">
@@ -41,11 +43,10 @@
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
-               PRODUCT_NAME AS productName,
-               DIVISION AS newProduct
+               PRODUCT_NAME AS productName
         from study_gh.MKT_PRODUCT p
         where p.PRODUCT_CATEGORY=#{code}
-        order by p.PRODUCT_REGISTRATION desc limit 8
+        order by p.CREATE_DT desc limit 8
     </select>
 
     <select id="getProductDetail" resultType="ProductDetailModel">
@@ -59,8 +60,7 @@
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain
-               from study_gh.MKT_PRODUCT p, study_gh.MKT_PRODUCT_OPTION o,
-             study_gh.MKT_DETAIL_PAGE d
+               from study_gh.MKT_PRODUCT p, study_gh.MKT_PRODUCT_OPTION o
         where p.MKT_PRODUCT_ID=#{productId} and o.PRODUCT_ID=#{productId}
     </select>
 
@@ -72,20 +72,21 @@
     </select>
 
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
-        select o.ORDER_NAME, COUNT(o.PRODUCT_ID)
-        from study_gh.MY_ORDER o
-        where o.ORDER_CONFIRM = 'Y'and o.PRODUCT_CATEGORY in
-            (select PRODUCT_CATEGORY
-            from study_gh.MKT_PRODUCT p
-            where P.MKT_PRODUCT_ID=#{productId})
-        group by o.PRODUCT_ID
-        order by COUNT(o.PRODUCT_ID) desc limit 4
+        select p.PRODUCT_NAME
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
+        limit 4
     </select>
 
     <select id="getProductReview" resultType="ProductReview">
         select MY_STAR AS myStar,
                 REVIEW_STRING AS reviewString,
-                CREATE_DT AS reviewDate,
+                r.CREATE_DT AS reviewDate,
                 MEM_ID AS memId,
                 p.PRODUCT_NAME AS productName
         from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p

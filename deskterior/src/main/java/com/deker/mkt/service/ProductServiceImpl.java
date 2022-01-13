@@ -58,9 +58,9 @@ public class ProductServiceImpl implements ProductService {
 
         return productMapper.getProductDetailExplain(productId);
     }
-    public List<RecommendedProduct> getRecommendedProduct(String productId){
+    public List<RecommendedProduct> getRecommendedProduct(String categoryId){
 
-        return productMapper.getRecommendedProduct(productId);
+        return productMapper.getRecommendedProduct(categoryId);
     }
     public List<ProductReview> getProductReview(String productId){
 

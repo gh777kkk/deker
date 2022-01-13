@@ -34,8 +34,8 @@ public class NMBMarketController {
     public ResponseEntity<Result> getCategory(@RequestBody ProductCode pc) {
         return ResponseEntity.ok(
                 new Result("200", "카테고리 목록",
-                Stream.concat(productService.getBestCategoryProductList(pc.getCodeId()).stream(),
-                        productService.getNewCategoryProductList(pc.getCodeId()).stream())
+                Stream.concat(productService.getBestCategoryProductList(pc.getProductId()).stream(),
+                        productService.getNewCategoryProductList(pc.getProductId()).stream())
                         .collect(Collectors.toList()))
         );
     }
@@ -46,10 +46,10 @@ public class NMBMarketController {
         return ResponseEntity.ok(
                 new Result("200", "상품 디테일",
                 Stream.concat(
-                    Stream.concat(productService.getProductDetail(pm.getCodeId()).stream(),
-                    productService.getProductDetailExplain(pm.getCodeId()).stream()),
-                    Stream.concat(productService.getRecommendedProduct(pm.getCodeId()).stream(),
-                    productService.getProductReview(pm.getCodeId()).stream())
+                    Stream.concat(productService.getProductDetail(pm.getProductId()).stream(),
+                    productService.getProductDetailExplain(pm.getProductId()).stream()),
+                    Stream.concat(productService.getRecommendedProduct(pm.getCategoryId()).stream(),
+                    productService.getProductReview(pm.getProductId()).stream())
                 ).collect(Collectors.toList()))
         );
     }
