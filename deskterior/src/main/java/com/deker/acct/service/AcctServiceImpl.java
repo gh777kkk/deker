@@ -3,16 +3,22 @@ package com.deker.acct.service;
 import com.deker.acct.mapper.AcctMapper;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
-import com.deker.cmm.util.IDSUtil;
+import com.deker.cmm.model.Img;
+import com.deker.cmm.util.CMMUtil;
+import com.deker.exception.AlreadyMemberException;
+import com.deker.exception.AlreadyNicknameException;
+import com.deker.exception.MailCheckNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
+import javax.mail.internet.MimeUtility;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,17 +29,22 @@ public class AcctServiceImpl implements AcctService {
 
     private final AcctMapper acctMapper;
 
-    private final IDSUtil IDSUtil;
+    private final com.deker.cmm.util.CMMUtil CMMUtil;
 
     private final JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public int regMember(AcctConditions conditions){
+    @Transactional
+    public List<?> regMember(AcctConditions conditions) throws Exception {
+        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
         Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct != null) return 2;
-        conditions.setMemId(IDSUtil.nextId("memId"));
+        List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
+        if (acct != null) throw new AlreadyMemberException();
+        if (nicknameCheck.size() > 0) throw new AlreadyNicknameException();
+
+        conditions.setMemId(CMMUtil.nextId("memId"));
         if(conditions.getPlatformCode().equals("P01")){
             acctMapper.insertMember(conditions);
             acctMapper.insertDekerMember(conditions);
@@ -41,7 +52,7 @@ public class AcctServiceImpl implements AcctService {
             acctMapper.insertMember(conditions);
             acctMapper.insertSocialMember(conditions);
         }
-        return 1;
+        return null;
     }
     
     @Override
@@ -51,32 +62,44 @@ public class AcctServiceImpl implements AcctService {
         return acct;
     }
 
-
     @Override
-    public int memberIdEmailSend(String id)throws Exception {
+    public void memberIdEmailSend(String id)throws Exception {
         AcctConditions conditions = new AcctConditions();
         conditions.setId(id);
         conditions.setPlatformCode("P01");
         Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct != null) return 2;
+        if (acct != null) throw new AlreadyMemberException();
 
-
-        MimeMessage message = createMessage(id);
-        try{
-            emailSender.send(message);
-        }catch(MailException es){
-            es.printStackTrace();
-            throw new IllegalArgumentException();
-        }
-        return 1;
+        String ePw = createKey();
+        MimeMessage message = createMessage(id,ePw);
+        conditions.setCheckString(ePw);
+        acctMapper.updateMailCheck(conditions);
+        emailSender.send(message);
     }
 
+    @Override
+    public void memberMailCheck(AcctConditions conditions)throws Exception {
+        Acct mailCheck = acctMapper.selectMailCheckString(conditions);
+        if (mailCheck == null) throw new MailCheckNotFoundException();
+    }
 
-    private MimeMessage createMessage(String id)throws Exception{
+    @Override
+    @Transactional
+    public List<?> setImgTest(MultipartFile img, AcctConditions conditions)throws Exception{
+        CMMUtil.setImg(img,conditions.getMemId());
+        return null;
+    }
+
+    @Override
+    public List<?> getImgTest(AcctConditions conditions) throws Exception {
+        return null;
+    }
+
+    private MimeMessage createMessage(String id, String ePw)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, id);//보내는 대상
-        message.setSubject("Deker회원가입 이메일 인증");//제목
+        message.setSubject(MimeUtility.encodeText("Deker회원가입 이메일 인증","UTF-8","B"));//제목
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
@@ -98,7 +121,7 @@ public class AcctServiceImpl implements AcctService {
         return message;
     }
 
-    public static String createKey() {
+    public String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 

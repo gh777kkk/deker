@@ -20,7 +20,7 @@ import java.io.OutputStream;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private static ExceptionResponse exceptionResponse =
-            new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "유효한 토큰값이 아닙니다", null);
+            new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "인증 실패", null);
 
     @Override
     public void commence(HttpServletRequest request,

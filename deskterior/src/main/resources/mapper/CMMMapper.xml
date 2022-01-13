@@ -25,5 +25,40 @@
         WHERE TABEL_NAME = #{tableName}
     </select>
 
+    <insert id="insertImg" parameterType="ImgConditions">
+        INSERT INTO IMAGE
+        (
+                IMG_ID
+            ,   IMG_PATH
+            ,   STRE_NM
+            ,   IMG_NM
+            ,   IMG_EXTENTION
+            ,   FILE_SIZE
+            ,   CREATE_ID
+            ,   UPDATE_ID
+        )
+        VALUES
+        (
+                #{imgId}
+            ,   #{imgPath}
+            ,   #{streNm}
+            ,   #{imgNm}
+            ,   #{imgExtention}
+            ,   #{fileSize}
+            ,   #{memId}
+            ,   #{memId}
+        )
+    </insert>
+
+    <select id="selectImg" parameterType="String" resultType="Img">
+        SELECT      IMG_PATH            imgPath
+                ,   STRE_NM             streNm
+                ,   IMG_NM              imgNm
+                ,   IMG_EXTENTION       imgExtention
+                ,   FILE_SIZE           fileSize
+        FROM IMAGE
+        WHERE IMG_ID = #{imgId}
+    </select>
+
 </mapper>
 

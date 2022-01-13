@@ -29,9 +29,9 @@ public class NMBMarketController {
     }
 
 
+
     @RequestMapping( value = "/category",  method = RequestMethod.POST)
     public ResponseEntity<Result> getCategory(@RequestBody ProductCode pc) {
-
         return ResponseEntity.ok(
                 new Result("200", "카테고리 목록",
                 Stream.concat(productService.getBestCategoryProductList(pc.getCodeId()).stream(),
