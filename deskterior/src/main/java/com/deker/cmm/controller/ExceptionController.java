@@ -1,10 +1,7 @@
 package com.deker.cmm.controller;
 
 import com.deker.cmm.model.Result;
-import com.deker.exception.AlreadyMemberException;
-import com.deker.exception.AlreadyNicknameException;
-import com.deker.exception.MailCheckNotFoundException;
-import com.deker.exception.MemberNotFoundException;
+import com.deker.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,8 +24,14 @@ public class ExceptionController {
     }
     @ExceptionHandler({ MailCheckNotFoundException.class })
     public ResponseEntity<Result> handleMailCheckNotFoundException() {
-        return ResponseEntity.ok(new Result("400","실패"));
+        return ResponseEntity.ok(new Result("400","메일을 발송한 적 없는 아이디"));
     }
+    @ExceptionHandler({ ImgNotFoundException.class })
+    public ResponseEntity<Result> handleImgNotFoundException() {
+        return ResponseEntity.ok(new Result("401","이미지를 찾을 수 없습니다"));
+    }
+
+
     @ExceptionHandler({ RuntimeException.class })
     public ResponseEntity<Result> handleRuntimeException(RuntimeException e) {
         return ResponseEntity.ok(new Result("410",e.toString()));

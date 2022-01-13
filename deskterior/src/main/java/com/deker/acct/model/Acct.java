@@ -12,4 +12,5 @@ public class Acct {
     private String socialId;
     private String platformCode;
     private String nickname;
+    private String imgExtention;
 }

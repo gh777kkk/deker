@@ -3,28 +3,18 @@ package com.deker.acct.controller;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
-import com.deker.cmm.model.CMM;
-import com.deker.cmm.model.ResponseData;
 import com.deker.cmm.model.Result;
-import com.deker.exception.AlreadyMemberException;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import com.deker.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.Collection;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,5 +67,15 @@ public class AcctController {
     public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions) throws Exception {
         acctService.memberMailCheck(conditions);
         return ResponseEntity.ok(new Result("200","정상"));
+    }
+
+    @RequestMapping(value = "/nmb/reg/img-test", method = RequestMethod.POST)
+    public ResponseEntity<Result> regImgTest(@RequestParam("img") MultipartFile img,AcctConditions conditions) throws Exception {
+        return ResponseEntity.ok(new Result("200","정상",acctService.setImgTest(img,conditions)));
+    }
+
+    @RequestMapping(value = "/nmb/get/img-test", method = RequestMethod.POST)
+    public ResponseEntity<Result> getImgTest(AcctConditions conditions) throws Exception {
+        return ResponseEntity.ok(new Result("200","정상",acctService.getImgTest(conditions)));
     }
 }
