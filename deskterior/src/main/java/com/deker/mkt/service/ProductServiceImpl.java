@@ -71,6 +71,14 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.regProductCart(pc);
     }
 
+    public ProductModel getCategoryTest(String code){
+        ProductModel result = new ProductModel();
+        result.setBestProduct(productMapper.getBestCategoryProductList(code));
+        result.setNewProduct(productMapper.getNewCategoryProductList(code));
+
+        return result;
+    }
+
 //    public List<?> getTrackingInfo(){
 //        List<?> result = new ArrayList<>();
 //        Item[] a = getItemList();

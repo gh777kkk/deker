@@ -18,5 +18,6 @@ public interface ProductService {
 
     public List<ProductCart> regProductCart(ProductCart pc);
 
+    ProductModel getCategoryTest(String code);
 
 }

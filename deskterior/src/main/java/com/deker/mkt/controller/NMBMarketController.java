@@ -40,6 +40,16 @@ public class NMBMarketController {
         );
     }
 
+
+
+    @RequestMapping( value = "/get/category/test",  method = RequestMethod.POST)
+    public ResponseEntity<Result> getCategoryTest(@RequestBody ProductCode pc) {
+
+        return ResponseEntity.ok(
+                new Result("200", "카테고리 목록",productService.getCategoryTest(pc.getCategoryId()))
+        );
+    }
+
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct(@RequestBody ProductCode pm) {
 
