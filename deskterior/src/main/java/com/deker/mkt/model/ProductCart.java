@@ -6,13 +6,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductModel {
+public class ProductCart {
 
     private String mktProductId;
     private int productPrice;
     private int productQuantity;
-    private String productCategory;
-    private String productExplain;
-    private String productName;
+    private String option1;
+    private String option1Data;
+    private String option2;
+    private String option2Data;
+
 
 }

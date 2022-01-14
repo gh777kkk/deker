@@ -12,8 +12,11 @@ public interface ProductService {
 
     public List<ProductDetailModel> getProductDetail(String productId);
     public List<ProductDetailExplain> getProductDetailExplain(String productId);
-    public List<RecommendedProduct> getRecommendedProduct(String productId);
+    public List<RecommendedProduct> getRecommendedProduct(String categoryId);
     public List<ProductReview> getProductReview(String productId);
+
+
+    public List<ProductCart> regProductCart(ProductCart pc);
 
 
 }
