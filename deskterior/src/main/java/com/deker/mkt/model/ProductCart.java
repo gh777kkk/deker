@@ -8,9 +8,11 @@ import lombok.Setter;
 @Setter
 public class ProductCart {
 
+    private String mktCartId;
+    private String memId;
     private String mktProductId;
-    private int productPrice;
-    private int productQuantity;
+    private int Price;
+    private int cartQuant;
     private String option1;
     private String option1Data;
     private String option2;

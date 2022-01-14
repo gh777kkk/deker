@@ -3,6 +3,7 @@ package com.deker.mkt.controller;
 import com.deker.cmm.model.Result;
 import com.deker.mkt.model.ProductCart;
 import com.deker.mkt.model.ProductCode;
+import com.deker.mkt.model.RecentProduct;
 import com.deker.mkt.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,24 +44,27 @@ public class MBMarketController {
     }
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
-    public ResponseEntity<?> getProduct(@RequestBody ProductCode pm) {
+    public ResponseEntity<?> getProduct(@RequestBody ProductCode pc) {
+
+        productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
                 new Result("200", "상품 디테일",
                         Stream.concat(
-                                Stream.concat(productService.getProductDetail(pm.getProductId()).stream(),
-                                        productService.getProductDetailExplain(pm.getProductId()).stream()),
-                                Stream.concat(productService.getRecommendedProduct(pm.getCategoryId()).stream(),
-                                        productService.getProductReview(pm.getProductId()).stream())
+                                Stream.concat(productService.getProductDetail(pc.getProductId()).stream(),
+                                        productService.getProductDetailExplain(pc.getProductId()).stream()),
+                                Stream.concat(productService.getRecommendedProduct(pc.getCategoryId()).stream(),
+                                        productService.getProductReview(pc.getProductId()).stream())
                         ).collect(Collectors.toList()))
         );
     }
 
 
+
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
     public ResponseEntity<?> regCart(@RequestBody ProductCart pc) {
 
-        productService.regProductCart(pc);
+        productService.insertProductCart(pc);
         return ResponseEntity.ok(
                 new Result("200", "장바구니 등록"
                         )

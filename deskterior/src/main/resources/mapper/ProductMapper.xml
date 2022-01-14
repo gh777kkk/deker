@@ -94,14 +94,43 @@
     </select>
 
 
-    <insert id="regProductCart" parameterType="ProductCart">
+    <insert id="insertProductCart" parameterType="ProductCart">
         insert into study_gh.MKT_CART
         (
-
+         MKT_CART_ID,
+         MEM_ID,
+         PRODUCT_ID,
+         PRICE,
+         CART_QUANT,
+         OPTION1,
+         OPTION1_DATA,
+         OPTION2,
+         OPTION2_DATA
         )
         VALUES (
-                   #{memId}
-               ,   #{password}
+                #{mktCartId},
+                #{memId},
+                #{mktProductId},
+                #{price},
+                #{cartQuant},
+                #{option1},
+                #{option1Data},
+                #{option2},
+                #{option2Data}
+               )
+    </insert>
+
+    <insert id="insertRecentProduct" parameterType="RecentProduct">
+        insert into study_gh.MKT_RECENT_PRODUCT
+        (
+            MKT_RECENT_PRODUCT_ID,
+            MEM_ID,
+            PRODUCT_ID
+        )
+        VALUES (
+                   #{mktRecentProductId},
+                   #{memId},
+                   #{productId}
                )
     </insert>
 

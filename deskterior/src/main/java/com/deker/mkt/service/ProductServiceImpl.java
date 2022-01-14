@@ -27,6 +27,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
+    private final com.deker.cmm.util.CMMUtil CMMUtil;
 
     @Value("${tracking.key}")
     private String trackingKey;
@@ -66,10 +67,19 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.getProductReview(productId);
     }
 
-    public List<ProductCart> regProductCart(ProductCart pc){
-
-        return productMapper.regProductCart(pc);
+    public void insertRecentProduct(ProductCode pc){
+        RecentProduct rp = new RecentProduct();
+        rp.setMktRecentProductId(CMMUtil.nextId("mrpId"));
+        rp.setProductId(pc.getProductId());
+        rp.setMemId(pc.getMemId());
     }
+
+    public void insertProductCart(ProductCart pc){
+
+        pc.setMktCartId(CMMUtil.nextId("cartId"));
+         productMapper.insertProductCart(pc);
+    }
+
 
     public ProductModel getCategoryTest(String code){
         ProductModel result = new ProductModel();
