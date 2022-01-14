@@ -17,6 +17,7 @@ public interface ProductMapper {
     List<RecommendedProduct> getRecommendedProduct(String categoryId);
     List<ProductReview> getProductReview(String productId);
 
-    List<ProductCart> regProductCart(ProductCart pc);
+    void insertProductCart(ProductCart pc);
+    void insertRecentProduct(RecentProduct pp);
 }
 

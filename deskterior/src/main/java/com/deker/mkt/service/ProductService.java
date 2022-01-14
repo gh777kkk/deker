@@ -16,7 +16,8 @@ public interface ProductService {
     public List<ProductReview> getProductReview(String productId);
 
 
-    public List<ProductCart> regProductCart(ProductCart pc);
+    public void insertProductCart(ProductCart pc);
+    public void insertRecentProduct(ProductCode pc);
 
     ProductModel getCategoryTest(String code);
 
