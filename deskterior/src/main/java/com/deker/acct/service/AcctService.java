@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface AcctService {
-    List<?> regMember(AcctConditions conditions) throws MemberNotFoundException, Exception;
+    Acct regMember(AcctConditions conditions) throws Exception;
     Acct getMemId(AcctConditions conditions) throws Exception;
-    void memberIdEmailSend(String to)throws Exception;
-    void memberMailCheck(AcctConditions conditions)throws Exception;
+    Acct memberIdEmailSend(String to)throws Exception;
+    Acct memberMailCheck(AcctConditions conditions)throws Exception;
     List<?> setImgTest(MultipartFile img, AcctConditions conditions)throws Exception;
     List<?> getImgTest(AcctConditions conditions, HttpServletRequest request)throws Exception;
 }

@@ -15,4 +15,6 @@ public interface AcctMapper {
     void updateMailCheck(AcctConditions conditions);
     List<String> selectNicknameCheck(AcctConditions conditions);
     Acct selectMailCheckString(AcctConditions conditions);
+    Acct selectDekerLogin(AcctConditions conditions);
+    Acct selectSocialLogin(AcctConditions conditions);
 }

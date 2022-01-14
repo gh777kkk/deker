@@ -101,4 +101,24 @@
         AND CHECK_STRING = #{checkString}
     </select>
 
+    <select id="selectDekerLogin" parameterType="AcctConditions" resultType="Acct">
+        SELECT      MEM.MEM_ID          memId
+                ,   DM.PASSWORD         password
+        FROM MEMBER MEM
+        LEFT OUTER JOIN DEKER_MEMBER DM ON MEM.MEM_ID = DM.MEM_ID
+        WHERE   ID = #{id}
+        AND     PLATFORM_CODE = #{platformCode}
+        AND     MEM.LAST_DT > '9999-12-30'
+    </select>
+
+    <select id="selectSocialLogin" parameterType="AcctConditions" resultType="Acct">
+        SELECT      MEM.MEM_ID          memId
+        FROM MEMBER MEM
+        LEFT OUTER JOIN SOCIAL_MEMBER SM ON MEM.MEM_ID = SM.MEM_ID
+        WHERE   ID = #{id}
+        AND     PLATFORM_CODE = #{platformCode}
+        AND     SOCIAL_ID = #{socialId}
+        AND     MEM.LAST_DT > '9999-12-30'
+    </select>
+
 </mapper>

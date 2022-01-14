@@ -3,10 +3,7 @@ package com.deker.acct.service;
 import com.deker.acct.mapper.AcctMapper;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
-import com.deker.exception.AlreadyMemberException;
-import com.deker.exception.AlreadyNicknameException;
-import com.deker.exception.MailCheckNotFoundException;
-import com.deker.exception.MemberNotFoundException;
+import com.deker.exception.*;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +43,7 @@ public class AcctServiceImpl implements AcctService {
 
     @Override
     @Transactional
-    public List<?> regMember(AcctConditions conditions) throws Exception {
-        if(conditions.getPlatformCode().equals("P01")) conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
+    public Acct regMember(AcctConditions conditions) throws Exception {
         Acct acct = acctMapper.selectMemCheck(conditions);
         List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
         if (acct != null) throw new AlreadyMemberException();
@@ -55,28 +51,25 @@ public class AcctServiceImpl implements AcctService {
 
         conditions.setMemId(CMMUtil.nextId("memId"));
         if(conditions.getPlatformCode().equals("P01")){
+            String password = conditions.getPassword();
+            conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
             acctMapper.insertMember(conditions);
             acctMapper.insertDekerMember(conditions);
+            conditions.setPassword(password);
         }else {
             acctMapper.insertMember(conditions);
             acctMapper.insertSocialMember(conditions);
         }
-        return null;
+        return loginPrc(conditions);
     }
     
     @Override
     public Acct getMemId(AcctConditions conditions) throws Exception{
-        Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct == null) throw new MemberNotFoundException();
-        UserDetails authentication =customUserDetailsService.loadUserByUsername(acct.getMemId());
-        String jwtToken = jwtProvider.generateJwtToken(authentication);
-        acct.setJwtToken(jwtToken);
-        acct.setExtTokenTime(jwtProvider.getExpToken(jwtToken));
-        return acct;
+        return loginPrc(conditions);
     }
 
     @Override
-    public void memberIdEmailSend(String id)throws Exception {
+    public Acct memberIdEmailSend(String id)throws Exception {
         AcctConditions conditions = new AcctConditions();
         conditions.setId(id);
         conditions.setPlatformCode("P01");
@@ -88,12 +81,14 @@ public class AcctServiceImpl implements AcctService {
         conditions.setCheckString(ePw);
         acctMapper.updateMailCheck(conditions);
         emailSender.send(message);
+        return null;
     }
 
     @Override
-    public void memberMailCheck(AcctConditions conditions)throws Exception {
+    public Acct memberMailCheck(AcctConditions conditions)throws Exception {
         Acct mailCheck = acctMapper.selectMailCheckString(conditions);
         if (mailCheck == null) throw new MailCheckNotFoundException();
+        return null;
     }
 
     @Override
@@ -163,4 +158,24 @@ public class AcctServiceImpl implements AcctService {
         return key.toString();
     }
 
+    private Acct loginPrc(AcctConditions conditions) throws Exception{
+        Acct acct = acctMapper.selectMemCheck(conditions);
+        if (acct == null) throw new MemberNotFoundException();
+        if (conditions.getPlatformCode().equals("P01")){
+            acct = acctMapper.selectDekerLogin(conditions);
+            boolean passwordCheck =passwordEncoder.matches(conditions.getPassword(),acct.getPassword());
+            acct.setPassword(null);
+            if (!passwordCheck) throw new LoginPasswordException();
+        }else {
+            acct = acctMapper.selectSocialLogin(conditions);
+            if (acct == null) throw new LoginSocialIdException();
+        }
+
+        UserDetails authentication =customUserDetailsService.loadUserByUsername(acct.getMemId());
+        String jwtToken = jwtProvider.generateJwtToken(authentication);
+        acct.setJwtToken(jwtToken);
+        acct.setExtTokenTime(jwtProvider.getExpToken(jwtToken));
+
+        return acct;
+    }
 }

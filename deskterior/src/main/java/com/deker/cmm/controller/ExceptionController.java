@@ -28,7 +28,15 @@ public class ExceptionController {
     }
     @ExceptionHandler({ ImgNotFoundException.class })
     public ResponseEntity<Result> handleImgNotFoundException() {
-        return ResponseEntity.ok(new Result("401","이미지를 찾을 수 없습니다"));
+        return ResponseEntity.ok(new Result("400","이미지를 찾을 수 없습니다"));
+    }
+    @ExceptionHandler({ LoginPasswordException.class })
+    public ResponseEntity<Result> handleLoginPasswordException() {
+        return ResponseEntity.ok(new Result("400","패스워드가 다릅니다"));
+    }
+    @ExceptionHandler({ LoginSocialIdException.class })
+    public ResponseEntity<Result> handleLoginSocialIdException() {
+        return ResponseEntity.ok(new Result("401","소셜 아이디가 다릅니다"));
     }
 
 

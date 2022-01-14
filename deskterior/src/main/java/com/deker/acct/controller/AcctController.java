@@ -28,14 +28,12 @@ public class AcctController {
 
     @RequestMapping(value = "/nmb/acct/member/mail-send", method = RequestMethod.POST)
     public ResponseEntity<Result> memberMailSend(@RequestBody AcctConditions conditions) throws Exception {
-        acctService.memberIdEmailSend(conditions.getId());
-        return ResponseEntity.ok(new Result("200","메일 발송 완료"));
+        return ResponseEntity.ok(new Result("200","메일 발송 완료",acctService.memberIdEmailSend(conditions.getId())));
     }
 
     @RequestMapping(value = "/nmb/acct/get/member/mail/check", method = RequestMethod.POST)
     public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions) throws Exception {
-        acctService.memberMailCheck(conditions);
-        return ResponseEntity.ok(new Result("200","정상"));
+        return ResponseEntity.ok(new Result("200","정상",acctService.memberMailCheck(conditions)));
     }
 
     @RequestMapping(value = "/nmb/reg/img-test", method = RequestMethod.POST)

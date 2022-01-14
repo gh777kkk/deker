@@ -62,7 +62,6 @@ public class CMMUtil {
     }
 
     public String getImg(String imgId) throws IOException, ImgNotFoundException {
-        imgId = "imgId_00000000000002";
         Img img;
         img = cmmMapper.selectImg(imgId);
         if (img == null) throw new ImgNotFoundException();

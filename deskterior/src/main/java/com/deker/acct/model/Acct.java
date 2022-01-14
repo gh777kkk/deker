@@ -11,4 +11,5 @@ public class Acct {
     private String memId;
     private String jwtToken;
     private Date extTokenTime;
+    private String password;
 }
