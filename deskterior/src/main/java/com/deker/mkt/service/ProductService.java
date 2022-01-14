@@ -16,4 +16,7 @@ public interface ProductService {
     public List<ProductReview> getProductReview(String productId);
 
 
+    public List<ProductCart> regProductCart(ProductCart pc);
+
+
 }

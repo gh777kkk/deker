@@ -4,7 +4,7 @@ import com.deker.cmm.util.IDSUtil;
 import com.deker.mkt.mapper.ProductMapper;
 
 import com.deker.mkt.model.*;
-import com.sun.mail.imap.protocol.Item;
+//import com.sun.mail.imap.protocol.Item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,21 +67,26 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.getProductReview(productId);
     }
 
-    public List<?> getTrackingInfo(){
-        List<?> result = new ArrayList<>();
-        Item[] a = getItemList();
-        return result;
+    public List<ProductCart> regProductCart(ProductCart pc){
+
+        return productMapper.regProductCart(pc);
     }
 
-    private Item[] getItemList() {
-        String url = trackingKey + "/api/v1/companylist";
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return restTemplate.getForObject(url, Item[].class);
-    }
+//    public List<?> getTrackingInfo(){
+//        List<?> result = new ArrayList<>();
+//        Item[] a = getItemList();
+//        return result;
+//    }
+//
+//    private Item[] getItemList() {
+//        String url = trackingKey + "/api/v1/companylist";
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+//
+//        return restTemplate.getForObject(url, Item[].class);
+//    }
 
 
 }

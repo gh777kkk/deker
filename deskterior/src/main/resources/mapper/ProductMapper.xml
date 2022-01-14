@@ -94,6 +94,19 @@
     </select>
 
 
+    <insert id="regProductCart" parameterType="ProductCart">
+        insert into study_gh.MKT_CART
+        (
+
+        )
+        VALUES (
+                   #{memId}
+               ,   #{password}
+               )
+    </insert>
+
+
+
 
 </mapper>
 
