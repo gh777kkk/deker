@@ -8,10 +8,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductCart {
+public class ProductBuy {
 
-    private String mktCartId;
     private String memId;
+    private int Price;
     private List<ProductOption> productOption;
 
 

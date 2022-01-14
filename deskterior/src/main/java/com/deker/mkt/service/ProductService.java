@@ -5,10 +5,13 @@ import com.deker.mkt.model.*;
 import java.util.List;
 
 public interface ProductService {
+
     public List<ProductModel> getBestSaleProductList();
 
-    public List<ProductModel> getBestCategoryProductList(String code);
-    public List<ProductModel> getNewCategoryProductList(String code);
+
+    ProductCategory getCategoryList(String code);
+
+
 
     public List<ProductDetailModel> getProductDetail(String productId);
     public List<ProductDetailExplain> getProductDetailExplain(String productId);
@@ -19,6 +22,8 @@ public interface ProductService {
     public void insertProductCart(ProductCart pc);
     public void insertRecentProduct(ProductCode pc);
 
-    ProductModel getCategoryTest(String code);
+    public ProductBuyOption getProductBuyList(ProductBuy pb);
+
+
 
 }

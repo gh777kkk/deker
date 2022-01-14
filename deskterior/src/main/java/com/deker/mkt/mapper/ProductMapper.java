@@ -19,5 +19,8 @@ public interface ProductMapper {
 
     void insertProductCart(ProductCart pc);
     void insertRecentProduct(RecentProduct pp);
+
+    ProductBuyOption getProductBuyList(ProductBuy pb);
+    MarketAddress getAddress(String memid);
 }
 

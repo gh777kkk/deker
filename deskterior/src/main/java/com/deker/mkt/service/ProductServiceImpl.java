@@ -38,15 +38,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public List<ProductModel> getBestCategoryProductList(String code){
 
-        return productMapper.getBestCategoryProductList(code);
+    public ProductCategory getCategoryList(String code){
+        ProductCategory result = new ProductCategory();
+        result.setBestProduct(productMapper.getBestCategoryProductList(code));
+        result.setNewProduct(productMapper.getNewCategoryProductList(code));
+
+        return result;
     }
 
-    public List<ProductModel> getNewCategoryProductList(String code){
-
-        return productMapper.getNewCategoryProductList(code);
-    }
 
 
 
@@ -81,13 +81,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public ProductModel getCategoryTest(String code){
-        ProductModel result = new ProductModel();
-        result.setBestProduct(productMapper.getBestCategoryProductList(code));
-        result.setNewProduct(productMapper.getNewCategoryProductList(code));
 
-        return result;
+    public ProductBuyOption getProductBuyList(ProductBuy pb){
+
+        ProductBuyOption pbo = new ProductBuyOption();
+        pbo.setPrice(pb.getPrice());
+        pbo.setProductOption(pb.getProductOption());
+        pbo.setMarketAddress(productMapper.getAddress(pb.getMemId()));
+
+        return pbo;
     }
+
+
+
 
 //    public List<?> getTrackingInfo(){
 //        List<?> result = new ArrayList<>();

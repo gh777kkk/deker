@@ -24,7 +24,9 @@ public class NMBMarketController {
     public ResponseEntity<?> getProduct() {
 
         return ResponseEntity.ok(
-                productService.getBestSaleProductList());
+                new Result("200", "스토어 메인",
+                productService.getBestSaleProductList())
+        );
     }
 
 
@@ -34,21 +36,11 @@ public class NMBMarketController {
 
         return ResponseEntity.ok(
                 new Result("200", "카테고리 목록",
-                        Stream.concat(productService.getBestCategoryProductList(pc.getCategoryId()).stream(),
-                                productService.getNewCategoryProductList(pc.getCategoryId()).stream()
-                        ).collect(Collectors.toList()))
+                        productService.getCategoryList(pc.getCategoryId()))
+
         );
     }
 
-
-
-    @RequestMapping( value = "/get/category/test",  method = RequestMethod.POST)
-    public ResponseEntity<Result> getCategoryTest(@RequestBody ProductCode pc) {
-
-        return ResponseEntity.ok(
-                new Result("200", "카테고리 목록",productService.getCategoryTest(pc.getCategoryId()))
-        );
-    }
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct(@RequestBody ProductCode pm) {

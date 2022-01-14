@@ -1,6 +1,7 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.mkt.model.ProductBuy;
 import com.deker.mkt.model.ProductCart;
 import com.deker.mkt.model.ProductCode;
 import com.deker.mkt.model.RecentProduct;
@@ -27,7 +28,9 @@ public class MBMarketController {
     public ResponseEntity<?> getProduct() {
 
         return ResponseEntity.ok(
-                productService.getBestSaleProductList());
+                new Result("200", "스토어 메인",
+                        productService.getBestSaleProductList())
+        );
     }
 
 
@@ -37,9 +40,8 @@ public class MBMarketController {
 
         return ResponseEntity.ok(
                 new Result("200", "카테고리 목록",
-                        Stream.concat(productService.getBestCategoryProductList(pc.getCategoryId()).stream(),
-                                productService.getNewCategoryProductList(pc.getCategoryId()).stream()
-                        ).collect(Collectors.toList()))
+                        productService.getCategoryList(pc.getCategoryId()))
+
         );
     }
 
@@ -68,6 +70,17 @@ public class MBMarketController {
         return ResponseEntity.ok(
                 new Result("200", "장바구니 등록"
                         )
+        );
+    }
+
+    @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
+    public ResponseEntity<?> getBuyList (@RequestBody ProductBuy pb) {
+
+
+        return ResponseEntity.ok(
+                new Result("200", "결제 페이지",
+                        productService.getProductBuyList(pb)
+                )
         );
     }
 
