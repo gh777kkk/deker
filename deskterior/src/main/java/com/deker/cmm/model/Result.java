@@ -10,7 +10,7 @@ import java.util.List;
 public class Result {
     private String responseCode;
     private String message;
-    private List<?> data;
+    private Object data;
 
     public Result(String responseCode){
         this.responseCode = responseCode;
@@ -21,7 +21,7 @@ public class Result {
         this.responseCode = responseCode;
     }
 
-    public Result(String responseCode, String message, List<?> data){
+    public Result(String responseCode, String message, Object data){
         this.data = data;
         this.message = message;
         this.responseCode = responseCode;

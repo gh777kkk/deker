@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,16 @@ public class MBMarketController {
         return ResponseEntity.ok(
                 new Result("200", "장바구니 등록"
                         )
+        );
+    }
+
+    @RequestMapping( value = "/get/tracking-info",  method = RequestMethod.POST)
+    public ResponseEntity<?> getTrackingInfo(@RequestBody String codeId) {
+
+        return ResponseEntity.ok(
+                Stream.concat(productService.getBestCategoryProductList(codeId).stream(),
+                        productService.getNewCategoryProductList(codeId).stream())
+                        .collect(Collectors.toList())
         );
     }
 

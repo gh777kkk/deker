@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
     @ExceptionHandler({ MemberNotFoundException.class })
     public ResponseEntity<Result> handleMemberNotFoundException() {
-        return ResponseEntity.ok(new Result("400","없는 회원 입니다"));
+        return ResponseEntity.ok(new Result("400","회원 정보를 찾을 수 없습니다"));
     }
     @ExceptionHandler({ AlreadyMemberException.class })
     public ResponseEntity<Result> handleAlreadyMemberException() {
