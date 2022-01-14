@@ -14,7 +14,9 @@ public interface ProductMapper {
 
     List<ProductDetailModel> getProductDetail(String productId);
     List<ProductDetailExplain> getProductDetailExplain(String productId);
-    List<RecommendedProduct> getRecommendedProduct(String productId);
+    List<RecommendedProduct> getRecommendedProduct(String categoryId);
     List<ProductReview> getProductReview(String productId);
+
+    List<ProductCart> regProductCart(ProductCart pc);
 }
 
