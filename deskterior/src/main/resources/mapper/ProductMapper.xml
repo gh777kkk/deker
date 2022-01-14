@@ -3,28 +3,107 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deker.mkt.mapper.ProductMapper">
 
-    <select id="getBestSaleProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID
-        order by s.PRODUCT_SALE desc limit 8
+
+    <select id="getBestSaleProductList" resultType="ProductModel">
+        select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain,
+               PRODUCT_NAME AS productName
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc limit 8) o
+        where p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
     </select>
 
-    <select id="getBestCategoryProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
-        from study_gh.MKT_PRODUCT_SALES s, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=s.MKT_PRODUCT_ID and p.PRODUCT_CATEGORY='${code}'
-        order by s.PRODUCT_SALE desc limit 8
+    <select id="getBestCategoryProductList" resultType="ProductModel">
+        select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain,
+               PRODUCT_NAME AS productName
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY=#{code} and p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
+        order by p.CREATE_DT limit 8
     </select>
 
-    <select id="getNewCategoryProductList" resultType="com.deker.mkt.model.ProductModel">
-        select *
+    <select id="getNewCategoryProductList" resultType="ProductModel">
+        select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain,
+               PRODUCT_NAME AS productName
         from study_gh.MKT_PRODUCT p
-        where p.PRODUCT_CATEGORY='${code}'
-        order by p.PRODUCT_REGISTRATION desc limit 8
+        where p.PRODUCT_CATEGORY=#{code}
+        order by p.CREATE_DT desc limit 8
+    </select>
+
+    <select id="getProductDetail" resultType="ProductDetailModel">
+        select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_NAME AS productName,
+               PRODUCT_PRICE AS productPrice,
+               OPTION1 AS option1,
+               OPTION1_DATA AS option1Data,
+               OPTION2 AS option2,
+               OPTION2_DATA AS option2Data,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain
+               from study_gh.MKT_PRODUCT p, study_gh.MKT_PRODUCT_OPTION o
+        where p.MKT_PRODUCT_ID=#{productId} and o.PRODUCT_ID=#{productId}
+    </select>
+
+    <select id="getProductDetailExplain" resultType="ProductDetailExplain">
+        select SET_ID AS setId,
+               DETAIL_EXPLAIN AS detailExplain
+        from study_gh.MKT_DETAIL_PAGE d
+        where d.PRODUCT_ID=#{productId}
+    </select>
+
+    <select id="getRecommendedProduct" resultType="RecommendedProduct">
+        select p.PRODUCT_NAME
+        from study_gh.MKT_PRODUCT p,
+             (select ORDER_PRODUCT_ID
+              from study_gh.MY_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by ORDER_PRODUCT_ID
+              order by COUNT(ORDER_PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.ORDER_PRODUCT_ID
+        limit 4
+    </select>
+
+    <select id="getProductReview" resultType="ProductReview">
+        select MY_STAR AS myStar,
+                REVIEW_STRING AS reviewString,
+                r.CREATE_DT AS reviewDate,
+                MEM_ID AS memId,
+                p.PRODUCT_NAME AS productName
+        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p
+        where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID=#{productId}
     </select>
 
 
+    <insert id="regProductCart" parameterType="ProductCart">
+        insert into study_gh.MKT_CART
+        (
+
+        )
+        VALUES (
+                   #{memId}
+               ,   #{password}
+               )
+    </insert>
 
 
 
