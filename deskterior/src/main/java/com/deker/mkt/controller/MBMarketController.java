@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,6 +24,16 @@ public class MBMarketController {
 
     @RequestMapping( value = "/category",  method = RequestMethod.POST)
     public ResponseEntity<?> getDecoProduct(@RequestBody String codeId) {
+
+        return ResponseEntity.ok(
+                Stream.concat(productService.getBestCategoryProductList(codeId).stream(),
+                        productService.getNewCategoryProductList(codeId).stream())
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @RequestMapping( value = "/get/tracking-info",  method = RequestMethod.POST)
+    public ResponseEntity<?> getTrackingInfo(@RequestBody String codeId) {
 
         return ResponseEntity.ok(
                 Stream.concat(productService.getBestCategoryProductList(codeId).stream(),

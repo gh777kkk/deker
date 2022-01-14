@@ -3,22 +3,27 @@ package com.deker.acct.service;
 import com.deker.acct.mapper.AcctMapper;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
-import com.deker.cmm.model.Img;
-import com.deker.cmm.util.CMMUtil;
 import com.deker.exception.AlreadyMemberException;
 import com.deker.exception.AlreadyNicknameException;
 import com.deker.exception.MailCheckNotFoundException;
+import com.deker.exception.MemberNotFoundException;
+import com.deker.jwt.JwtProvider;
+import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.internet.MimeUtility;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +39,10 @@ public class AcctServiceImpl implements AcctService {
     private final JavaMailSender emailSender;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtProvider jwtProvider;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     @Transactional
@@ -56,9 +65,13 @@ public class AcctServiceImpl implements AcctService {
     }
     
     @Override
-    public Acct getMemId(AcctConditions conditions) {
+    public Acct getMemId(AcctConditions conditions) throws Exception{
         Acct acct = acctMapper.selectMemCheck(conditions);
-        if (acct == null) new IllegalAccessException("가입되지 않은 회원 입니다.");
+        if (acct == null) throw new MemberNotFoundException();
+        UserDetails authentication =customUserDetailsService.loadUserByUsername(acct.getMemId());
+        String jwtToken = jwtProvider.generateJwtToken(authentication);
+        acct.setJwtToken(jwtToken);
+        acct.setExtTokenTime(jwtProvider.getExpToken(jwtToken));
         return acct;
     }
 
@@ -91,7 +104,10 @@ public class AcctServiceImpl implements AcctService {
     }
 
     @Override
-    public List<?> getImgTest(AcctConditions conditions) throws Exception {
+    public List<?> getImgTest(AcctConditions conditions, HttpServletRequest request) throws Exception {
+        String jwtToken = jwtProvider.getToken(request);
+        String a = jwtProvider.getUserNameFromJwtToken(jwtToken);
+        Date b = jwtProvider.getExpToken(jwtToken);
         return null;
     }
 
@@ -121,7 +137,7 @@ public class AcctServiceImpl implements AcctService {
         return message;
     }
 
-    public String createKey() {
+    private String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 

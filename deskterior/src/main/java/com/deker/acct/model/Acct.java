@@ -3,14 +3,12 @@ package com.deker.acct.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class Acct {
     private String memId;
-    private String id;
-    private String password;
-    private String socialId;
-    private String platformCode;
-    private String nickname;
-    private String imgExtention;
+    private String jwtToken;
+    private Date extTokenTime;
 }
