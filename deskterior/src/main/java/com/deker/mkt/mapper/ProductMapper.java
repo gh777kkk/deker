@@ -1,6 +1,11 @@
 package com.deker.mkt.mapper;
 
 import com.deker.mkt.model.*;
+import com.deker.mkt.model.request.ProductBuy;
+import com.deker.mkt.model.request.ProductCart;
+import com.deker.mkt.model.response.ProductBuyOption;
+import com.deker.mkt.model.response.RecentProduct;
+import com.deker.mkt.model.resultService.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,10 +22,12 @@ public interface ProductMapper {
     List<RecommendedProduct> getRecommendedProduct(String categoryId);
     List<ProductReview> getProductReview(String productId);
 
-    void insertProductCart(ProductCart pc);
+    void insertProductCart(ProductOption pc);
     void insertRecentProduct(RecentProduct pp);
 
     ProductBuyOption getProductBuyList(ProductBuy pb);
     MarketAddress getAddress(String memid);
+
+    String getProductOptionId(ProductOption po);
 }
 

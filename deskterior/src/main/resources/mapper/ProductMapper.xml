@@ -94,6 +94,24 @@
     </select>
 
 
+
+
+    <select id="getProductOptionId" resultType="String">
+        select MKT_PRODUCT_OPTION_ID
+        from study_gh.MKT_PRODUCT_OPTION
+        where OPTION1 = #{option1} and OPTION1_DATA = #{option1Data}
+        <choose>
+            <when test="option2 == null">
+                and OPTION2 IS NULL and OPTION2_DATA IS NULL
+            </when>
+            <otherwise>
+                and OPTION2 = #{option2} and OPTION2_DATA= #{option2Data}
+            </otherwise>
+        </choose>
+    </select>
+
+
+
     <insert id="insertProductCart" parameterType="ProductCart">
         insert into study_gh.MKT_CART
         (
@@ -102,10 +120,7 @@
          PRODUCT_ID,
          PRICE,
          CART_QUANT,
-         OPTION1,
-         OPTION1_DATA,
-         OPTION2,
-         OPTION2_DATA
+         PODUCT_OPTION
         )
         VALUES (
                 #{mktCartId},
@@ -113,12 +128,11 @@
                 #{mktProductId},
                 #{price},
                 #{cartQuant},
-                #{option1},
-                #{option1Data},
-                #{option2},
-                #{option2Data}
+                #{productOption}
                )
     </insert>
+
+
 
     <insert id="insertRecentProduct" parameterType="RecentProduct">
         insert into study_gh.MKT_RECENT_PRODUCT

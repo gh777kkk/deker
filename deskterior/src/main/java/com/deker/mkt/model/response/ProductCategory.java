@@ -1,5 +1,6 @@
-package com.deker.mkt.model;
+package com.deker.mkt.model.response;
 
+import com.deker.mkt.model.ProductModel;
 import lombok.Getter;
 import lombok.Setter;
 

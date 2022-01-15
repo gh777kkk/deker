@@ -1,5 +1,7 @@
-package com.deker.mkt.model;
+package com.deker.mkt.model.response;
 
+import com.deker.mkt.model.resultService.MarketAddress;
+import com.deker.mkt.model.ProductOption;
 import lombok.Getter;
 import lombok.Setter;
 

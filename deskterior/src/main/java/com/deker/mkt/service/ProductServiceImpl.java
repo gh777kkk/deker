@@ -5,19 +5,23 @@ import com.deker.mkt.mapper.ProductMapper;
 import com.deker.mkt.model.*;
 //import com.sun.mail.imap.protocol.Item;
 
+import com.deker.mkt.model.request.ProductBuy;
+import com.deker.mkt.model.request.ProductCart;
+import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.model.response.ProductBuyOption;
+import com.deker.mkt.model.response.ProductCategory;
+import com.deker.mkt.model.response.ProductDetail;
+import com.deker.mkt.model.response.RecentProduct;
+import com.deker.mkt.model.resultService.ProductDetailExplain;
+import com.deker.mkt.model.resultService.ProductDetailModel;
+import com.deker.mkt.model.resultService.ProductReview;
+import com.deker.mkt.model.resultService.RecommendedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,24 +52,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    public ProductDetail getProductDetails(ProductCode pc) {
 
+        ProductDetail pd = new ProductDetail();
+        pd.setProductDetail(productMapper.getProductDetail(pc.getProductId()));
+        pd.setProductDetailExplain(productMapper.getProductDetailExplain(pc.getProductId()));
+        pd.setRecommendedProduct(productMapper.getRecommendedProduct(pc.getCategoryId()));
+        pd.setProductReview(productMapper.getProductReview(pc.getProductId()));
 
-    public List<ProductDetailModel> getProductDetail(String productId){
-
-        return productMapper.getProductDetail(productId);
+        return pd;
     }
-    public List<ProductDetailExplain> getProductDetailExplain(String productId){
 
-        return productMapper.getProductDetailExplain(productId);
-    }
-    public List<RecommendedProduct> getRecommendedProduct(String categoryId){
-
-        return productMapper.getRecommendedProduct(categoryId);
-    }
-    public List<ProductReview> getProductReview(String productId){
-
-        return productMapper.getProductReview(productId);
-    }
 
     public void insertRecentProduct(ProductCode pc){
         RecentProduct rp = new RecentProduct();
@@ -74,24 +71,36 @@ public class ProductServiceImpl implements ProductService {
         rp.setMemId(pc.getMemId());
     }
 
+
+
     public void insertProductCart(ProductCart pc){
+        List<ProductOption> oList = pc.getProductOption();
 
-        pc.setMktCartId(CMMUtil.nextId("cartId"));
-         productMapper.insertProductCart(pc);
+        for (ProductOption productOption : oList) {
+            productOption.setProductOption(productMapper.getProductOptionId(productOption));
+            productOption.setMemId(pc.getMemId());
+            productOption.setMktCartId(CMMUtil.nextId("cartId"));
+            productMapper.insertProductCart(productOption);
+        }
+
     }
-
 
 
     public ProductBuyOption getProductBuyList(ProductBuy pb){
 
         ProductBuyOption pbo = new ProductBuyOption();
-        pbo.setPrice(pb.getPrice());
-        pbo.setProductOption(pb.getProductOption());
+        List<ProductOption> oList = pb.getProductOption();
+
+        for (ProductOption productOption : oList) {
+            productOption.setProductOption(productMapper.getProductOptionId(productOption));
+        }
+
+        pbo.setProductOption(oList);
+        pbo.setPrice(pb.getResultPrice());
         pbo.setMarketAddress(productMapper.getAddress(pb.getMemId()));
 
         return pbo;
     }
-
 
 
 

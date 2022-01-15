@@ -1,4 +1,4 @@
-package com.deker.mkt.model;
+package com.deker.mkt.model.resultService;
 
 import lombok.Getter;
 import lombok.Setter;
