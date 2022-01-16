@@ -26,7 +26,7 @@ public interface ProductMapper {
     void insertRecentProduct(RecentProduct pp);
 
     ProductBuyOption getProductBuyList(ProductBuy pb);
-    MarketAddress getAddress(String memid);
+    MarketAddress getAddress(String memId);
 
     String getProductOptionId(ProductOption po);
 }

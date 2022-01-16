@@ -69,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
         rp.setMktRecentProductId(CMMUtil.nextId("mrpId"));
         rp.setProductId(pc.getProductId());
         rp.setMemId(pc.getMemId());
+        productMapper.insertRecentProduct(rp);
     }
 
 

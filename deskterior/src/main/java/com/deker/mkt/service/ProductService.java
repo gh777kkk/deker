@@ -25,9 +25,10 @@ public interface ProductService {
     ProductDetail getProductDetails(ProductCode pc);
 
 
-    public void insertProductCart(ProductCart pc);
+
     public void insertRecentProduct(ProductCode pc);
 
+    public void insertProductCart(ProductCart pc);
     public ProductBuyOption getProductBuyList(ProductBuy pb);
 
 

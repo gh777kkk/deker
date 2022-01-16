@@ -12,12 +12,12 @@
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName
         from study_gh.MKT_PRODUCT p,
-             (select MKT_PRODUCT_ID
+             (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
-              group by MKT_PRODUCT_ID
-              order by COUNT(MKT_PRODUCT_ID) desc limit 8) o
-        where p.MKT_PRODUCT_ID = o.MKT_PRODUCT_ID
+              group by PRODUCT_ID
+              order by COUNT(PRODUCT_ID) desc limit 8) o
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID
     </select>
 
     <select id="getBestCategoryProductList" resultType="ProductModel">
@@ -28,12 +28,12 @@
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName
         from study_gh.MKT_PRODUCT p,
-             (select MKT_PRODUCT_ID
+             (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
-              group by MKT_PRODUCT_ID
-              order by COUNT(MKT_PRODUCT_ID) desc) o
-        where p.PRODUCT_CATEGORY=#{code} and p.MKT_PRODUCT_ID = o.MKT_PRODUCT_ID
+              group by PRODUCT_ID
+              order by COUNT(PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY=#{code} and p.MKT_PRODUCT_ID = o.PRODUCT_ID
         order by p.CREATE_DT limit 8
     </select>
 
@@ -74,12 +74,12 @@
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
         select p.PRODUCT_NAME
         from study_gh.MKT_PRODUCT p,
-             (select MKT_PRODUCT_ID
+             (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
-              group by MKT_PRODUCT_ID
-              order by COUNT(MKT_PRODUCT_ID) desc) o
-        where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.MKT_PRODUCT_ID
+              group by PRODUCT_ID
+              order by COUNT(PRODUCT_ID) desc) o
+        where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.PRODUCT_ID
         limit 4
     </select>
 
@@ -96,7 +96,7 @@
 
 
 
-    <select id="getProductOptionId" resultType="String">
+    <select id="getProductOptionId" resultType="string">
         select MKT_PRODUCT_OPTION_ID
         from study_gh.MKT_PRODUCT_OPTION
         where OPTION1 = #{option1} and OPTION1_DATA = #{option1Data}
@@ -112,7 +112,7 @@
 
 
 
-    <insert id="insertProductCart" parameterType="ProductCart">
+    <insert id="insertProductCart" parameterType="ProductOption">
         insert into study_gh.MKT_CART
         (
          MKT_CART_ID,
@@ -159,19 +159,6 @@
         from study_gh.MKT_ADDRESS a
         where a.MEM_ID = #{memId}
     </select>
-
-    <select id="getProductOption" resultType="MarketAddress">
-        select ADD_NAME AS addName,
-               PHONE_NUMBER AS phoneNumber,
-               ADD_ZIP AS addZip,
-               ADDRESS AS address,
-               ADD_DETAIL AS addDetail,
-               REQUEST AS request
-        from study_gh.MKT_ADDRESS a
-        where a.MEM_ID = #{memId}
-    </select>
-
-
 
 
 </mapper>
