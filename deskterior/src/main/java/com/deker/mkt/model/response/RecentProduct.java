@@ -1,12 +1,15 @@
-package com.deker.mkt.model;
+package com.deker.mkt.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-public class ProductCode {
+public class RecentProduct {
+
+    private String mktRecentProductId;
     private String productId;
-    private String categoryId;
     private String memId;
+
 }
