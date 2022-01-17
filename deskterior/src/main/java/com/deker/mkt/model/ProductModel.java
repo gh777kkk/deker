@@ -17,7 +17,5 @@ public class ProductModel {
     private String productExplain;
     private String productName;
 
-    private List<ProductModel> bestProduct;
-    private List<ProductModel> newProduct;
 
 }

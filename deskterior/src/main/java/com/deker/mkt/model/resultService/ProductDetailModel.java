@@ -1,4 +1,4 @@
-package com.deker.mkt.model;
+package com.deker.mkt.model.resultService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,15 +6,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductCart {
+public class ProductDetailModel {
 
     private String mktProductId;
+    private String productName;
     private int productPrice;
-    private int productQuantity;
     private String option1;
     private String option1Data;
     private String option2;
     private String option2Data;
+    private int productQuantity;
+    private String productExplain;
+
+
+
+
 
 
 }
