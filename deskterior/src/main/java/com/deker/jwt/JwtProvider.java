@@ -42,7 +42,6 @@ public class JwtProvider {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getExpiration();
     }
 
-
     public String getToken(HttpServletRequest request){
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
@@ -51,12 +50,17 @@ public class JwtProvider {
         return null;
     }
 
+    public String getMemIdFromJwtToken(HttpServletRequest request){
+        String token = getToken(request);
+        return getUserNameFromJwtToken(token);
+    }
+
     @PostConstruct
     protected void init() {
         jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
     }
 
-    public boolean validateJwtToken(String authToken) {
+    boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
