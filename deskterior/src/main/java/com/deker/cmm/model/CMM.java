@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CMM {
-    private String Code;
-    private String CodeNm;
+    private String value;
+    private String label;
 }

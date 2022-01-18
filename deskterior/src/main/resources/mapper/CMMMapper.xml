@@ -4,8 +4,8 @@
 <mapper namespace="com.deker.cmm.mapper.CMMMapper">
 
     <select id="selectCode" parameterType="CMMConditions" resultType="CMM">
-        SELECT      CODE        code
-                ,   CODE_NM     codeNm
+        SELECT      CODE        value
+                ,   CODE_NM     label
         FROM CODE_DETAIL
         WHERE CODE_ID = #{codeId}
     </select>

@@ -1,6 +1,7 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,6 +21,7 @@ import java.util.stream.Stream;
 public class MBMarketController {
 
     public final ProductService productService;
+    private final JwtProvider jwtProvider;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
@@ -41,8 +44,10 @@ public class MBMarketController {
     }
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
-    public ResponseEntity<?> getProduct(@RequestBody ProductCode pc) {
+    public ResponseEntity<?> getProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
 
+        //String memid = jwtProvider
+        //pc.setMemId(memid);
         productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(

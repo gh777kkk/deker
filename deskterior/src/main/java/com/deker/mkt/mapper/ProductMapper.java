@@ -17,7 +17,8 @@ public interface ProductMapper {
     List<ProductModel> getBestCategoryProductList(String codeId);
     List<ProductModel> getNewCategoryProductList(String codeId);
 
-    List<ProductDetailModel> getProductDetail(String productId);
+    ProductDetailModel getProductDetail(String productId);
+    List<ProductDetailOption> getProductDetailOption(String productId);
     List<ProductDetailExplain> getProductDetailExplain(String productId);
     List<RecommendedProduct> getRecommendedProduct(String categoryId);
     List<ProductReview> getProductReview(String productId);
