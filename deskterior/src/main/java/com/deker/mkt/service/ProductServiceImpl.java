@@ -56,6 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductDetail pd = new ProductDetail();
         pd.setProductDetail(productMapper.getProductDetail(pc.getProductId()));
+        pd.setProductDetailOption(productMapper.getProductDetailOption(pc.getProductId()));
         pd.setProductDetailExplain(productMapper.getProductDetailExplain(pc.getProductId()));
         pd.setRecommendedProduct(productMapper.getRecommendedProduct(pc.getCategoryId()));
         pd.setProductReview(productMapper.getProductReview(pc.getProductId()));

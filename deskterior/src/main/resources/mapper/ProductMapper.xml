@@ -52,16 +52,21 @@
     <select id="getProductDetail" resultType="ProductDetailModel">
         select p.MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_NAME AS productName,
-               PRODUCT_PRICE AS productPrice,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain
+               from study_gh.MKT_PRODUCT p
+        where p.MKT_PRODUCT_ID=#{productId}
+    </select>
+
+    <select id="getProductDetailOption" resultType="ProductDetailOption">
+        select PRODUCT_PRICE AS productPrice,
                OPTION1 AS option1,
                OPTION1_DATA AS option1Data,
                OPTION2 AS option2,
                OPTION2_DATA AS option2Data,
-               PRODUCT_QUANTITY AS productQuantity,
-               PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain
-               from study_gh.MKT_PRODUCT p, study_gh.MKT_PRODUCT_OPTION o
-        where p.MKT_PRODUCT_ID=#{productId} and o.PRODUCT_ID=#{productId}
+               OPTION_QUANTITY AS productQuantity
+        from  study_gh.MKT_PRODUCT_OPTION
+        where PRODUCT_ID=#{productId}
     </select>
 
     <select id="getProductDetailExplain" resultType="ProductDetailExplain">
