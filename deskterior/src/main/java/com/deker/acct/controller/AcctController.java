@@ -45,4 +45,10 @@ public class AcctController {
     public ResponseEntity<Result> getImgTest(AcctConditions conditions, HttpServletRequest request) throws Exception {
         return ResponseEntity.ok(new Result("200","정상",acctService.getImgTest(conditions,request)));
     }
+
+    @RequestMapping(value = "/nmb/get/trc-test", method = RequestMethod.POST)
+    public ResponseEntity<Result> getTrcTest(@RequestBody AcctConditions conditions) throws Exception {
+        acctService.getTrcTest(conditions);
+        return ResponseEntity.ok(new Result("200","정상"));
+    }
 }

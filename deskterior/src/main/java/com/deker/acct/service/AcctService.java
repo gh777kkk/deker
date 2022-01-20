@@ -15,4 +15,5 @@ public interface AcctService {
     Acct memberMailCheck(AcctConditions conditions)throws Exception;
     List<?> setImgTest(MultipartFile img, AcctConditions conditions)throws Exception;
     List<?> getImgTest(AcctConditions conditions, HttpServletRequest request)throws Exception;
+    Acct getTrcTest(AcctConditions conditions) throws Exception;
 }

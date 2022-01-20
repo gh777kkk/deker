@@ -7,12 +7,13 @@ import com.deker.exception.*;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.internet.MimeUtility;
@@ -40,6 +41,9 @@ public class AcctServiceImpl implements AcctService {
     private final JwtProvider jwtProvider;
 
     private final CustomUserDetailsService customUserDetailsService;
+
+    @Value("tracking.key")
+    private String trcKey;
 
     @Override
     @Transactional
@@ -103,6 +107,14 @@ public class AcctServiceImpl implements AcctService {
         String jwtToken = jwtProvider.getToken(request);
         String a = jwtProvider.getUserNameFromJwtToken(jwtToken);
         Date b = jwtProvider.getExpToken(jwtToken);
+        return null;
+    }
+
+    @Override
+    public Acct getTrcTest(AcctConditions conditions) throws Exception{
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key=GpWefcHZW65BrMbWLDI5EA&t_code=06&t_invoice=31732607830";
+        Object data = restTemplate.getForEntity(url, Object.class);
         return null;
     }
 
