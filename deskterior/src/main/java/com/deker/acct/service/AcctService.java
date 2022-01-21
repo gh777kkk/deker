@@ -13,7 +13,6 @@ public interface AcctService {
     Acct getMemId(AcctConditions conditions) throws Exception;
     Acct memberIdEmailSend(String to)throws Exception;
     Acct memberMailCheck(AcctConditions conditions)throws Exception;
-    List<?> setImgTest(MultipartFile img, AcctConditions conditions)throws Exception;
-    List<?> getImgTest(AcctConditions conditions, HttpServletRequest request)throws Exception;
-    Acct getTrcTest(AcctConditions conditions) throws Exception;
+    Acct modMemberInfo(MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception;
+    Acct getMemberInfo(HttpServletRequest request) throws Exception;
 }

@@ -5,6 +5,7 @@ import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,17 @@ public class MBMarketController {
         return ResponseEntity.ok(
                 new Result("200", "결제 페이지",
                         productService.getProductBuyList(pb)
+                )
+        );
+    }
+
+    @RequestMapping(value = "/get/tracking", method = RequestMethod.POST)
+    public ResponseEntity<?> getTracking(@RequestBody ProductOrder conditions) throws Exception {
+
+
+        return ResponseEntity.ok(
+                new Result("200", "배송 조회",
+                        productService.getProductTracking(conditions)
                 )
         );
     }

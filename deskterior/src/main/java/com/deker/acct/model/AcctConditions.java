@@ -19,5 +19,5 @@ public class AcctConditions {
     private String platformCode;
     private String socialId;
     private String checkString;
-    private List<AcctConditions> listData;
+    private List<String> tag;
 }

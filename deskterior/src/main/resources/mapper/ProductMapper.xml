@@ -165,6 +165,39 @@
         where a.MEM_ID = #{memId}
     </select>
 
+    <select id="selectProductTracking" parameterType="ProductOrder" resultType="ProductTracking">
+        SELECT      MP.MKT_PRODUCT_ID                                                   productId
+                ,   MPO.MKT_PRODUCT_OPTION_ID                                           productOptionId
+                ,   'deker'                                                             productBrand
+                ,   MP.PRODUCT_IMG                                                      productImg
+                ,   OPTION1                                                             option1
+                ,   OPTION1_DATA                                                        option1Data
+                ,   CODE_NAME('OPK',MPO.OPTION1)                                        option1Nm
+                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)        option1DataNm
+                ,   OPTION2                                                             option2
+                ,   OPTION2_DATA                                                        option2Data
+                ,   CODE_NAME('OPK',MPO.OPTION2)                                        option2Nm
+                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION2,MPO.OPTION2_DATA)        option2DataNm
+                ,   MO.DELIVERY_CODE                                                    deliveryCode
+                ,   CODE_NAME('TTC',MO.DELIVERY_CODE)                                   deliveryName
+                ,   MA.ADD_NAME                                                         addNmae
+                ,   MA.ADD_ZIP                                                          addZip
+                ,   CONCAT(MA.ADDRESS,' ',MA.ADD_DETAIL)                                address
+                ,   MO.WAYBILL                                                          waybill
+        FROM MKT_ORDER MO
+        LEFT OUTER JOIN MKT_ADDRESS MA ON MO.ADD_ID = MA.ADD_ID
+        LEFT OUTER JOIN MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+        WHERE   MO.ORDER_ID = #{orderId}
+    </select>
+
+    <select id="selectLevelCodeNm" parameterType="String" resultType="String">
+        SELECT CODE_NM      levelNm
+        FROM CODE_DETAIL
+        WHERE   CODE_ID='ODS'
+        AND     CODE=#{level}
+    </select>
+
 
 </mapper>
 

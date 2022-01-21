@@ -17,4 +17,6 @@ public interface AcctMapper {
     Acct selectMailCheckString(AcctConditions conditions);
     Acct selectDekerLogin(AcctConditions conditions);
     Acct selectSocialLogin(AcctConditions conditions);
+    Acct selectMemberInfo(AcctConditions conditions);
+    List<Acct> selectTagList(AcctConditions conditions);
 }
