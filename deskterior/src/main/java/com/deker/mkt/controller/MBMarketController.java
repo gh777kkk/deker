@@ -2,19 +2,24 @@ package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
+import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.service.IamportService;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +28,10 @@ public class MBMarketController {
 
     public final ProductService productService;
     private final JwtProvider jwtProvider;
+    private final IamportService iamportService;
+
+
+    //reg, get, mod, del
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
@@ -47,8 +56,8 @@ public class MBMarketController {
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
 
-        //String memid = jwtProvider
-        //pc.setMemId(memid);
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
         productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
@@ -59,8 +68,10 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
-    public ResponseEntity<?> regCart(@RequestBody ProductCart pc) {
+    public ResponseEntity<?> regCart(@RequestBody ProductCart pc, HttpServletRequest request) {
 
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
         productService.insertProductCart(pc);
         return ResponseEntity.ok(
                 new Result("200", "장바구니 등록"
@@ -68,10 +79,12 @@ public class MBMarketController {
         );
     }
 
+
     @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
-    public ResponseEntity<?> getBuyList(@RequestBody ProductBuy pb) {
+    public ResponseEntity<?> getBuyList(@RequestBody ProductBuy pb, HttpServletRequest request) {
 
-
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pb.setMemId(memId);
         return ResponseEntity.ok(
                 new Result("200", "결제 페이지",
                         productService.getProductBuyList(pb)
@@ -91,6 +104,32 @@ public class MBMarketController {
     }
 
 
+
+
+    @RequestMapping(value = "/get/verify", method = RequestMethod.POST)
+    public ResponseEntity<?> getVerifyPayment(@RequestBody Payment pm, HttpServletRequest request) throws Exception {
+        return ResponseEntity.ok(
+                new Result("200", "결제 페이지",
+                        iamportService.getBuyerInfor(pm.getImp_uid())
+                )
+        );
+    }
+
+
+    @RequestMapping(value = "/get/payment-complete", method = RequestMethod.POST)
+    public ResponseEntity<?> getPaymentComplete(@RequestBody Payment pm, HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Result("200", "결제 완료"
+                //상품 값 수정
+
+                )
+        );
+    }
+
+
+
+
+   //끝
 }
 
  /*
