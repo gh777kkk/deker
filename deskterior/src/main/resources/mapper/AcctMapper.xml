@@ -91,7 +91,8 @@
     <select id="selectNicknameCheck" parameterType="AcctConditions" resultType="String">
         SELECT      NICKNAME        nickname
         FROM MEMBER
-        WHERE NICKNAME = #{nickname}
+        WHERE   NICKNAME = #{nickname}
+        AND     LAST_DT > '9999-12-30'
     </select>
 
     <select id="selectMailCheckString" parameterType="AcctConditions" resultType="Acct">
@@ -119,6 +120,23 @@
         AND     PLATFORM_CODE = #{platformCode}
         AND     SOCIAL_ID = #{socialId}
         AND     MEM.LAST_DT > '9999-12-30'
+    </select>
+
+    <select id="selectMemberInfo" parameterType="AcctConditions" resultType="Acct">
+        SELECT      ID              id
+                ,   NICKNAME        nickname
+                ,   JOB_CODE        jobCode
+                ,   PROFILE_IMG     profileImg
+        FROM MEMBER
+        WHERE   MEM_ID = #{memId}
+        AND     LAST_DT > '9999-12-30'
+    </select>
+
+    <select id="selectTagList" parameterType="AcctConditions" resultType="Acct">
+        SELECT      MEM_ID      memId
+                ,   CONTENTS    contents
+        FROM MEMBER_TAG
+        WHERE MEM_ID = #{memId}
     </select>
 
 </mapper>

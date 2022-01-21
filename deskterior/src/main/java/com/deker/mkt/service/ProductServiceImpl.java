@@ -1,5 +1,7 @@
 package com.deker.mkt.service;
 
+import com.deker.exception.TrackingException;
+import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
 
 import com.deker.mkt.model.*;
@@ -8,20 +10,22 @@ import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
-import com.deker.mkt.model.response.ProductBuyOption;
-import com.deker.mkt.model.response.ProductCategory;
-import com.deker.mkt.model.response.ProductDetail;
-import com.deker.mkt.model.response.RecentProduct;
+import com.deker.mkt.model.request.ProductOrder;
+import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.ProductDetailExplain;
 import com.deker.mkt.model.resultService.ProductDetailModel;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.model.resultService.RecommendedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -104,23 +108,35 @@ public class ProductServiceImpl implements ProductService {
         return pbo;
     }
 
+    public ProductTracking getProductTracking(ProductOrder conditions) throws Exception{
+        ProductTracking result = productMapper.selectProductTracking(conditions);
+        List<String> optionList = new ArrayList<>();
+        if (result == null) return null;
+        if (result.getOption1() != null) optionList.add(result.getOption1Nm() +" : "+result.getOption1DataNm());
+        if (result.getOption2() != null) optionList.add(result.getOption2Nm() +" : "+result.getOption2DataNm());
+        result.setOptionList(optionList);
+        TrackingData trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
+        result.setTrackingList(trackingData.getTrackingDetails());
+        result.setProductImg(CMMUtil.getImg(result.getProductImg()));
+        return result;
+
+    }
 
 
-//    public List<?> getTrackingInfo(){
-//        List<?> result = new ArrayList<>();
-//        Item[] a = getItemList();
-//        return result;
-//    }
-//
-//    private Item[] getItemList() {
-//        String url = trackingKey + "/api/v1/companylist";
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-//
-//        return restTemplate.getForObject(url, Item[].class);
-//    }
-
+    public TrackingData getTracking(String tCode,String tInvoice) throws Exception{
+        RestTemplate restTemplate = new RestTemplate();
+        try{
+            String url = "http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+trackingKey+"&t_code="+tCode+"&t_invoice="+tInvoice;
+            ResponseEntity<TrackingData> data = restTemplate.getForEntity(url, TrackingData.class);
+            if (data == null || data.getBody() == null) throw new TrackingException("조회 오류");
+            if (data.getBody().getCode() != null) throw new TrackingException(data.getBody().getMsg());
+            for (int idx = 0; data.getBody().getTrackingDetails().size() > idx; idx++){
+                data.getBody().getTrackingDetails().get(idx).setLevelNm(productMapper.selectLevelCodeNm(Integer.toString(data.getBody().getTrackingDetails().get(idx).getLevel())));
+            }
+            return data.getBody();
+        }catch (HttpClientErrorException e){
+            throw new TrackingKeyException();
+        }
+    }
 
 }

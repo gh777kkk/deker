@@ -3,22 +3,15 @@ package com.deker.cmm.util;
 import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.Img;
 import com.deker.cmm.model.ImgConditions;
-import com.deker.exception.ImgNotFoundException;
-//import com.sun.javafx.iio.ImageStorageException;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 @Service
@@ -62,10 +55,11 @@ public class CMMUtil {
         return imgConditions.getImgId();
     }
 
-    public String getImg(String imgId) throws IOException, ImgNotFoundException {
+    public String getImg(String imgId) {
         Img img;
         img = cmmMapper.selectImg(imgId);
-        if (img == null) throw new ImgNotFoundException();
+//        if (img == null) throw new ImgNotFoundException();
+        if (img == null) return null;
         return imgUrl + img.getStreNm();
     }
 }

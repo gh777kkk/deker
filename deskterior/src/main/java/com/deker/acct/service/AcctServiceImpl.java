@@ -7,22 +7,21 @@ import com.deker.exception.*;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.internet.MimeUtility;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +40,10 @@ public class AcctServiceImpl implements AcctService {
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    @Value("tracking.key")
+    private String trcKey;
+
     @Override
-    @Transactional
     public Acct regMember(AcctConditions conditions) throws Exception {
         Acct acct = acctMapper.selectMemCheck(conditions);
         List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
@@ -69,6 +70,30 @@ public class AcctServiceImpl implements AcctService {
     }
 
     @Override
+    public Acct getMemberInfo(HttpServletRequest request) throws Exception{
+        AcctConditions conditions = new AcctConditions();
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        Acct result = acctMapper.selectMemberInfo(conditions);
+        List<Acct> contentsList = acctMapper.selectTagList(conditions);
+        List<String> tagList = new ArrayList<>();
+        if(contentsList != null){
+            for(Acct data : contentsList){
+                tagList.add(data.getContents());
+            }
+        }
+        result.setTag(tagList);
+        if (result.getProfileImg() != null) result.setProfileImg(CMMUtil.getImg(result.getProfileImg()));
+        return result;
+    }
+
+    @Override
+    public Acct modMemberInfo(MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception{
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        conditions.setProfileImg(CMMUtil.setImg(profileImg,conditions.getMemId()));
+        return null;
+    }
+
+    @Override
     public Acct memberIdEmailSend(String id)throws Exception {
         AcctConditions conditions = new AcctConditions();
         conditions.setId(id);
@@ -88,21 +113,6 @@ public class AcctServiceImpl implements AcctService {
     public Acct memberMailCheck(AcctConditions conditions)throws Exception {
         Acct mailCheck = acctMapper.selectMailCheckString(conditions);
         if (mailCheck == null) throw new MailCheckNotFoundException();
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public List<?> setImgTest(MultipartFile img, AcctConditions conditions)throws Exception{
-        CMMUtil.setImg(img,conditions.getMemId());
-        return null;
-    }
-
-    @Override
-    public List<?> getImgTest(AcctConditions conditions, HttpServletRequest request) throws Exception {
-        String jwtToken = jwtProvider.getToken(request);
-        String a = jwtProvider.getUserNameFromJwtToken(jwtToken);
-        Date b = jwtProvider.getExpToken(jwtToken);
         return null;
     }
 
@@ -174,7 +184,10 @@ public class AcctServiceImpl implements AcctService {
         UserDetails authentication =customUserDetailsService.loadUserByUsername(acct.getMemId());
         String jwtToken = jwtProvider.generateJwtToken(authentication);
         acct.setJwtToken(jwtToken);
-        acct.setExtTokenTime(jwtProvider.getExpToken(jwtToken));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = jwtProvider.getExpToken(jwtToken);
+        acct.setExtTokenTime(dateFormat.format(date));
 
         return acct;
     }

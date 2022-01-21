@@ -3,7 +3,9 @@ package com.deker.mkt.mapper;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
+import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.model.response.ProductBuyOption;
+import com.deker.mkt.model.response.ProductTracking;
 import com.deker.mkt.model.response.RecentProduct;
 import com.deker.mkt.model.resultService.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,5 +32,8 @@ public interface ProductMapper {
     MarketAddress getAddress(String memId);
 
     String getProductOptionId(ProductOption po);
+
+    ProductTracking selectProductTracking(ProductOrder conditions);
+    String selectLevelCodeNm(String level);
 }
 

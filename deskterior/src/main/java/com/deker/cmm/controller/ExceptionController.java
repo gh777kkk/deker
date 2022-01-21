@@ -38,6 +38,14 @@ public class ExceptionController {
     public ResponseEntity<Result> handleNoPaymentException() {
         return ResponseEntity.ok(new Result("401","소셜 아이디가 다릅니다"));
     }
+    @ExceptionHandler({ TrackingKeyException.class })
+    public ResponseEntity<Result> handleTrackingKeyException() {
+        return ResponseEntity.ok(new Result("401","Tracking 키값 오류"));
+    }
+    @ExceptionHandler({ TrackingException.class })
+    public ResponseEntity<Result> handleTrackingException(TrackingException e) {
+        return ResponseEntity.ok(new Result("400",e.getMsg()));
+    }
 
     @ExceptionHandler({ PaymentVerificationException.class })
     public ResponseEntity<Result> handleLoginSocialIdException() {
