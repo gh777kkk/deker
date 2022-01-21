@@ -35,9 +35,15 @@ public class ExceptionController {
         return ResponseEntity.ok(new Result("400","패스워드가 다릅니다"));
     }
     @ExceptionHandler({ LoginSocialIdException.class })
-    public ResponseEntity<Result> handleLoginSocialIdException() {
+    public ResponseEntity<Result> handleNoPaymentException() {
         return ResponseEntity.ok(new Result("401","소셜 아이디가 다릅니다"));
     }
+
+    @ExceptionHandler({ PaymentVerificationException.class })
+    public ResponseEntity<Result> handleLoginSocialIdException() {
+        return ResponseEntity.ok(new Result("401","결제 검증을 실패했습니다."));
+    }
+
 
 
     @ExceptionHandler({ RuntimeException.class })
