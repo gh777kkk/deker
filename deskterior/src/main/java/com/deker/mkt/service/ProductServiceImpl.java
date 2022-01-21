@@ -109,15 +109,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductTracking getProductTracking(ProductOrder conditions) throws Exception{
-        ProductTracking result = new ProductTracking();
-        TrackingData trackingData = new TrackingData();
+        ProductTracking result = productMapper.selectProductTracking(conditions);
         List<String> optionList = new ArrayList<>();
-        result = productMapper.selectProductTracking(conditions);
         if (result == null) return null;
         if (result.getOption1() != null) optionList.add(result.getOption1Nm() +" : "+result.getOption1DataNm());
         if (result.getOption2() != null) optionList.add(result.getOption2Nm() +" : "+result.getOption2DataNm());
         result.setOptionList(optionList);
-        trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
+        TrackingData trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
         result.setTrackingList(trackingData.getTrackingDetails());
         result.setProductImg(CMMUtil.getImg(result.getProductImg()));
         return result;
