@@ -19,4 +19,7 @@ public interface AcctMapper {
     Acct selectSocialLogin(AcctConditions conditions);
     Acct selectMemberInfo(AcctConditions conditions);
     List<Acct> selectTagList(AcctConditions conditions);
+    void insertTag(AcctConditions conditions);
+    void deleteTag(AcctConditions conditions);
+    void updateMemberInfo(AcctConditions conditions);
 }

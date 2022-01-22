@@ -88,8 +88,18 @@ public class AcctServiceImpl implements AcctService {
 
     @Override
     public Acct modMemberInfo(MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception{
+        AcctConditions tegConditions = new AcctConditions();
         conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
         conditions.setProfileImg(CMMUtil.setImg(profileImg,conditions.getMemId()));
+        acctMapper.updateMemberInfo(conditions);
+
+        tegConditions.setMemId(conditions.getMemId());
+        acctMapper.deleteTag(conditions);
+        for(String contents : conditions.getTag()){
+            tegConditions.setContents(contents);
+            tegConditions.setMemTagId(CMMUtil.nextId("mtgId"));
+            acctMapper.insertTag(tegConditions);
+        }
         return null;
     }
 

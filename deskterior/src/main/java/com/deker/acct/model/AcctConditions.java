@@ -19,5 +19,7 @@ public class AcctConditions {
     private String platformCode;
     private String socialId;
     private String checkString;
+    private String contents;
+    private String memTagId;
     private List<String> tag;
 }

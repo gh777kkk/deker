@@ -139,4 +139,31 @@
         WHERE MEM_ID = #{memId}
     </select>
 
+    <insert id="insertTag" parameterType="AcctConditions">
+        INSERT INTO MEMBER_TAG
+        (
+                    MEM_TAG_ID
+                ,   MEM_ID
+                ,   CONTENTS
+        )
+        VALUES
+        (
+                    #{memTagId}
+                ,   #{memId}
+                ,   #{contents}
+        )
+    </insert>
+
+    <delete id="deleteTag" parameterType="AcctConditions">
+        DELETE FROM MEMBER_TAG
+        WHERE MEM_ID = #{memId}
+    </delete>
+
+    <update id="updateMemberInfo" parameterType="AcctConditions">
+        UPDATE MEMBER
+        SET     JOB_CODE = #{jobCode}
+            ,   PROFILE_IMG = #{profileImg}
+        WHERE MEM_ID = #{memId}
+    </update>
+
 </mapper>

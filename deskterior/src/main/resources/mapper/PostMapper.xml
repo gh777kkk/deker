@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deker.post.mapper.PostMapper">
+
+    <select id="selectMyPostList" parameterType="PostConditions" resultType="Post">
+        SELECT      PL.POST_ID          postId
+                ,   PD.POST_IMG         postImg
+        FROM POST_LIST PL
+        LEFT OUTER JOIN POST_DETAIL PD  ON  PL.POST_ID = PD.POST_ID
+                                        AND PD.USE_YN = 'Y'
+        WHERE 1=1
+        AND PL.MEM_ID = #{memId}
+        AND PL.USE_YN = 'Y'
+    </select>
+
+    <select id="selectMemberProfileImg" parameterType="PostConditions" resultType="Post">
+        SELECT      PROFILE_IMG     profileImg
+        FROM MEMBER
+        WHERE   MEM_ID = #{memId}
+        AND     LAST_DT > '9999-12-30'
+    </select>
+
+</mapper>
