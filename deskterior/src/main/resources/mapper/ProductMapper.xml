@@ -184,10 +184,10 @@
                 ,   MA.ADD_ZIP                                                          addZip
                 ,   CONCAT(MA.ADDRESS,' ',MA.ADD_DETAIL)                                address
                 ,   MO.WAYBILL                                                          waybill
-        FROM MKT_ORDER MO
-        LEFT OUTER JOIN MKT_ADDRESS MA ON MO.ADD_ID = MA.ADD_ID
-        LEFT OUTER JOIN MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
-        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+        FROM study_gh.MKT_ORDER MO
+        LEFT OUTER JOIN study_gh.MKT_ADDRESS MA ON MO.ADD_ID = MA.ADD_ID
+        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        LEFT OUTER JOIN study_gh.MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
         WHERE   MO.ORDER_ID = #{orderId}
     </select>
 
@@ -196,6 +196,14 @@
         FROM CODE_DETAIL
         WHERE   CODE_ID='ODS'
         AND     CODE=#{level}
+    </select>
+
+
+    <select id="selectDeliveryStatus"  resultType="DeliveryStatus">
+        SELECT WAYBILL AS waybill,
+               DELIVERY_CODE AS deliveryCode
+        FROM study_gh.MKT_ORDER
+        WHERE   ORDER_CONFIRM = 'N'
     </select>
 
 

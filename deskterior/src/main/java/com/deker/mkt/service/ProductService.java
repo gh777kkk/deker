@@ -34,7 +34,7 @@ public interface ProductService {
     public ProductBuyOption getProductBuyList(ProductBuy pb);
 
     ProductTracking getProductTracking(ProductOrder conditions) throws Exception;
-
+    TrackingData getTracking(String tCode,String tInvoice)throws Exception;
 
 
 }

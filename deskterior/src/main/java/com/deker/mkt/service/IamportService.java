@@ -5,14 +5,17 @@ import com.deker.mkt.model.request.CancleBuy;
 import com.deker.mkt.model.request.Iamport;
 import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.response.BuyerInfor;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+@Service
+@RequiredArgsConstructor
 public class IamportService {
 
 
