@@ -4,6 +4,7 @@ import com.deker.cmm.model.Result;
 import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.service.ProductService;
+import com.deker.mkt.service.Scheduler;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -52,6 +53,16 @@ public class NMBMarketController {
                         productService.getProductDetails(pc))
         );
     }
+
+    @RequestMapping(value = "/get/test", method = RequestMethod.POST)
+    public void gettProduct(@RequestBody ProductCode pc) {
+
+
+        //sd.deliveryStatus();
+
+    }
+
+
 
 
     @RequestMapping(value = "/get/verify", method = RequestMethod.POST)

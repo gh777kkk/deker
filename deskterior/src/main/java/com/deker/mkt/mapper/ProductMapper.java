@@ -35,5 +35,7 @@ public interface ProductMapper {
 
     ProductTracking selectProductTracking(ProductOrder conditions);
     String selectLevelCodeNm(String level);
+
+    DeliveryStatus selectDeliveryStatus();
 }
 

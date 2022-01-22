@@ -107,7 +107,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/get/verify", method = RequestMethod.POST)
-    public ResponseEntity<?> getVerifyPayment(@RequestBody Payment pm, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getVerifyPayment(@RequestBody Payment pm) throws Exception {
         return ResponseEntity.ok(
                 new Result("200", "결제 페이지",
                         iamportService.getBuyerInfor(pm.getImp_uid())

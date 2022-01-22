@@ -40,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
     @Value("${tracking.key}")
     private String trackingKey;
 
+
+
     public List<ProductModel> getBestSaleProductList(){
 
         return productMapper.getBestSaleProductList();
@@ -116,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
         if (result.getOption2() != null) optionList.add(result.getOption2Nm() +" : "+result.getOption2DataNm());
         result.setOptionList(optionList);
         TrackingData trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
+
         result.setTrackingList(trackingData.getTrackingDetails());
         result.setProductImg(CMMUtil.getImg(result.getProductImg()));
         return result;
@@ -131,12 +134,16 @@ public class ProductServiceImpl implements ProductService {
             if (data == null || data.getBody() == null) throw new TrackingException("조회 오류");
             if (data.getBody().getCode() != null) throw new TrackingException(data.getBody().getMsg());
             for (int idx = 0; data.getBody().getTrackingDetails().size() > idx; idx++){
-                data.getBody().getTrackingDetails().get(idx).setLevelNm(productMapper.selectLevelCodeNm(Integer.toString(data.getBody().getTrackingDetails().get(idx).getLevel())));
+                data.getBody().getTrackingDetails().get(idx).setLevelNm(
+                        productMapper.selectLevelCodeNm(Integer.toString(data.getBody().getTrackingDetails().get(idx).getLevel())));
             }
             return data.getBody();
+
         }catch (HttpClientErrorException e){
             throw new TrackingKeyException();
         }
     }
+
+    //31732607830
 
 }

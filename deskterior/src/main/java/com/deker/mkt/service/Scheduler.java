@@ -1,9 +1,12 @@
 package com.deker.mkt.service;
 
-import java.time.LocalDateTime;
 
 
 
+import com.deker.mkt.mapper.ProductMapper;
+import com.deker.mkt.model.DeliveryStatus;
+import com.deker.mkt.model.TrackingData;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import org.springframework.stereotype.Component;
@@ -11,27 +14,30 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-
+@RequiredArgsConstructor
 public class Scheduler {
 
+    private final ProductMapper productMapper;
+    public final ProductService productService;
+
+    private int level;
+    //@Scheduled(cron = "0 0 0 * * ?") // 매월 15일 오전 10시 15분에 실행
+    @Scheduled(fixedRate = 1000)
+    public void deliveryStatus() throws Exception {
+        DeliveryStatus ds = productMapper.selectDeliveryStatus();
+        TrackingData td = productService.getTracking(ds.getDeliveryCode(),ds.getWaybill());
+
+        level = td.getLevel();
+        if(level==6){
+
+        }
 
 
-//    @Scheduled(fixedDelay = 2000)
-//
-//    public void task1() {
-//
-//        System.out.println("The current date (1) : " + LocalDateTime.now());
-//
-//    }
-//
-//
-//
-//    @Scheduled(fixedDelayString = "${spring.task.fixedDelay}")
-//
-//    public void task2() {
-//
-//        System.out.println("The current date (2) : " + LocalDateTime.now());
-//
-//    }
+        //ds.getDeliveryCode(),ds.getWaybill()
+        //TrackingData trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
+
+        //System.out.println("current thread : {}"+ Thread.currentThread().getName());
+    }
+
 }
 
