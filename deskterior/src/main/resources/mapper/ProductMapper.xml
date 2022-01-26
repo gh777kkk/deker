@@ -118,10 +118,12 @@
         select PRODUCT_PRICE AS productPrice,
                OPTION1 AS option1,
                OPTION1_DATA AS option1Data,
-               CODE_NAME('OPK',MPO.OPTION1)                                         option1Nm
-                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)
-                                                                                   OPTION2 AS option2,
+               CODE_NAME('OPK',OPTION1) AS option1Name,
+               MKT_OPTION_NAME(PRODUCT_ID,OPTION1,OPTION1_DATA) AS option1DataName,
+               OPTION1 AS option2,
                OPTION2_DATA AS option2Data,
+               CODE_NAME('OPK',OPTION2) AS option2Name,
+               MKT_OPTION_NAME(PRODUCT_ID,OPTION2,OPTION2_DATA) AS option2DataName,
                OPTION_QUANTITY AS productQuantity
         from  study_gh.MKT_PRODUCT_OPTION
         where PRODUCT_ID=#{productId}

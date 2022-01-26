@@ -10,9 +10,13 @@ public class ProductDetailOption {
 
     private int productPrice;
     private String option1;
+    private String option1Name;
     private String option1Data;
+    private String option1DataName;
     private String option2;
+    private String option2Name;
     private String option2Data;
+    private String option2DataName;
     private int productQuantity;
 
 }
