@@ -15,6 +15,7 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
     List<ProductModel> getBestSaleProductList();
+    List<MarketCategory> getProductCategory();
 
     List<ProductModel> getBestCategoryProductList(String codeId);
     List<ProductModel> getNewCategoryProductList(String codeId);
@@ -36,6 +37,15 @@ public interface ProductMapper {
     ProductTracking selectProductTracking(ProductOrder conditions);
     String selectLevelCodeNm(String level);
 
-    DeliveryStatus selectDeliveryStatus();
+    List<DeliveryStatus> selectDeliveryStatus();
+
+    void updateOrderState(DeliveryUpdate du);
+    void updateCompletedDate(DeliveryUpdate du);
+
+    List<DeliveryUpdate> selectDeliveryComplete();
+    void updateOrderConfirm(DeliveryUpdate du);
+
+    void regReview(ProductReview pr);
+    void modReview(ProductReview pr);
 }
 

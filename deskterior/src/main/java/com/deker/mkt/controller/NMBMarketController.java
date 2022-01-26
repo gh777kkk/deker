@@ -1,6 +1,8 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.mkt.mapper.ProductMapper;
+import com.deker.mkt.model.DeliveryUpdate;
 import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.service.ProductService;
@@ -24,6 +26,7 @@ import java.util.stream.Stream;
 public class NMBMarketController {
 
     public final ProductService productService;
+    public final ProductMapper productMapper;
 
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
@@ -57,6 +60,12 @@ public class NMBMarketController {
     @RequestMapping(value = "/get/test", method = RequestMethod.POST)
     public void gettProduct(@RequestBody ProductCode pc) {
 
+//        DeliveryUpdate du = new DeliveryUpdate();
+//        String timeString = "1999-06-03 10:45:00";
+//        String id = "odrId_99999999999999";
+//        du.setId(id);
+//        du.setTimeString(timeString);
+//        productMapper.updateConfirmDate(du);
 
         //sd.deliveryStatus();
 

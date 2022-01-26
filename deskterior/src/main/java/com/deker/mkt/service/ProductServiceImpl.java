@@ -5,17 +5,14 @@ import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
 
 import com.deker.mkt.model.*;
-//import com.sun.mail.imap.protocol.Item;
 
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.model.response.*;
-import com.deker.mkt.model.resultService.ProductDetailExplain;
-import com.deker.mkt.model.resultService.ProductDetailModel;
+
 import com.deker.mkt.model.resultService.ProductReview;
-import com.deker.mkt.model.resultService.RecommendedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +40,13 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public List<ProductModel> getBestSaleProductList(){
+    public MarketMainModel getBestSaleProductList(){
 
-        return productMapper.getBestSaleProductList();
+        MarketMainModel marketMainModel = new MarketMainModel();
+        marketMainModel.setProductModels(productMapper.getBestSaleProductList());
+        marketMainModel.setMarketCategories(productMapper.getProductCategory());
+
+        return marketMainModel;
     }
 
 
@@ -137,13 +139,32 @@ public class ProductServiceImpl implements ProductService {
                 data.getBody().getTrackingDetails().get(idx).setLevelNm(
                         productMapper.selectLevelCodeNm(Integer.toString(data.getBody().getTrackingDetails().get(idx).getLevel())));
             }
-            return data.getBody();
 
+            return data.getBody();
         }catch (HttpClientErrorException e){
             throw new TrackingKeyException();
         }
     }
 
-    //31732607830
+
+
+
+    public void regReview(ProductReview pr, MultipartFile img)throws Exception{
+       String reviewId = CMMUtil.setImg(img,pr.getMemId());
+       pr.setProReviewImg(reviewId);
+       pr.setMktReviewId(CMMUtil.nextId("RVID"));
+       productMapper.regReview(pr);
+
+    }
+
+    public void modReview(ProductReview pr, MultipartFile img)throws Exception{
+
+        if(img != null) {
+            String reviewId = CMMUtil.setImg(img, pr.getMemId());
+            pr.setProReviewImg(reviewId);
+        }
+        productMapper.modReview(pr);
+
+    }
 
 }

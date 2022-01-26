@@ -10,35 +10,86 @@
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
-               PRODUCT_NAME AS productName
-        from study_gh.MKT_PRODUCT p,
+               PRODUCT_NAME AS productName,
+               IMG_PATH AS productImg
+        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc limit 8) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and i.IMG_ID = p.PRODUCT_IMG
     </select>
 
-    <select id="getBestCategoryProductList" resultType="ProductModel">
+
+
+    <select id="getNoBestSaleProductList" parameterType="ProductOrder" resultType="ProductModel">
         select p.MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_PRICE AS productPrice,
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
-               PRODUCT_NAME AS productName
-        from study_gh.MKT_PRODUCT p,
+               PRODUCT_NAME AS productName,
+               IMG_PATH AS productImg
+        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p
+        where i.IMG_ID = p.PRODUCT_IMG
+    </select>
+
+
+
+    <select id="getProductCategory" resultType="MarketCategory">
+        select CATEGORY_ID AS categoryId,
+               IMG_PATH AS categoryImg,
+               CATEGORY_NAME AS categoryName
+        from study_gh.IMAGE i, study_gh.MKT_CATEGORY c
+        where i.IMG_ID = c.CATEGORY_IMG
+
+    </select>
+
+
+
+    <select id="getBestProductMore" resultType="ProductModel">
+        select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain,
+               PRODUCT_NAME AS productName,
+               IMG_PATH AS productImg
+        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
-        where p.PRODUCT_CATEGORY=#{code} and p.MKT_PRODUCT_ID = o.PRODUCT_ID
-        order by p.CREATE_DT limit 8
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and i.IMG_ID = p.PRODUCT_IMG
+        limit #{start}, #{end}
     </select>
 
-    <select id="getNewCategoryProductList" resultType="ProductModel">
+
+    <select id="getBestCategoryProductMore" resultType="ProductModel">
         select p.MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_QUANTITY AS productQuantity,
+               PRODUCT_CATEGORY AS productCategory,
+               PRODUCT_EXPLAIN AS productExplain,
+               PRODUCT_NAME AS productName,
+               PRODUCT_IMG AS productImg
+        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
+             (select PRODUCT_ID
+              from study_gh.MKT_ORDER
+              where ORDER_CONFIRM = 'Y'
+              group by PRODUCT_ID
+              order by COUNT(PRODUCT_ID) desc) o
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and PRODUCT_CATEGORY = #{code} and i.IMG_ID = p.PRODUCT_IMG
+        limit #{start}, #{end}
+    </select>
+
+
+
+
+    <select id="getNewCategoryProductList" resultType="ProductModel">
+        select MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_PRICE AS productPrice,
                PRODUCT_QUANTITY AS productQuantity,
                PRODUCT_CATEGORY AS productCategory,
@@ -49,25 +100,34 @@
         order by p.CREATE_DT desc limit 8
     </select>
 
+
+
+
     <select id="getProductDetail" resultType="ProductDetailModel">
-        select p.MKT_PRODUCT_ID AS mktProductId,
+        select MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_NAME AS productName,
                PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain
-               from study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=#{productId}
+               PRODUCT_EXPLAIN AS productExplain,
+               IMG_PATH AS productImg
+               from study_gh.IMAGE i, study_gh.MKT_PRODUCT p
+        where p.MKT_PRODUCT_ID=#{productId} and i.IMG_ID = p.PRODUCT_IMG
     </select>
+
 
     <select id="getProductDetailOption" resultType="ProductDetailOption">
         select PRODUCT_PRICE AS productPrice,
                OPTION1 AS option1,
                OPTION1_DATA AS option1Data,
-               OPTION2 AS option2,
+               CODE_NAME('OPK',MPO.OPTION1)                                         option1Nm
+                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)
+                                                                                   OPTION2 AS option2,
                OPTION2_DATA AS option2Data,
                OPTION_QUANTITY AS productQuantity
         from  study_gh.MKT_PRODUCT_OPTION
         where PRODUCT_ID=#{productId}
     </select>
+
+
 
     <select id="getProductDetailExplain" resultType="ProductDetailExplain">
         select SET_ID AS setId,
@@ -75,6 +135,8 @@
         from study_gh.MKT_DETAIL_PAGE d
         where d.PRODUCT_ID=#{productId}
     </select>
+
+
 
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
         select p.PRODUCT_NAME
@@ -88,15 +150,21 @@
         limit 4
     </select>
 
+
+
     <select id="getProductReview" resultType="ProductReview">
-        select MY_STAR AS myStar,
+        select r.MKT_REVIEW_ID AS mktReviewId,
+               MY_STAR AS myStar,
                 REVIEW_STRING AS reviewString,
                 r.CREATE_DT AS reviewDate,
-                MEM_ID AS memId,
-                p.PRODUCT_NAME AS productName
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p
+                r.MEM_ID AS memId,
+                p.PRODUCT_NAME AS productName,
+               m.NICKNAME AS nickname
+        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID=#{productId}
+                and r.MEM_ID = m.MEM_ID
     </select>
+
 
 
 
@@ -114,6 +182,7 @@
             </otherwise>
         </choose>
     </select>
+
 
 
 
@@ -193,7 +262,7 @@
 
     <select id="selectLevelCodeNm" parameterType="String" resultType="String">
         SELECT CODE_NM      levelNm
-        FROM CODE_DETAIL
+        FROM study_gh.CODE_DETAIL
         WHERE   CODE_ID='ODS'
         AND     CODE=#{level}
     </select>
@@ -201,10 +270,88 @@
 
     <select id="selectDeliveryStatus"  resultType="DeliveryStatus">
         SELECT WAYBILL AS waybill,
-               DELIVERY_CODE AS deliveryCode
+               DELIVERY_CODE AS deliveryCode,
+               ORDER_ID AS orderId
         FROM study_gh.MKT_ORDER
-        WHERE   ORDER_CONFIRM = 'N'
+        WHERE   ORDER_STATE != 6 and ORDER_CONFIRM = 'N'
     </select>
+
+
+
+    <update id="updateOrderState" parameterType="DeliveryUpdate">
+
+        UPDATE study_gh.MKT_ORDER
+        SET ORDER_STATE =#{level}
+        WHERE ORDER_ID = #{id}
+
+    </update>
+
+
+
+    <update id="updateCompletedDate" parameterType="DeliveryUpdate">
+        UPDATE study_gh.MKT_ORDER
+        SET COMPLETED_DT =#{timeString}
+        WHERE ORDER_ID = #{id}
+    </update>
+
+
+    <select id="selectDeliveryComplete"  resultType="DeliveryUpdate">
+        SELECT COMPLETED_DT AS timeString,
+               ORDER_ID AS id
+        FROM study_gh.MKT_ORDER
+        WHERE   ORDER_STATE = 6 and ORDER_CONFIRM = 'N'
+    </select>
+
+
+    <update id="updateOrderConfirm" parameterType="DeliveryUpdate">
+
+        UPDATE study_gh.MKT_ORDER
+        SET ORDER_CONFIRM ='Y'
+        WHERE ORDER_ID = #{id}
+
+    </update>
+
+
+    <insert id="regReview" parameterType="ProductReview">
+        insert into study_gh.MKT_REVIEW
+        (
+            MKT_REVIEW_ID,
+            MEM_ID,
+            PRODUCT_ID,
+            IMG_ID,
+            MY_STAR,
+            REVIEW_STRING,
+            PRO_REVIEW_IMG
+        )
+        VALUES (
+                   #{mktReviewId},
+                   #{memId},
+                   #{productId},
+                   ( SELECT IMG_ID FROM study_gh.MKT_PRODUCT
+                   WHERE MKT_PRODUCT_ID = #{productId}),
+                   #{myStar},
+                   #{reviewString},
+                   #{proReviewImg}
+               )
+    </insert>
+
+    <update id="modReview" parameterType="ProductReview">
+
+        UPDATE study_gh.MKT_REVIEW
+        SET <if test="myStar != null">
+                MY_STAR = #{myStar}
+            </if>,
+            <if test="proReviewImg != null">
+                PRO_REVIEW_IMG = #{proReviewImg}
+            </if>,
+            <if test="reviewString != null">
+                REVIEW_STRING = #{reviewString}
+            </if>
+        WHERE MKT_REVIEW_ID = #{mktReviewId}
+
+    </update>
+
+
 
 
 </mapper>

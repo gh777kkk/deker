@@ -16,6 +16,7 @@ public class ProductModel {
     private String productCategory;
     private String productExplain;
     private String productName;
+    private String productImg;
 
 
 }
