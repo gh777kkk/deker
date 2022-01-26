@@ -1,11 +1,14 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.cmm.service.CMMService;
+import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.service.ProductService;
@@ -17,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +33,13 @@ public class MBMarketController {
     public final ProductService productService;
     private final JwtProvider jwtProvider;
     private final IamportService iamportService;
+    private final CMMService cmmService;
+    private final com.deker.cmm.util.CMMUtil CMMUtil;
 
 
     //reg, get, mod, del
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/get/product", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
 
         return ResponseEntity.ok(
@@ -41,6 +47,17 @@ public class MBMarketController {
                         productService.getBestSaleProductList())
         );
     }
+
+    @RequestMapping(value = "/get/product/more", method = RequestMethod.POST)
+    public ResponseEntity<?> getProductMore() {
+
+        return ResponseEntity.ok(
+                new Result("200", "스토어 메인",
+                        productService.getBestSaleProductList())
+        );
+    }
+
+
 
 
     @RequestMapping(value = "/get/category", method = RequestMethod.POST)
@@ -52,6 +69,19 @@ public class MBMarketController {
 
         );
     }
+
+
+    @RequestMapping(value = "/get/category/product/more", method = RequestMethod.POST)
+    public ResponseEntity<?> getCategoryProductMore() {
+
+        return ResponseEntity.ok(
+                new Result("200", "스토어 메인",
+                        productService.getBestSaleProductList())
+        );
+    }
+
+
+
 
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
@@ -118,6 +148,10 @@ public class MBMarketController {
 
     @RequestMapping(value = "/get/payment-complete", method = RequestMethod.POST)
     public ResponseEntity<?> getPaymentComplete(@RequestBody Payment pm, HttpServletRequest request) {
+
+        //String memId = jwtProvider.getMemIdFromJwtToken(request);
+        //pb.setMemId(memId);
+
         return ResponseEntity.ok(
                 new Result("200", "결제 완료"
                 //상품 값 수정
@@ -126,6 +160,35 @@ public class MBMarketController {
         );
     }
 
+
+
+    @RequestMapping(value = "/reg/review", method = RequestMethod.POST)
+    public ResponseEntity<?> regProductReview(@RequestBody ProductReview pr, HttpServletRequest request,
+                                       @RequestParam("img") MultipartFile img) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pr.setMemId(memId);
+        productService.regReview(pr,img);
+
+        return ResponseEntity.ok(
+                new Result("200", "리뷰 작성"
+                )
+        );
+    }
+
+    @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
+    public ResponseEntity<?> modReview(@RequestBody ProductReview pr, HttpServletRequest request,
+                                       @RequestParam("img") MultipartFile img) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pr.setMemId(memId);
+        productService.modReview(pr,img);
+
+        return ResponseEntity.ok(
+                new Result("200", "리뷰 수정 완료"
+                )
+        );
+    }
 
 
 
