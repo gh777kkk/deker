@@ -18,9 +18,9 @@ public class AcctController {
 
     private final AcctService acctService;
 
-    @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.GET)
+    @RequestMapping(value = "/nmb/acct/reg/member", method = RequestMethod.POST)
     public ResponseEntity<Result> regMember(@RequestBody AcctConditions conditions) throws Exception {
-        return ResponseEntity.ok(new Result("200","회원가입",acctService.regMember(conditions)));
+        return ResponseEntity.ok(new Result("200","회원가입 - 로그인",acctService.regMember(conditions)));
     }
 
     @RequestMapping(value = "/nmb/acct/get/member", method = RequestMethod.POST)

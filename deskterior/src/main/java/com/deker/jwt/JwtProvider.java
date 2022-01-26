@@ -52,6 +52,7 @@ public class JwtProvider {
 
     public String getMemIdFromJwtToken(HttpServletRequest request){
         String token = getToken(request);
+        if (token == null) return null;
         return getUserNameFromJwtToken(token);
     }
 

@@ -5,9 +5,13 @@ import com.deker.cmm.model.CMMConditions;
 import com.deker.cmm.model.Result;
 import com.deker.cmm.service.CMMService;
 import com.deker.mkt.model.request.ProductBuy;
+import com.deker.security.CustomUserDetailsService;
+import com.deker.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,5 +61,10 @@ public class CMMController {
     public ResponseEntity<Result> sseTest() throws Exception {
         cmmService.sseTest();
         return ResponseEntity.ok(new Result("200","정상"));
+    }
+
+    @RequestMapping(value = "/nmb/user-test", method = RequestMethod.POST)
+    public void userTest() throws Exception {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
     }
 }

@@ -3,11 +3,13 @@ package com.deker.acct.service;
 import com.deker.acct.mapper.AcctMapper;
 import com.deker.acct.model.Acct;
 import com.deker.acct.model.AcctConditions;
+import com.deker.cmm.model.Result;
 import com.deker.exception.*;
 import com.deker.jwt.JwtProvider;
 import com.deker.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +49,10 @@ public class AcctServiceImpl implements AcctService {
     public Acct regMember(AcctConditions conditions) throws Exception {
         Acct acct = acctMapper.selectMemCheck(conditions);
         List<String> nicknameCheck = acctMapper.selectNicknameCheck(conditions);
-        if (acct != null) throw new AlreadyMemberException();
+        if (acct != null) {
+            if(conditions.getPlatformCode().equals("P01")) throw new AlreadyMemberException();
+            else return loginPrc(conditions);
+        }
         if (nicknameCheck.size() > 0) throw new AlreadyNicknameException();
 
         conditions.setMemId(CMMUtil.nextId("memId"));

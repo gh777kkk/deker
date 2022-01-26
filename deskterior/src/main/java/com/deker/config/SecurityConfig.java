@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/nmb/**").permitAll()
-                .antMatchers("/mb/**").hasRole("AUTH")
+                .antMatchers("/mb/**").hasRole("USER")
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin().disable()
