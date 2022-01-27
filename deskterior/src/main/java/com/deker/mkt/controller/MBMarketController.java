@@ -39,7 +39,7 @@ public class MBMarketController {
 
     //reg, get, mod, del
 
-    @RequestMapping(value = "/get/product", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
 
         return ResponseEntity.ok(
@@ -52,7 +52,7 @@ public class MBMarketController {
     public ResponseEntity<?> getProductMore() {
 
         return ResponseEntity.ok(
-                new Result("200", "스토어 메인",
+                new Result("200", "스토어 메인 더보기",
                         productService.getBestSaleProductList())
         );
     }
@@ -75,7 +75,7 @@ public class MBMarketController {
     public ResponseEntity<?> getCategoryProductMore() {
 
         return ResponseEntity.ok(
-                new Result("200", "스토어 메인",
+                new Result("200", "스토어 카테고리 상품 더보기",
                         productService.getBestSaleProductList())
         );
     }
@@ -97,6 +97,19 @@ public class MBMarketController {
     }
 
 
+    @RequestMapping(value = "/get/recent-pro", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecentProduct( HttpServletRequest request) {
+
+//        String memId = jwtProvider.getMemIdFromJwtToken(request);
+//        pc.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "장바구니 목록"
+                )
+        );
+    }
+
+
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
     public ResponseEntity<?> regCart(@RequestBody ProductCart pc, HttpServletRequest request) {
 
@@ -105,6 +118,18 @@ public class MBMarketController {
         productService.insertProductCart(pc);
         return ResponseEntity.ok(
                 new Result("200", "장바구니 등록"
+                )
+        );
+    }
+
+    @RequestMapping(value = "/get/cart", method = RequestMethod.POST)
+    public ResponseEntity<?> getCart( HttpServletRequest request) {
+
+//        String memId = jwtProvider.getMemIdFromJwtToken(request);
+//        pc.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "장바구니 목록"
                 )
         );
     }

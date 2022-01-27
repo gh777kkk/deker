@@ -13,4 +13,5 @@ import java.util.List;
 public class DeliveryStatus {
     private String waybill;
     private String deliveryCode;
+    private String orderId;
 }

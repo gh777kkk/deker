@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ProductDetailExplain {
     private int setId;
     private String detailExplain;
+    private String detailImg;
 }

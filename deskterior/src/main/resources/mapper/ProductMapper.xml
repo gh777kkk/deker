@@ -120,7 +120,7 @@
                OPTION1_DATA AS option1Data,
                CODE_NAME('OPK',OPTION1) AS option1Name,
                MKT_OPTION_NAME(PRODUCT_ID,OPTION1,OPTION1_DATA) AS option1DataName,
-               OPTION1 AS option2,
+               OPTION2 AS option2,
                OPTION2_DATA AS option2Data,
                CODE_NAME('OPK',OPTION2) AS option2Name,
                MKT_OPTION_NAME(PRODUCT_ID,OPTION2,OPTION2_DATA) AS option2DataName,
@@ -133,22 +133,24 @@
 
     <select id="getProductDetailExplain" resultType="ProductDetailExplain">
         select SET_ID AS setId,
-               DETAIL_EXPLAIN AS detailExplain
-        from study_gh.MKT_DETAIL_PAGE d
-        where d.PRODUCT_ID=#{productId}
+               DETAIL_EXPLAIN AS detailExplain,
+               IMG_PATH AS detailImg
+        from study_gh.MKT_DETAIL_PAGE d, study_gh.IMAGE i
+        where d.PRODUCT_ID=#{productId} and d.IMG_ID = i.IMG_ID
     </select>
 
 
 
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
-        select p.PRODUCT_NAME
-        from study_gh.MKT_PRODUCT p,
+        select p.PRODUCT_NAME, i.IMG_PATH
+        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
         where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.PRODUCT_ID
+                and i.IMG_ID = p.PRODUCT_IMG
         limit 4
     </select>
 
@@ -157,14 +159,18 @@
     <select id="getProductReview" resultType="ProductReview">
         select r.MKT_REVIEW_ID AS mktReviewId,
                MY_STAR AS myStar,
-                REVIEW_STRING AS reviewString,
-                r.CREATE_DT AS reviewDate,
-                r.MEM_ID AS memId,
-                p.PRODUCT_NAME AS productName,
-               m.NICKNAME AS nickname
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
-        where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID=#{productId}
-                and r.MEM_ID = m.MEM_ID
+               REVIEW_STRING AS reviewString,
+               r.CREATE_DT AS reviewDate,
+               r.MEM_ID AS memId,
+               p.PRODUCT_NAME AS productName,
+               m.NICKNAME AS nickname,
+               i.IMG_PATH AS productImg,
+               IMG_PATH AS proReviewImg,
+               (SELECT IMG_PATH FROM study_gh.IMAGE si, study_gh.MKT_REVIEW sr, study_gh.MKT_PRODUCT sp
+                WHERE sr.PRODUCT_ID = #{productId} and i.IMG_ID = sr.PRODUCT_ID)
+        from study_gh.IMAGE i, study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
+        where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
+          and r.MEM_ID = m.MEM_ID and i.IMG_ID = r.IMG_ID
     </select>
 
 
