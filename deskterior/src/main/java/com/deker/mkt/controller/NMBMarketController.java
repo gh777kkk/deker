@@ -4,6 +4,7 @@ import com.deker.cmm.model.Result;
 import com.deker.mkt.mapper.ProductMapper;
 import com.deker.mkt.model.DeliveryUpdate;
 import com.deker.mkt.model.request.Payment;
+import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.service.ProductService;
 import com.deker.mkt.service.Scheduler;
@@ -56,6 +57,20 @@ public class NMBMarketController {
                         productService.getProductDetails(pc))
         );
     }
+
+    @RequestMapping(value = "/get/recent-pro", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecentProduct( HttpServletRequest request) {
+
+//        String memId = jwtProvider.getMemIdFromJwtToken(request);
+//        pc.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "장바구니 목록"
+                )
+        );
+    }
+
+
 
     @RequestMapping(value = "/get/test", method = RequestMethod.POST)
     public void gettProduct(@RequestBody ProductCode pc) {
