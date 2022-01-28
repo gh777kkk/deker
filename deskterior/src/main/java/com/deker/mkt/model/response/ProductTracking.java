@@ -27,6 +27,7 @@ public class ProductTracking {
     private String addZip;
     private String address;
     private String waybill;
+    private String productExplain;
     private List<String> optionList;
     private List<TrackingData> trackingList;
 }

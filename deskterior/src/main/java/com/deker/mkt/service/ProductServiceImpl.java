@@ -116,8 +116,10 @@ public class ProductServiceImpl implements ProductService {
         ProductTracking result = productMapper.selectProductTracking(conditions);
         List<String> optionList = new ArrayList<>();
         if (result == null) return null;
-        if (result.getOption1() != null) optionList.add(result.getOption1Nm() +" : "+result.getOption1DataNm());
-        if (result.getOption2() != null) optionList.add(result.getOption2Nm() +" : "+result.getOption2DataNm());
+//        if (result.getOption1() != null) optionList.add(result.getOption1Nm() +" : "+result.getOption1DataNm());
+//        if (result.getOption2() != null) optionList.add(result.getOption2Nm() +" : "+result.getOption2DataNm());
+        if (result.getOption1() != null) optionList.add(result.getOption1DataNm());
+        if (result.getOption2() != null) optionList.add(result.getOption2DataNm());
         result.setOptionList(optionList);
         TrackingData trackingData = getTracking(result.getDeliveryCode(),result.getWaybill());
 

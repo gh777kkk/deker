@@ -53,7 +53,19 @@ public class AcctServiceImpl implements AcctService {
             if(conditions.getPlatformCode().equals("P01")) throw new AlreadyMemberException();
             else return loginPrc(conditions);
         }
-        if (nicknameCheck.size() > 0) throw new AlreadyNicknameException();
+        if (nicknameCheck.size() > 0) {
+            if(conditions.getPlatformCode().equals("P01")) throw new AlreadyNicknameException();
+            else {
+                int i = 1;
+                String nickname = conditions.getNickname();
+                while (true){
+                    conditions.setNickname(nickname+"#"+i);
+                    List<String> check = acctMapper.selectNicknameCheck(conditions);
+                    if (check.size() > 0) i++;
+                    else break;
+                }
+            }
+        }
 
         conditions.setMemId(CMMUtil.nextId("memId"));
         if(conditions.getPlatformCode().equals("P01")){

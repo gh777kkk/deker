@@ -245,6 +245,7 @@
     <select id="selectProductTracking" parameterType="ProductOrder" resultType="ProductTracking">
         SELECT      MP.MKT_PRODUCT_ID                                                   productId
                 ,   MPO.MKT_PRODUCT_OPTION_ID                                           productOptionId
+                ,   MP.PRODUCT_EXPLAIN                                                  productExplain
                 ,   'deker'                                                             productBrand
                 ,   MP.PRODUCT_IMG                                                      productImg
                 ,   OPTION1                                                             option1
