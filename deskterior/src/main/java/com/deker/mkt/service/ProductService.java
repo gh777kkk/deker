@@ -1,10 +1,7 @@
 package com.deker.mkt.service;
 
 import com.deker.mkt.model.*;
-import com.deker.mkt.model.request.ProductBuy;
-import com.deker.mkt.model.request.ProductCart;
-import com.deker.mkt.model.request.ProductCode;
-import com.deker.mkt.model.request.ProductOrder;
+import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +35,12 @@ public interface ProductService {
 
     void getTest();
 
+
+
+    MyShopping getOrderProduct(MyShoppingConditions conditions);
+
+    Menu getNmbMenu();
+    Menu getMbMenu();
 
 
 

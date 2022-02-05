@@ -2,11 +2,10 @@ package com.deker.mkt.mapper;
 
 import com.deker.cmm.model.Menu;
 import com.deker.mkt.model.*;
+import com.deker.mkt.model.request.MyShoppingConditions;
 import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductOrder;
-import com.deker.mkt.model.response.ProductBuyOption;
-import com.deker.mkt.model.response.ProductTracking;
-import com.deker.mkt.model.response.RecentProduct;
+import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -52,6 +51,12 @@ public interface ProductMapper {
     List<ProductModel> getRegProduct(ProductKeyword pk);
 
 
+
+    List<Menu> getNmbMenu();
+    List<Menu> getMbMenu();
+
+    List<MyShoppingOrderState> selectMyShoppingOrderState(MyShoppingConditions conditions);
+    List<MyShoppingList> selectMyShoppingList(MyShoppingConditions conditions);
 
 }
 
