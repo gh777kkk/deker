@@ -6,10 +6,7 @@ import com.deker.mkt.mapper.ProductMapper;
 
 import com.deker.mkt.model.*;
 
-import com.deker.mkt.model.request.ProductBuy;
-import com.deker.mkt.model.request.ProductCart;
-import com.deker.mkt.model.request.ProductCode;
-import com.deker.mkt.model.request.ProductOrder;
+import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
 
 import com.deker.mkt.model.resultService.ProductDetailExplain;
@@ -26,6 +23,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,6 +256,40 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    public MyShopping getOrderProduct(MyShoppingConditions conditions){
+        MyShopping myShopping = new MyShopping();
+        List<MyShoppingOrderState> orderState = productMapper.selectMyShoppingOrderState(conditions);
+        if (orderState != null){
+            for (MyShoppingOrderState data : orderState){
+                if (data.getOrderState().equals("7")) myShopping.setDeposit(data.getOrderStateCount());
+                if (data.getOrderState().equals("8")) myShopping.setPayment(data.getOrderStateCount());
+                if (data.getOrderState().equals("1")) myShopping.setPreparation(data.getOrderStateCount());
+                if (data.getOrderState().equals("2")) myShopping.setDelivery(data.getOrderStateCount());
+                if (data.getOrderState().equals("3")) myShopping.setDelivery(data.getOrderStateCount());
+                if (data.getOrderState().equals("4")) myShopping.setDelivery(data.getOrderStateCount());
+                if (data.getOrderState().equals("5")) myShopping.setDelivery(data.getOrderStateCount());
+                if (data.getOrderState().equals("6")) myShopping.setComplete(data.getOrderStateCount());
+                if (data.getOrderState().equals("9")) myShopping.setFinish(data.getOrderStateCount());
+            }
+        }
+        List<MyShoppingList> shoppingList = productMapper.selectMyShoppingList(conditions);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+        for (MyShoppingList data : shoppingList) {
+            List<String> optionList = new ArrayList<>();
+            data.setProductImg(CMMUtil.getImg(data.getProductImg()));
+            data.setStringDt(dateFormat.format(data.getCreateDt()));
+            if (data.getOption1() != null) optionList.add(data.getOption1DataNm());
+            if (data.getOption2() != null) optionList.add(data.getOption2DataNm());
+            data.setOptionList(optionList);
+            data.setOrderNumber(data.getOrderId().substring(6));
+        }
+
+        myShopping.setOrderList(shoppingList);
+
+        return myShopping;
+    }
 
 
     // 메뉴

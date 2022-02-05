@@ -2,13 +2,9 @@ package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
-import com.deker.mkt.model.request.Payment;
-import com.deker.mkt.model.request.ProductBuy;
-import com.deker.mkt.model.request.ProductCart;
-import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
-import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -202,6 +198,18 @@ public class MBMarketController {
 
         return ResponseEntity.ok(
                 new Result("200", "리뷰 수정 완료"
+                )
+        );
+    }
+
+    @RequestMapping(value = "/get/order-product", method = RequestMethod.POST)
+    public ResponseEntity<?> getOrderProduct(@RequestBody MyShoppingConditions conditions, HttpServletRequest request) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "주문한 상품",productService.getOrderProduct(conditions)
                 )
         );
     }

@@ -282,7 +282,43 @@
         WHERE   ORDER_STATE != 6 and ORDER_CONFIRM = 'N'
     </select>
 
+    <select id="selectMyShoppingOrderState" parameterType="MyShoppingConditions" resultType="MyShoppingOrderState">
+        SELECT      ORDER_STATE             orderState
+                ,   COUNT(ORDER_STATE)      orderStateCount
+        FROM MKT_ORDER
+        WHERE   1=1
+        AND     MEM_ID = #{memId}
+        AND     USE_YN = 'Y'
+        GROUP BY ORDER_STATE
+    </select>
 
+    <select id="selectMyShoppingList" parameterType="MyShoppingConditions" resultType="MyShoppingList">
+        SELECT      MP.MKT_PRODUCT_ID                                                   productId
+                ,   MO.ORDER_ID                                                         orderId
+                ,   MP.PRODUCT_IMG                                                      productImg
+                ,   'deker'                                                             productBrand
+                ,   MP.PRODUCT_NAME                                                     productName
+                ,   OPTION1                                                             option1
+                ,   OPTION1_DATA                                                        option1Data
+                ,   CODE_NAME('OPK',MPO.OPTION1)                                        option1Nm
+                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)        option1DataNm
+                ,   OPTION2                                                             option2
+                ,   OPTION2_DATA                                                        option2Data
+                ,   CODE_NAME('OPK',MPO.OPTION2)                                        option2Nm
+                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION2,MPO.OPTION2_DATA)        option2DataNm
+                ,   MO.CREATE_DT                                                        createDt
+                ,   MO.ORDER_STATE                                                      orderState
+                ,   CODE_NAME('ODS',MO.ORDER_STATE)                                     orderStateNm
+                ,   MO.ORDER_PRICE                                                      orderPrice
+                ,   MO.ORDER_QUANTITY                                                   orderQuantity
+        FROM MKT_ORDER MO
+        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        WHERE   1=1
+        AND     MO.MEM_ID = #{memId}
+        AND     MO.CREATE_DT > #{period}
+        AND     MO.ORDER_STATE = #{deliveryState}
+    </select>
 
     <update id="updateOrderState" parameterType="DeliveryUpdate">
 
