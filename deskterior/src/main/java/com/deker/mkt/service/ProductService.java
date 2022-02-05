@@ -5,36 +5,40 @@ import com.deker.mkt.model.request.ProductBuy;
 import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.request.ProductOrder;
-import com.deker.mkt.model.response.ProductBuyOption;
-import com.deker.mkt.model.response.ProductCategory;
-import com.deker.mkt.model.response.ProductDetail;
-import com.deker.mkt.model.response.ProductTracking;
-import com.deker.mkt.model.resultService.ProductDetailExplain;
-import com.deker.mkt.model.resultService.ProductDetailModel;
+import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.ProductReview;
-import com.deker.mkt.model.resultService.RecommendedProduct;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 public interface ProductService {
 
-    public List<ProductModel> getBestSaleProductList();
+    MarketMainModel getBestSaleProductList();
 
 
     ProductCategory getCategoryList(String code);
 
 
     ProductDetail getProductDetails(ProductCode pc);
+    ProductDetail getRecoProduct(ProductCode pc);
+    ProductDetail getProductReview(ProductReview pr);
 
 
+    void insertRecentProduct(ProductCode pc);
 
-    public void insertRecentProduct(ProductCode pc);
-
-    public void insertProductCart(ProductCart pc);
-    public ProductBuyOption getProductBuyList(ProductBuy pb);
+    void insertProductCart(ProductCart pc);
+    ProductBuyOption getProductBuyList(ProductBuy pb);
 
     ProductTracking getProductTracking(ProductOrder conditions) throws Exception;
     TrackingData getTracking(String tCode,String tInvoice)throws Exception;
+
+    void regReview(ProductReview pr, MultipartFile img) throws Exception;
+    void modReview(ProductReview pr, MultipartFile img) throws Exception;
+
+    ProductKeyword getRegProduct(ProductKeyword pk);
+
+    Menu getNmbMenu();
+    Menu getMbMenu();
+
 
 
 }

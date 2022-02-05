@@ -16,7 +16,8 @@ public class ProductDetail {
     private List<ProductDetailOption> productDetailOption;
     private List<ProductDetailExplain> productDetailExplain;
     private List<RecommendedProduct> recommendedProduct;
-    private List<ProductReview> productReview;
+    private List<ProductReview> reviews;
+    private boolean isLastPage;
 
 
 }

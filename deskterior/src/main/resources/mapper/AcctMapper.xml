@@ -92,7 +92,6 @@
         SELECT      NICKNAME        nickname
         FROM MEMBER
         WHERE   NICKNAME = #{nickname}
-        AND     LAST_DT > '9999-12-30'
     </select>
 
     <select id="selectMailCheckString" parameterType="AcctConditions" resultType="Acct">
@@ -163,6 +162,7 @@
         UPDATE MEMBER
         SET     JOB_CODE = #{jobCode}
             ,   PROFILE_IMG = #{profileImg}
+            ,   NICKNAME    = #{nickname}
         WHERE MEM_ID = #{memId}
     </update>
 

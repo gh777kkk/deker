@@ -1,8 +1,15 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.jwt.JwtProvider;
+import com.deker.mkt.mapper.ProductMapper;
+import com.deker.mkt.model.DeliveryUpdate;
+import com.deker.mkt.model.ProductKeyword;
 import com.deker.mkt.model.request.Payment;
+import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
+import com.deker.mkt.model.resultService.ProductReview;
+import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
 import com.deker.mkt.service.Scheduler;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +31,12 @@ import java.util.stream.Stream;
 public class NMBMarketController {
 
     public final ProductService productService;
+    private final JwtProvider jwtProvider;
+    private final IamportService iamportService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    //reg, get, mod, del
+
+    @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<?> getProduct() {
 
         return ResponseEntity.ok(
@@ -33,6 +44,17 @@ public class NMBMarketController {
                         productService.getBestSaleProductList())
         );
     }
+
+    @RequestMapping(value = "/get/product/more", method = RequestMethod.POST)
+    public ResponseEntity<?> getProductMore() {
+
+        return ResponseEntity.ok(
+                new Result("200", "스토어 메인 더보기",
+                        productService.getBestSaleProductList())
+        );
+    }
+
+
 
 
     @RequestMapping(value = "/get/category", method = RequestMethod.POST)
@@ -45,8 +67,22 @@ public class NMBMarketController {
         );
     }
 
+
+    @RequestMapping(value = "/get/category/product/more", method = RequestMethod.POST)
+    public ResponseEntity<?> getCategoryProductMore() {
+
+        return ResponseEntity.ok(
+                new Result("200", "스토어 카테고리 상품 더보기",
+                        productService.getBestSaleProductList())
+        );
+    }
+
+
+
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
-    public ResponseEntity<?> getProduct(@RequestBody ProductCode pc) {
+    public ResponseEntity<?> getProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
+
+        //productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
                 new Result("200", "상품 디테일",
@@ -54,9 +90,54 @@ public class NMBMarketController {
         );
     }
 
+
+    @RequestMapping(value = "/get/recommend-product", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecoProduct(@RequestBody ProductCode pc) {
+
+
+        return ResponseEntity.ok(
+                new Result("200", "추천 상품",
+                        productService.getRecoProduct(pc))
+        );
+    }
+
+
+    @RequestMapping(value = "/get/review", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecoProduct(@RequestBody ProductReview pr) {
+
+
+        return ResponseEntity.ok(
+                new Result("200", "상품 리뷰",
+                       productService.getProductReview(pr))
+        );
+    }
+
+
+
+
+    @RequestMapping(value = "/get/recent-pro", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecentProduct( HttpServletRequest request) {
+
+//        String memId = jwtProvider.getMemIdFromJwtToken(request);
+//        pc.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "장바구니 목록"
+                )
+        );
+    }
+
+
+
     @RequestMapping(value = "/get/test", method = RequestMethod.POST)
     public void gettProduct(@RequestBody ProductCode pc) {
 
+//        DeliveryUpdate du = new DeliveryUpdate();
+//        String timeString = "1999-06-03 10:45:00";
+//        String id = "odrId_99999999999999";
+//        du.setId(id);
+//        du.setTimeString(timeString);
+//        productMapper.updateConfirmDate(du);
 
         //sd.deliveryStatus();
 
@@ -91,6 +172,16 @@ public class NMBMarketController {
 
 
 
+    }
+
+
+    @RequestMapping(value = "/get/reg-product", method = RequestMethod.POST)
+    public ResponseEntity<?> getRegProductList(@RequestBody ProductKeyword pk) {
+
+        return ResponseEntity.ok(
+                new Result("200", "상품 등록 리스트",
+                        productService.getRegProduct(pk))
+        );
     }
 
 
