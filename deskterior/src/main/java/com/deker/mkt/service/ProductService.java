@@ -33,10 +33,15 @@ public interface ProductService {
 
     ProductKeyword getRegProduct(ProductKeyword pk);
 
+    void getTest();
+
+
+
     MyShopping getOrderProduct(MyShoppingConditions conditions);
 
     Menu getNmbMenu();
     Menu getMbMenu();
+
 
 
 

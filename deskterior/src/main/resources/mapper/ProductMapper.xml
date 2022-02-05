@@ -163,7 +163,7 @@
                p.PRODUCT_NAME AS productName,
                m.NICKNAME AS nickname,
                p.PRODUCT_IMG AS productImg,
-               r.IMG_ID AS proReviewImg
+               r.PRO_REVIEW_IMG AS proReviewImg
         from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
           and r.MEM_ID = m.MEM_ID
@@ -404,22 +404,6 @@
     </select>
 
 
-
-
-    <select id="getNmbMenu" resultType="Menu">
-        select m.MENU_NM AS menuName,
-               m.MENU_URL AS menuUrl
-        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
-        where a.AUTHORITY_CODE = 'ROLE_ANONYMOUS' and a.MENU_ID = m.MENU_ID
-    </select>
-
-
-    <select id="getMbMenu" resultType="Menu">
-        select m.MENU_NM AS menuName,
-               m.MENU_URL AS menuUrl
-        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
-        where a.AUTHORITY_CODE = 'ROLE_USER' and a.MENU_ID = m.MENU_ID
-    </select>
 
 
 

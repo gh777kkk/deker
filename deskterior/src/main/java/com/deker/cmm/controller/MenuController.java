@@ -1,6 +1,7 @@
-package com.deker.mkt.controller;
+package com.deker.cmm.controller;
 
 import com.deker.cmm.model.Result;
+import com.deker.cmm.service.CMMService;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductKeyword;
 import com.deker.mkt.model.request.ProductCode;
@@ -27,33 +28,22 @@ public class MenuController {
 
     public final ProductService productService;
     private final JwtProvider jwtProvider;
-    private final IamportService iamportService;
+    private final CMMService cmmService;
 
     //reg, get, mod, del
 
     @RequestMapping(value = "/nmb", method = RequestMethod.POST)
-    public ResponseEntity<?> getNmbMenu() {
+    public ResponseEntity<?> getNmbMenu(HttpServletRequest request) {
 
         return ResponseEntity.ok(
                 new Result("200", "비회원 메뉴",
-                        productService.getNmbMenu())
+                        cmmService.getNmbMenu(request))
         );
     }
 
 
 
-    @RequestMapping(value = "/mb", method = RequestMethod.POST)
-    public ResponseEntity<?> getMbMenu(HttpServletRequest request) {
 
-        String memId = jwtProvider.getMemIdFromJwtToken(request);
-        //pc.setMemId(memId);
-
-        return ResponseEntity.ok(
-                new Result("200", "회원 메뉴",
-                        productService.getMbMenu())
-        );
-
-    }
 
 
 

@@ -2,6 +2,7 @@ package com.deker.cmm.service;
 
 import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.CMMConditions;
+import com.deker.cmm.model.Menu;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -13,4 +14,7 @@ public interface CMMService {
     List<?> setImg(MultipartFile img)throws Exception;
     void startSSE(SseEmitter emitter, HttpServletRequest request);
     CMM sseTest();
+
+    Menu getNmbMenu(HttpServletRequest request);
+    Menu getMbMenu();
 }

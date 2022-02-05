@@ -185,5 +185,19 @@ public class NMBMarketController {
     }
 
 
+    @RequestMapping(value = "/get/my", method = RequestMethod.POST)
+    public ResponseEntity<?>  getTest() {
+
+        productService.getTest();
+
+        return ResponseEntity.ok(
+                new Result("200", "상품 등록 리스트")
+        );
+
+
+
+    }
+
+
 
 }
