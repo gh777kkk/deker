@@ -7,18 +7,15 @@
     <select id="getBestSaleProductList" resultType="ProductModel">
         select p.MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_PRICE AS productPrice,
-               PRODUCT_QUANTITY AS productQuantity,
-               PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
-               IMG_PATH AS productImg
-        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc limit 8) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and i.IMG_ID = p.PRODUCT_IMG
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID
     </select>
 
 
@@ -26,23 +23,18 @@
     <select id="getNoBestSaleProductList" parameterType="ProductOrder" resultType="ProductModel">
         select p.MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_PRICE AS productPrice,
-               PRODUCT_QUANTITY AS productQuantity,
-               PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
-               IMG_PATH AS productImg
-        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p
-        where i.IMG_ID = p.PRODUCT_IMG
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p
     </select>
 
 
 
     <select id="getProductCategory" resultType="MarketCategory">
         select CATEGORY_ID AS categoryId,
-               IMG_PATH AS categoryImg,
+               CATEGORY_IMG AS categoryImg,
                CATEGORY_NAME AS categoryName
-        from study_gh.IMAGE i, study_gh.MKT_CATEGORY c
-        where i.IMG_ID = c.CATEGORY_IMG
+        from study_gh.MKT_CATEGORY c
 
     </select>
 
@@ -55,14 +47,14 @@
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
-               IMG_PATH AS productImg
-        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and i.IMG_ID = p.PRODUCT_IMG
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID
         limit #{start}, #{end}
     </select>
 
@@ -75,13 +67,13 @@
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg
-        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
+        from study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and PRODUCT_CATEGORY = #{code} and i.IMG_ID = p.PRODUCT_IMG
+        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and PRODUCT_CATEGORY = #{code}
         limit #{start}, #{end}
     </select>
 
@@ -106,11 +98,10 @@
     <select id="getProductDetail" resultType="ProductDetailModel">
         select MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_NAME AS productName,
-               PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain,
-               IMG_PATH AS productImg
-               from study_gh.IMAGE i, study_gh.MKT_PRODUCT p
-        where p.MKT_PRODUCT_ID=#{productId} and i.IMG_ID = p.PRODUCT_IMG
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_IMG AS productImg
+               from study_gh.MKT_PRODUCT
+        where MKT_PRODUCT_ID=#{productId}
     </select>
 
 
@@ -134,29 +125,36 @@
     <select id="getProductDetailExplain" resultType="ProductDetailExplain">
         select SET_ID AS setId,
                DETAIL_EXPLAIN AS detailExplain,
-               IMG_PATH AS detailImg
-        from study_gh.MKT_DETAIL_PAGE d, study_gh.IMAGE i
-        where d.PRODUCT_ID=#{productId} and d.IMG_ID = i.IMG_ID
+               IMG_ID AS detailImg
+        from study_gh.MKT_DETAIL_PAGE
+        where PRODUCT_ID=#{productId}
     </select>
 
 
+    <select id="getCategoryId" resultType="String">
+        select PRODUCT_CATEGORY
+        from study_gh.MKT_PRODUCT p
+        where MKT_PRODUCT_ID = #{productId}
+        limit 4
+    </select>
+
 
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
-        select p.PRODUCT_NAME, i.IMG_PATH
-        from study_gh.IMAGE i, study_gh.MKT_PRODUCT p,
+        select PRODUCT_NAME AS productName,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
         where p.PRODUCT_CATEGORY = #{categoryId} and p.MKT_PRODUCT_ID = o.PRODUCT_ID
-                and i.IMG_ID = p.PRODUCT_IMG
         limit 4
     </select>
 
 
 
-    <select id="getProductReview" resultType="ProductReview">
+    <select id="getProductReview" parameterType="ProductReview" resultType="ProductReview">
         select r.MKT_REVIEW_ID AS mktReviewId,
                MY_STAR AS myStar,
                REVIEW_STRING AS reviewString,
@@ -164,13 +162,12 @@
                r.MEM_ID AS memId,
                p.PRODUCT_NAME AS productName,
                m.NICKNAME AS nickname,
-               i.IMG_PATH AS productImg,
-               IMG_PATH AS proReviewImg,
-               (SELECT IMG_PATH FROM study_gh.IMAGE si, study_gh.MKT_REVIEW sr, study_gh.MKT_PRODUCT sp
-                WHERE sr.PRODUCT_ID = #{productId} and i.IMG_ID = sr.PRODUCT_ID)
-        from study_gh.IMAGE i, study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
+               p.PRODUCT_IMG AS productImg,
+               r.IMG_ID AS proReviewImg
+        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
-          and r.MEM_ID = m.MEM_ID and i.IMG_ID = r.IMG_ID
+          and r.MEM_ID = m.MEM_ID
+        limit #{start}, #{end}
     </select>
 
 
@@ -359,6 +356,33 @@
 
     </update>
 
+
+    <select id="getRegProduct" resultType="ProductModel">
+        select MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_NAME AS productName,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT
+        where PRODUCT_NAME like CONCAT('%', #{keyword}, '%') or
+              PRODUCT_EXPLAIN like CONCAT('%', #{keyword}, '%')
+    </select>
+
+
+
+
+    <select id="getNmbMenu" resultType="Menu">
+        select m.MENU_NM AS menuName,
+               m.MENU_URL AS menuUrl
+        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
+        where a.AUTHORITY_CODE = 'ROLE_ANONYMOUS' and a.MENU_ID = m.MENU_ID
+    </select>
+
+
+    <select id="getMbMenu" resultType="Menu">
+        select m.MENU_NM AS menuName,
+               m.MENU_URL AS menuUrl
+        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
+        where a.AUTHORITY_CODE = 'ROLE_USER' and a.MENU_ID = m.MENU_ID
+    </select>
 
 
 
