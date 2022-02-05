@@ -36,8 +36,9 @@ public interface ProductService {
 
     ProductKeyword getRegProduct(ProductKeyword pk);
 
-    Menu getNmbMenu();
-    Menu getMbMenu();
+    void getTest();
+
+
 
 
 

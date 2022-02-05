@@ -1,5 +1,6 @@
 package com.deker.mkt.service;
 
+import com.deker.cmm.model.Menu;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
@@ -19,6 +20,7 @@ import com.deker.mkt.model.resultService.RecommendedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -123,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDetail pd = new ProductDetail();
         int end, start;
 
-        start = pr.getPageNumber() * 100;
+        start = pr.getPageNumber() * 100; //0부터 받아야 됨
         end = 100;
         pr.setStart(start);
         pr.setEnd(end);
@@ -234,10 +236,9 @@ public class ProductServiceImpl implements ProductService {
 
     public void modReview(ProductReview pr, MultipartFile img)throws Exception{
 
-        if(img != null) {
-            String reviewId = CMMUtil.setImg(img, pr.getMemId());
-            pr.setProReviewImg(reviewId);
-        }
+        String reviewId = CMMUtil.setImg(img, pr.getMemId());
+        pr.setProReviewImg(reviewId);
+
         productMapper.modReview(pr);
 
     }
@@ -259,19 +260,17 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    // 메뉴
-    public Menu getNmbMenu(){
-        Menu m = new Menu();
-        m.setMenu(productMapper.getNmbMenu());
-        return m;
+    @Async
+    public void getTest() {
+        try {
+
+            Thread.sleep(10000);
+            System.out.println(Thread.currentThread().getName());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Menu getMbMenu(){
-
-        Menu m = new Menu();
-        m.setMenu(productMapper.getMbMenu());
-        return m;
-    }
 
 
 

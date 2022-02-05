@@ -193,12 +193,12 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
-    public ResponseEntity<?> modReview(@RequestBody ProductReview pr, HttpServletRequest request,
-                                       @RequestParam("proReviewImg") MultipartFile proReviewImg) throws Exception {
+    public ResponseEntity<?> modReview(@RequestParam("myImg") MultipartFile myImg,
+                                       @RequestBody ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
-        productService.modReview(pr,proReviewImg);
+        productService.modReview(pr,myImg);
 
         return ResponseEntity.ok(
                 new Result("200", "리뷰 수정 완료"
@@ -233,3 +233,6 @@ public class MBMarketController {
     //return ResponseEntity.noContent().build();
 
     }*/
+
+
+

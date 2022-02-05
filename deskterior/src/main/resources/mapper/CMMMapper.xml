@@ -60,5 +60,22 @@
         WHERE IMG_ID = #{imgId}
     </select>
 
+
+
+
+    <select id="getNmbMenu" resultType="Menu">
+        select m.MENU_NM AS menuName,
+               m.MENU_URL AS menuUrl
+        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
+        where a.AUTHORITY_CODE = #{authorityCode} and a.MENU_ID = m.MENU_ID
+    </select>
+
+
+    <select id="getUserRole" resultType="String">
+        select AUTHORITY_CODE
+        from study_gh.AUTHORITY a
+        where a.MEM_ID = #{memId}
+    </select>
+
 </mapper>
 

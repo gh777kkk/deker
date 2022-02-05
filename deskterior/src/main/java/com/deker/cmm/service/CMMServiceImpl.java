@@ -3,6 +3,7 @@ package com.deker.cmm.service;
 import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.CMMConditions;
+import com.deker.cmm.model.Menu;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -93,5 +94,33 @@ public class CMMServiceImpl implements CMMService {
         ResponseEntity<JSONObject> test = restTemplate.postForEntity("https://testapi.openbanking.or.kr/oauth/2.0/authorize", entity, JSONObject.class);
         System.out.println(test);
         return null;
+    }
+
+
+
+
+    //메뉴
+
+    public Menu getNmbMenu(HttpServletRequest request){
+
+        String authorityCode;
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        if(memId==null){
+            authorityCode = "ROLE_ANONYMOUS";
+        }
+        else{
+            authorityCode = cmmMapper.getUserRole(memId);
+        }
+
+        Menu m = new Menu();
+        m.setMenu(cmmMapper.getNmbMenu(authorityCode));
+        return m;
+    }
+
+    public Menu getMbMenu(){
+
+        Menu m = new Menu();
+       // m.setMenu(cmmMapper.getMbMenu());
+        return m;
     }
 }
