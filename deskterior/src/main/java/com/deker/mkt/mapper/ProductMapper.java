@@ -24,7 +24,8 @@ public interface ProductMapper {
     List<ProductDetailOption> getProductDetailOption(String productId);
     List<ProductDetailExplain> getProductDetailExplain(String productId);
     List<RecommendedProduct> getRecommendedProduct(String categoryId);
-    List<ProductReview> getProductReview(String productId);
+    List<ProductReview> getProductReview(ProductReview pr);
+    String getCategoryId(String productId);
 
     void insertProductCart(ProductOption pc);
     void insertRecentProduct(RecentProduct pp);
@@ -47,5 +48,11 @@ public interface ProductMapper {
 
     void regReview(ProductReview pr);
     void modReview(ProductReview pr);
+
+    List<ProductModel> getRegProduct(ProductKeyword pk);
+
+
+    List<Menu> getNmbMenu();
+    List<Menu> getMbMenu();
 }
 

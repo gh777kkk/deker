@@ -1,8 +1,6 @@
 package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
-import com.deker.cmm.service.CMMService;
-import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.request.Payment;
 import com.deker.mkt.model.request.ProductBuy;
@@ -13,13 +11,8 @@ import com.deker.mkt.service.IamportService;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -33,9 +26,6 @@ public class MBMarketController {
     public final ProductService productService;
     private final JwtProvider jwtProvider;
     private final IamportService iamportService;
-    private final CMMService cmmService;
-    private final com.deker.cmm.util.CMMUtil CMMUtil;
-
 
     //reg, get, mod, del
 
@@ -188,12 +178,11 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/review", method = RequestMethod.POST)
-    public ResponseEntity<?> regProductReview(@RequestBody ProductReview pr, HttpServletRequest request,
-                                       @RequestParam("img") MultipartFile img) throws Exception {
+    public ResponseEntity<?> regProductReview( @RequestParam("myImg") MultipartFile myImg, ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
-        productService.regReview(pr,img);
+        productService.regReview(pr,myImg);
 
         return ResponseEntity.ok(
                 new Result("200", "리뷰 작성"
@@ -201,13 +190,15 @@ public class MBMarketController {
         );
     }
 
+
+
     @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
     public ResponseEntity<?> modReview(@RequestBody ProductReview pr, HttpServletRequest request,
-                                       @RequestParam("img") MultipartFile img) throws Exception {
+                                       @RequestParam("proReviewImg") MultipartFile proReviewImg) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
-        productService.modReview(pr,img);
+        productService.modReview(pr,proReviewImg);
 
         return ResponseEntity.ok(
                 new Result("200", "리뷰 수정 완료"

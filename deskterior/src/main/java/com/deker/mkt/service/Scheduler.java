@@ -8,6 +8,8 @@ import com.deker.mkt.model.DeliveryStatus;
 import com.deker.mkt.model.DeliveryUpdate;
 import com.deker.mkt.model.TrackingData;
 import lombok.RequiredArgsConstructor;
+import org.mariadb.jdbc.internal.logging.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @Component
@@ -33,63 +36,36 @@ public class Scheduler {
     private int compare;
 
 
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정
+
+    @Async
+    @Scheduled(cron = "0 56 4 * * ?") // 매일 자정
     public void deliveryStatus() throws Exception {
-        //운송장, 택배코드, 오더 테이블 id 값 가져오기
-        List<DeliveryStatus> dsList = productMapper.selectDeliveryStatus();
-
-        //각 row 당 택배 level 값 가져와서 order에 값 update
-        for (DeliveryStatus ds : dsList) {
-            TrackingData td = productService.getTracking(ds.getDeliveryCode(), ds.getWaybill());
-            DeliveryUpdate du = new DeliveryUpdate();
-
-            level = td.getLevel();
-            du.setLevel(level);
-            du.setId(ds.getOrderId());
-            productMapper.updateOrderState(du);
-
-            //배송 완료면 완료날짜에 날짜 update
-            if (level == 6) {
-
-                du.setId(ds.getOrderId());
-                du.setTimeString(td.getTimeFormat());
-                productMapper.updateCompletedDate(du);
-
+        for(int i=0; i<10; i++){
+            System.out.println(Thread.currentThread().getName()+"start");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            System.out.println(Thread.currentThread().getName()+"end");
         }
+
     }
 
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
+
+    @Async
+    @Scheduled(cron = "0 56 4 * * ?")
     public void deliveryComplete() throws ParseException {
-        List<DeliveryUpdate> duList = productMapper.selectDeliveryComplete();
-
-        for (DeliveryUpdate du : duList) {
-
-            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = dateParser.parse(du.getTimeString());
-            //System.out.println(date);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.DATE, 7);  //7일 후
-            Date dDate = cal.getTime(); //date로 변경
-
-
-            Date myDate = new Date();   //현재 date
-            String day = dateParser.format(myDate);
-            Date today = dateParser.parse(day);  // 다시 date로 변경
-
-
-            compare = dDate.compareTo(today); //오늘 날짜와 배송 완료 3일후 비교 같으면 0, 크면 0 보다 큼
-            if(compare > 0 || compare == 0){
-
-                productMapper.updateOrderConfirm(du);
-
+        for(int i=0; i<10; i++){
+            System.out.println(Thread.currentThread().getName()+"start");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-
-
+            System.out.println(Thread.currentThread().getName()+"end");
         }
 
     }
@@ -98,34 +74,18 @@ public class Scheduler {
 
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
+
+    @Async
+    @Scheduled(cron = "0 56 4 * * ?")
     public void deliveryCompleteAlarm() throws ParseException {
-        List<DeliveryUpdate> duList = productMapper.selectDeliveryComplete();
-
-        for (DeliveryUpdate du : duList) {
-
-            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = dateParser.parse(du.getTimeString());
-            //System.out.println(date);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.DATE, 3);  //3일 후
-            Date dDate = cal.getTime(); //date로 변경
-
-
-            Date myDate = new Date();   //현재 date
-            String day = dateParser.format(myDate);  //년,월,일로 포맷
-            Date today = dateParser.parse(day);  // 다시 date로 변경
-
-
-            compare = dDate.compareTo(today); //오늘 날짜와 배송 완료 3일후 비교 같으면 0, 크면 0 보다 큼
-            if(compare > 0 || compare == 0){
-
-                //알람
+        for(int i=0; i<10; i++){
+            System.out.println(Thread.currentThread().getName()+"start");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-
-
+            System.out.println(Thread.currentThread().getName()+"end");
         }
 
     }

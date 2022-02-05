@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,4 +20,10 @@ public class ProductReview {
     private Date reviewDate;
     private String productName;
     private String nickname;
+    private List<String> productOption;
+    private int pageNumber;
+    private String profileImg;
+    private int start;
+    private int end;
 }
+

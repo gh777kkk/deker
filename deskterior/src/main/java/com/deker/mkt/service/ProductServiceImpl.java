@@ -12,7 +12,10 @@ import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.model.response.*;
 
+import com.deker.mkt.model.resultService.ProductDetailExplain;
+import com.deker.mkt.model.resultService.ProductDetailModel;
 import com.deker.mkt.model.resultService.ProductReview;
+import com.deker.mkt.model.resultService.RecommendedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +46,19 @@ public class ProductServiceImpl implements ProductService {
     public MarketMainModel getBestSaleProductList(){
 
         MarketMainModel marketMainModel = new MarketMainModel();
-        marketMainModel.setProductModels(productMapper.getBestSaleProductList());
-        marketMainModel.setMarketCategories(productMapper.getProductCategory());
+        List<ProductModel> productModels = productMapper.getBestSaleProductList();
+        List<MarketCategory> marketCategories = productMapper.getProductCategory();
+
+        for (ProductModel productModel : productModels) {
+            productModel.setProductImg(CMMUtil.getImg(productModel.getProductImg()));
+        }
+        marketMainModel.setProductModels(productModels);
+
+        for (MarketCategory marketCategory : marketCategories) {
+            marketCategory.setCategoryImg(CMMUtil.getImg(marketCategory.getCategoryImg()));
+        }
+        marketMainModel.setMarketCategories(marketCategories);
+
 
         return marketMainModel;
     }
@@ -53,8 +67,11 @@ public class ProductServiceImpl implements ProductService {
 
     public ProductCategory getCategoryList(String code){
         ProductCategory result = new ProductCategory();
-        result.setBestProduct(productMapper.getBestCategoryProductList(code));
-        result.setNewProduct(productMapper.getNewCategoryProductList(code));
+        List<ProductModel> bestProducts =productMapper.getBestCategoryProductList(code);
+        for (ProductModel bestProduct : bestProducts) {
+            bestProduct.setProductImg(CMMUtil.getImg(bestProduct.getProductImg()));
+        }
+        result.setBestProduct(bestProducts);
 
         return result;
     }
@@ -63,11 +80,68 @@ public class ProductServiceImpl implements ProductService {
     public ProductDetail getProductDetails(ProductCode pc) {
 
         ProductDetail pd = new ProductDetail();
-        pd.setProductDetail(productMapper.getProductDetail(pc.getProductId()));
+        ProductDetailModel productDetail = productMapper.getProductDetail(pc.getProductId());
+        List<ProductDetailExplain> productDetailExplains = productMapper.getProductDetailExplain(pc.getProductId());
+        productDetail.setProductImg(CMMUtil.getImg(productDetail.getProductImg()));
+        pd.setProductDetail(productDetail);
         pd.setProductDetailOption(productMapper.getProductDetailOption(pc.getProductId()));
-        pd.setProductDetailExplain(productMapper.getProductDetailExplain(pc.getProductId()));
-        pd.setRecommendedProduct(productMapper.getRecommendedProduct(pc.getCategoryId()));
-        pd.setProductReview(productMapper.getProductReview(pc.getProductId()));
+
+        for (ProductDetailExplain productDetailExplain : productDetailExplains) {
+            productDetailExplain.setDetailImg(CMMUtil.getImg(productDetailExplain.getDetailImg()));
+        }
+        pd.setProductDetailExplain(productDetailExplains);
+        //pd.setRecommendedProduct(productMapper.getRecommendedProduct(pc.getCategoryId()));
+        //pd.setProductReview(productMapper.getProductReview(pc.getProductId()));
+
+        return pd;
+    }
+
+
+
+
+    public ProductDetail getRecoProduct(ProductCode pc) {
+
+        ProductDetail pd = new ProductDetail();
+        pc.setCategoryId(productMapper.getCategoryId(pc.getProductId()));
+        List<RecommendedProduct> recommendedProducts = productMapper.getRecommendedProduct(pc.getProductId());
+
+
+        for (RecommendedProduct recommendedProduct : recommendedProducts) {
+            recommendedProduct.setProductImg(CMMUtil.getImg(recommendedProduct.getProductImg()));
+        }
+
+        pd.setRecommendedProduct(recommendedProducts);
+
+        return pd;
+    }
+
+
+
+
+    public ProductDetail getProductReview(ProductReview pr) {
+
+        ProductDetail pd = new ProductDetail();
+        int end, start;
+
+        start = pr.getPageNumber() * 100;
+        end = 100;
+        pr.setStart(start);
+        pr.setEnd(end);
+        List<ProductReview> reviews = productMapper.getProductReview(pr);
+
+        for (ProductReview review : reviews) {
+            review.setProductImg(CMMUtil.getImg(review.getProductImg()));
+        }
+
+        for (ProductReview review : reviews) {
+            review.setProReviewImg(CMMUtil.getImg(review.getProReviewImg()));
+        }
+
+        if(end > reviews.size()){
+            pd.setLastPage(true);
+        }
+
+        pd.setReviews(reviews);
 
         return pd;
     }
@@ -152,8 +226,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     public void regReview(ProductReview pr, MultipartFile img)throws Exception{
-       String reviewId = CMMUtil.setImg(img,pr.getMemId());
-       pr.setProReviewImg(reviewId);
+       pr.setProReviewImg(CMMUtil.setImg(img,pr.getMemId()));
        pr.setMktReviewId(CMMUtil.nextId("RVID"));
        productMapper.regReview(pr);
 
@@ -168,5 +241,38 @@ public class ProductServiceImpl implements ProductService {
         productMapper.modReview(pr);
 
     }
+
+    public ProductKeyword getRegProduct(ProductKeyword pk){
+
+
+        List<ProductModel> productModels = productMapper.getRegProduct(pk);
+
+        for (ProductModel productModel : productModels) {
+            productModel.setProductImg(CMMUtil.getImg(productModel.getProductImg()));
+        }
+
+        pk.setProductModels(productModels);
+
+        return pk;
+    }
+
+
+
+
+    // 메뉴
+    public Menu getNmbMenu(){
+        Menu m = new Menu();
+        m.setMenu(productMapper.getNmbMenu());
+        return m;
+    }
+
+    public Menu getMbMenu(){
+
+        Menu m = new Menu();
+        m.setMenu(productMapper.getMbMenu());
+        return m;
+    }
+
+
 
 }

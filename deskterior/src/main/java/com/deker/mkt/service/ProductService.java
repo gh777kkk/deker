@@ -19,7 +19,8 @@ public interface ProductService {
 
 
     ProductDetail getProductDetails(ProductCode pc);
-
+    ProductDetail getRecoProduct(ProductCode pc);
+    ProductDetail getProductReview(ProductReview pr);
 
 
     void insertRecentProduct(ProductCode pc);
@@ -32,5 +33,12 @@ public interface ProductService {
 
     void regReview(ProductReview pr, MultipartFile img) throws Exception;
     void modReview(ProductReview pr, MultipartFile img) throws Exception;
+
+    ProductKeyword getRegProduct(ProductKeyword pk);
+
+    Menu getNmbMenu();
+    Menu getMbMenu();
+
+
 
 }
