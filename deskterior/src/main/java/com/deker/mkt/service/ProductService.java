@@ -39,8 +39,6 @@ public interface ProductService {
 
     MyShopping getOrderProduct(MyShoppingConditions conditions);
 
-    Menu getNmbMenu();
-    Menu getMbMenu();
 
 
 

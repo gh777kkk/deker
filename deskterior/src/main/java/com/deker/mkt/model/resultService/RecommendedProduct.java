@@ -8,4 +8,6 @@ import lombok.Setter;
 public class RecommendedProduct {
     private String productName;
     private String productImg;
+    private String productId;
+    private int productPrice;
 }

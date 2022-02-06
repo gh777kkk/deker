@@ -135,13 +135,14 @@
         select PRODUCT_CATEGORY
         from study_gh.MKT_PRODUCT p
         where MKT_PRODUCT_ID = #{productId}
-        limit 4
     </select>
 
 
     <select id="getRecommendedProduct" resultType="RecommendedProduct">
         select PRODUCT_NAME AS productName,
-               PRODUCT_IMG AS productImg
+               PRODUCT_IMG AS productImg,
+               PRODUCT_ID AS productId,
+               PRODUCT_PRICE AS productPrice
         from study_gh.MKT_PRODUCT p,
              (select PRODUCT_ID
               from study_gh.MKT_ORDER

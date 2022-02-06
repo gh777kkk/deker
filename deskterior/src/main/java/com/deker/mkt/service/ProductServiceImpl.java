@@ -103,9 +103,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductDetail getRecoProduct(ProductCode pc) {
 
         ProductDetail pd = new ProductDetail();
-        pc.setCategoryId(productMapper.getCategoryId(pc.getProductId()));
-        List<RecommendedProduct> recommendedProducts = productMapper.getRecommendedProduct(pc.getProductId());
+        String n = productMapper.getCategoryId(pc.getProductId());
 
+        pc.setCategoryId(n);
+        List<RecommendedProduct> recommendedProducts = productMapper.getRecommendedProduct(pc.getCategoryId());
 
         for (RecommendedProduct recommendedProduct : recommendedProducts) {
             recommendedProduct.setProductImg(CMMUtil.getImg(recommendedProduct.getProductImg()));
@@ -291,6 +292,8 @@ public class ProductServiceImpl implements ProductService {
 
         return myShopping;
     }
+
+
 
 
     @Async
