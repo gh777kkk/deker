@@ -131,13 +131,21 @@ public class ProductServiceImpl implements ProductService {
         pr.setEnd(end);
         List<ProductReview> reviews = productMapper.getProductReview(pr);
 
-        for (ProductReview review : reviews) {
-            review.setProductImg(CMMUtil.getImg(review.getProductImg()));
-        }
 
         for (ProductReview review : reviews) {
+            review.setProductImg(CMMUtil.getImg(review.getProductImg()));
             review.setProReviewImg(CMMUtil.getImg(review.getProReviewImg()));
+
+            List<String> options = new ArrayList<String>();
+            options.add(review.getOption1DataName());
+            options.add(review.getOption2DataName());
+            review.setProductOption(options);
+
+
         }
+
+
+
 
         if(end > reviews.size()){
             pd.setLastPage(true);

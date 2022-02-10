@@ -15,6 +15,6 @@ public interface CMMService {
     void startSSE(SseEmitter emitter, HttpServletRequest request);
     CMM sseTest();
 
-    Menu getNmbMenu(HttpServletRequest request);
-    Menu getMbMenu();
+    Menu getMenu(HttpServletRequest request);
+
 }

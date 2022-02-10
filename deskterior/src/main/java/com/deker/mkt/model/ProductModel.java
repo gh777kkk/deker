@@ -17,6 +17,7 @@ public class ProductModel {
     private String productExplain;
     private String productName;
     private String productImg;
+    private String productBrand;
 
 
 }

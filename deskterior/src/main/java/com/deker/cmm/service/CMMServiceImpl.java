@@ -6,6 +6,7 @@ import com.deker.cmm.model.CMMConditions;
 import com.deker.cmm.model.Menu;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
+import com.deker.mkt.model.ProductModel;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,7 +103,7 @@ public class CMMServiceImpl implements CMMService {
 
     //메뉴
 
-    public Menu getNmbMenu(HttpServletRequest request){
+    public Menu getMenu(HttpServletRequest request){
 
         String authorityCode;
         String memId = jwtProvider.getMemIdFromJwtToken(request);
@@ -113,14 +115,35 @@ public class CMMServiceImpl implements CMMService {
         }
 
         Menu m = new Menu();
-        m.setMenu(cmmMapper.getNmbMenu(authorityCode));
+        List<Menu> menu = new ArrayList<>();
+        List<Object> subMenu = new ArrayList<>();
+        List<Menu> community = new ArrayList<>();
+        List<Menu> market = new ArrayList<>();
+
+        List<Menu> menus = cmmMapper.getMenu(authorityCode);
+
+        for (Menu me : menus) {
+            if(me.getMenuParent() == 0){
+                menu.add(me);
+            }
+            else{
+                if(me.getMenuParent() == 1000000000){
+                    community.add(me);
+                }
+                else if(me.getMenuParent() == 2000000000){
+                    market.add(me);
+                }
+            }
+        }
+        subMenu.add(community);
+        subMenu.add(market);
+
+        m.setMenu(menu);
+        m.setSubMenu(subMenu);
+
         return m;
+
     }
 
-    public Menu getMbMenu(){
 
-        Menu m = new Menu();
-       // m.setMenu(cmmMapper.getMbMenu());
-        return m;
-    }
 }
