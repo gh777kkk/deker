@@ -16,8 +16,8 @@ public class Menu {
     private String menuUrl;
 
     private List<Menu> menu;
-    private List<Object> subMenu;
-    private List<Menu> community;
-    private List<Menu> market;
+    private SubMenu subMenu;
 
 }
+
+

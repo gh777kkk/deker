@@ -4,6 +4,7 @@ import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.CMMConditions;
 import com.deker.cmm.model.Menu;
+import com.deker.cmm.model.SubMenu;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
@@ -116,7 +117,7 @@ public class CMMServiceImpl implements CMMService {
 
         Menu m = new Menu();
         List<Menu> menu = new ArrayList<>();
-        List<Object> subMenu = new ArrayList<>();
+        SubMenu subMenu = new SubMenu();
         List<Menu> community = new ArrayList<>();
         List<Menu> market = new ArrayList<>();
 
@@ -135,8 +136,8 @@ public class CMMServiceImpl implements CMMService {
                 }
             }
         }
-        subMenu.add(community);
-        subMenu.add(market);
+        subMenu.setCommunity(community);
+        subMenu.setMarket(market);
 
         m.setMenu(menu);
         m.setSubMenu(subMenu);

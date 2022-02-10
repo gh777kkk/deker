@@ -45,7 +45,7 @@ public class MenuController {
     public ResponseEntity<?> getMbMenu(HttpServletRequest request) {
 
         return ResponseEntity.ok(
-                new Result("200", "비회원 메뉴",
+                new Result("200", "회원 메뉴",
                         cmmService.getMenu(request))
         );
     }
