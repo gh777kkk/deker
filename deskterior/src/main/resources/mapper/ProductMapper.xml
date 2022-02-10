@@ -164,10 +164,12 @@
                p.PRODUCT_NAME AS productName,
                m.NICKNAME AS nickname,
                p.PRODUCT_IMG AS productImg,
-               r.PRO_REVIEW_IMG AS proReviewImg
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m
+               r.PRO_REVIEW_IMG AS proReviewImg,
+               MKT_OPTION_NAME(mpo.PRODUCT_ID, mpo.OPTION2, mpo.OPTION2_DATA) AS option2DataName,
+               MKT_OPTION_NAME(mpo.PRODUCT_ID, mpo.OPTION1, mpo.OPTION1_DATA) AS option1DataName
+        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m, study_gh.MKT_PRODUCT_OPTION mpo
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
-          and r.MEM_ID = m.MEM_ID
+          and mpo.MKT_PRODUCT_OPTION_ID = r.OPTION_ID and r.MEM_ID = m.MEM_ID
         limit #{start}, #{end}
     </select>
 
@@ -364,7 +366,9 @@
             IMG_ID,
             MY_STAR,
             REVIEW_STRING,
-            PRO_REVIEW_IMG
+            PRO_REVIEW_IMG,
+            ORDER_ID,
+            OPTION_ID
         )
         VALUES (
                    #{mktReviewId},
@@ -374,7 +378,10 @@
                    WHERE MKT_PRODUCT_ID = #{productId}),
                    #{myStar},
                    #{reviewString},
-                   #{proReviewImg}
+                   #{proReviewImg},
+                   #{orderId},
+                   ( SELECT OPTION_ID FROM study_gh.MKT_ORDER
+                     WHERE MKT_ORDER.ORDER_ID = #{orderId})
                )
     </insert>
 
@@ -398,7 +405,8 @@
     <select id="getRegProduct" resultType="ProductModel">
         select MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_NAME AS productName,
-               PRODUCT_IMG AS productImg
+               PRODUCT_IMG AS productImg,
+               'deker' AS productBrand
         from study_gh.MKT_PRODUCT
         where PRODUCT_NAME like CONCAT('%', #{keyword}, '%') or
               PRODUCT_EXPLAIN like CONCAT('%', #{keyword}, '%')

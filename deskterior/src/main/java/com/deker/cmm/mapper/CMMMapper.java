@@ -14,6 +14,6 @@ public interface CMMMapper {
     Img selectImg(String imgId);
 
 
-    List<Menu> getNmbMenu(String authorityCode);
+    List<Menu> getMenu(String authorityCode);
     String getUserRole(String memId);
 }

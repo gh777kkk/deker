@@ -63,9 +63,11 @@
 
 
 
-    <select id="getNmbMenu" resultType="Menu">
+    <select id="getMenu" resultType="Menu">
         select m.MENU_NM AS menuName,
-               m.MENU_URL AS menuUrl
+               m.MENU_URL AS menuUrl,
+               m.MENU_ID AS menuId,
+               m.MENU_PARENT AS menuParent
         from study_gh.MENU m, study_gh.MENU_AUTHORITY a
         where a.AUTHORITY_CODE = #{authorityCode} and a.MENU_ID = m.MENU_ID
     </select>

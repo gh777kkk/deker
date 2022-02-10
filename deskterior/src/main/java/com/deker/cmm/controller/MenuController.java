@@ -37,7 +37,16 @@ public class MenuController {
 
         return ResponseEntity.ok(
                 new Result("200", "비회원 메뉴",
-                        cmmService.getNmbMenu(request))
+                        cmmService.getMenu(request))
+        );
+    }
+
+    @RequestMapping(value = "/mb", method = RequestMethod.POST)
+    public ResponseEntity<?> getMbMenu(HttpServletRequest request) {
+
+        return ResponseEntity.ok(
+                new Result("200", "비회원 메뉴",
+                        cmmService.getMenu(request))
         );
     }
 
