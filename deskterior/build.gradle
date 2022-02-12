@@ -41,6 +41,9 @@ dependencies {
 	//입출력 관련
 	compile 'commons-io:commons-io:2.11.0'
 
+	//json -> list
+	compile('com.google.code.gson:gson:2.8.2')
+
 	//jsonobject
 	compile group:'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 

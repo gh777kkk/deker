@@ -3,11 +3,13 @@ package com.deker.post.service;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.post.mapper.PostMapper;
+import com.deker.post.model.MyPost;
 import com.deker.post.model.Post;
 import com.deker.post.model.PostConditions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,5 +33,9 @@ public class PostServiceImpl implements PostService{
         if(postMapper.selectMemberProfileImg(conditions) != null) post.setProfileImg(CMMUtil.getImg(postMapper.selectMemberProfileImg(conditions).getProfileImg()));
         post.setPostList(postMapper.selectMyPostList(conditions));
         return post;
+    }
+
+    public void regPost(MyPost mp, MultipartFile img){
+       // mp.setProReviewImg(CMMUtil.setImg(img,mp.getMemId()));
     }
 }
