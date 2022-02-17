@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.DataInput;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,16 +38,12 @@ public class PostController {
     }
 
 
-    @RequestMapping(value = "/nmb/post/reg/write-post", method = RequestMethod.POST)
-    public ResponseEntity<Result> regPost( @RequestPart("img") MultipartFile img,
-                                          @RequestPart("json") MyPost mp, @RequestPart("js") CommunityProducts cp) {
-        //String memId = jwtProvider.getMemIdFromJwtToken(request);
+    @RequestMapping(value = "/mb/post/reg/write-post", method = RequestMethod.POST)
+    public ResponseEntity<Result> regPost( HttpServletRequest request, @RequestParam(value = "img", required = false) MultipartFile img,
+                                          @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException {
 
-
-//        Gson gons = new Gson();
-//        Map<String, Object> jsonObject = gons.fromJson(arg, new TypeToken<Map<String, Object>>(){}.getType());
-//        List<Map<String, Object>> jsonList = (List) jsonObject.get("communityProducts");
-
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        mp.setMemId(memId);
         mp.setCommunityProducts(cp);
         postService.regPost(mp, img);
 
@@ -55,5 +52,13 @@ public class PostController {
                 ));
     }
 
+
+
+    @RequestMapping(value = "/nmb/post/", method = RequestMethod.POST)
+    public ResponseEntity<Result> regPost(){
+        return ResponseEntity.ok(new Result("200","커뮤니티 메인"
+        ));
+        
+    }
 
 }

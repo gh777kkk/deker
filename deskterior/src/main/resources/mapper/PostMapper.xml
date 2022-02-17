@@ -21,4 +21,48 @@
         AND     LAST_DT > '9999-12-30'
     </select>
 
+
+    <insert id="insertPost" parameterType="MyPost">
+        insert into study_gh.POST_LIST
+        (
+            POST_ID, MEM_ID, JOB_CODE, MOOD_CODE, MTRL_CODE
+        )
+        VALUES (
+                   #{communityId}, #{memId}, #{jobCode}, #{moodCode}, #{materialCode}
+               )
+    </insert>
+
+    <insert id="insertPostDetail" parameterType="MyPost">
+        insert into study_gh.POST_DETAIL
+        (
+            POST_DETAIL_ID, POST_ID, POST_IMG, CONTENTS
+        )
+        VALUES (
+                   #{postDetailId}, #{communityId}, #{postImg}, #{communityContent}
+               )
+    </insert>
+
+    <insert id="insertPostTag" parameterType="MyPost">
+        insert into study_gh.POST_TAG
+        (
+            post_tag_id, post_detail_id, contents
+        )
+        VALUES (
+                   #{postTagId}, #{postDetailId}, #{tag}
+               )
+    </insert>
+
+    <insert id="insertPostItem" parameterType="CommunityProducts">
+        insert into study_gh.POST_ITEM
+        (
+            POST_ITEM_ID, POST_DETAIL_ID, PRODUCT_ID,  MAKET_CONTENTS, LOCATIONX, LOCATIONY
+        )
+        VALUES (
+                   #{id}, #{postDetailId}, #{productId}, #{productDescription}, #{offsetX}, #{offsetY}
+               )
+    </insert>
+
+
+
+
 </mapper>
