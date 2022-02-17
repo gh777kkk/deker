@@ -8,10 +8,11 @@ import java.util.List;
 @Getter
 @Setter
 public class CommunityProducts {
-    private String id;
+    private int id;
     private int offsetX;
     private int offsetY;
     private String productId;
+    private String postDetailId;
     private String productDescription;
 
 
