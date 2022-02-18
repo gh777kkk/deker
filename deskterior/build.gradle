@@ -53,8 +53,8 @@ test {
 	useJUnitPlatform()
 }
 
-bootJar {
-	archiveBaseName = 'deker'
-	archiveFileName = 'deker.jar'
-	archiveVersion = '0.0.0'
-}
+//bootJar {
+//	archiveBaseName = 'deker'
+//	archiveFileName = 'deker.jar'
+//	archiveVersion = '0.0.0'
+//}
