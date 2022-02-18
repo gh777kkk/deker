@@ -1,9 +1,6 @@
 package com.deker.post.mapper;
 
-import com.deker.post.model.CommunityProducts;
-import com.deker.post.model.MyPost;
-import com.deker.post.model.Post;
-import com.deker.post.model.PostConditions;
+import com.deker.post.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,4 +15,9 @@ public interface PostMapper {
     void insertPostDetail(MyPost myPost);
     void insertPostTag(MyPost myPost);
     void insertPostItem(CommunityProducts cp);
+
+    PostProperties getPostDetail(String communityId);
+    List<PostProperties> getPostLike();
+    int getPostComment(String communityId);
+    String getPostFollow(PostProperties pp);
 }
