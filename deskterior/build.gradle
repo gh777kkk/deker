@@ -57,4 +57,5 @@ bootJar {
 	archiveBaseName = 'deker'
 	archiveFileName = 'deker.jar'
 	archiveVersion = '0.0.0'
+	mainClassName = 'com.deker.DeskteriorApplication'
 }
