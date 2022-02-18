@@ -46,7 +46,7 @@ public class CMMController {
 
 
     @RequestMapping(value = "/nmb/reg/img", method = RequestMethod.POST)
-    public ResponseEntity<Result> regImgTest(@RequestParam("img") MultipartFile img) throws Exception {
+    public ResponseEntity<Result> regImgTest(@RequestParam("img") MultipartFile img,@RequestPart(value="conditions", required=false) CMMConditions conditions) throws Exception {
         return ResponseEntity.ok(new Result("200","정상",cmmService.setImg(img)));
     }
 

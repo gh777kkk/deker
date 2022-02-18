@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 public interface PostMapper {
     List<Post> selectMyPostList(PostConditions conditions);
+    Integer selectMyPostListCount(PostConditions conditions);
     Post selectMemberProfileImg(PostConditions conditions);
 }
