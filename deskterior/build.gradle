@@ -53,14 +53,8 @@ test {
 	useJUnitPlatform()
 }
 
-tasks.bootJar {
+bootJar {
 	archiveBaseName = 'deker'
 	archiveFileName = 'deker.jar'
 	archiveVersion = '0.0.0'
-	mainClassName = 'com.deker.DeskteriorApplication'
-}
-
-bootRun {
-	String activeProfile = System.properties['spring.profiles.active']
-	systemProperty "spring.profiles.active", activeProfile
 }
