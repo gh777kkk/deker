@@ -3,7 +3,9 @@ package com.deker.post.service;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
+import com.deker.mkt.model.ProductModel;
 import com.deker.post.mapper.PostMapper;
+import com.deker.post.model.CommunityProducts;
 import com.deker.post.model.MyPost;
 import com.deker.post.model.Post;
 import com.deker.post.model.PostConditions;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -44,7 +47,29 @@ public class PostServiceImpl implements PostService{
         return pageInfo;
     }
 
-    public void regPost(MyPost mp, MultipartFile img){
-       // mp.setProReviewImg(CMMUtil.setImg(img,mp.getMemId()));
+
+
+    public void regPost(MyPost mp, MultipartFile img) throws IOException {
+        mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
+        mp.setCommunityId(CMMUtil.nextId("cmId"));
+        postMapper.insertPost(mp);
+
+        String pdId = CMMUtil.nextId("pdId");
+        mp.setPostDetailId(pdId);
+        postMapper.insertPostDetail(mp);
+
+        for (String tag : mp.getCommunityTags()) {
+            mp.setTag(tag);
+            mp.setPostTagId(CMMUtil.nextId("tagId"));
+            postMapper.insertPostTag(mp);
+        }
+
+        for (CommunityProducts cp : mp.getCommunityProducts()) {
+            cp.setPostDetailId(pdId);
+            postMapper.insertPostItem(cp);
+        }
     }
+
+
+//end
 }
