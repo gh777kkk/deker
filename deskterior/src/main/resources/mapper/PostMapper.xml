@@ -12,6 +12,17 @@
         WHERE 1=1
         AND PL.MEM_ID = #{memId}
         AND PL.USE_YN = 'Y'
+		LIMIT				#{startRowNo}, #{endRowNo}
+    </select>
+
+    <select id="selectMyPostListCount" parameterType="PostConditions" resultType="Integer">
+        SELECT      COUNT(*)
+        FROM POST_LIST PL
+        LEFT OUTER JOIN POST_DETAIL PD  ON  PL.POST_ID = PD.POST_ID
+                                        AND PD.USE_YN = 'Y'
+        WHERE 1=1
+        AND PL.MEM_ID = #{memId}
+        AND PL.USE_YN = 'Y'
     </select>
 
     <select id="selectMemberProfileImg" parameterType="PostConditions" resultType="Post">

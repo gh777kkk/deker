@@ -6,6 +6,7 @@ import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.DeliveryStatus;
 import com.deker.post.model.CommunityProducts;
 import com.deker.post.model.MyPost;
+import com.deker.post.model.PostConditions;
 import com.deker.post.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,8 +34,8 @@ public class PostController {
     private final JwtProvider jwtProvider;
 
     @RequestMapping(value = "/mb/post/get/my-post-list", method = RequestMethod.POST)
-    public ResponseEntity<Result> getMyPostList(HttpServletRequest request) throws Exception{
-        return ResponseEntity.ok(new Result("200","마이페이지 내가올린글",postService.getMemberInfo(request)));
+    public ResponseEntity<Result> getMyPostList(HttpServletRequest request,@RequestBody PostConditions conditions) throws Exception{
+        return ResponseEntity.ok(new Result("200","마이페이지 내가올린글",postService.getMemberInfo(request,conditions)));
     }
 
 
