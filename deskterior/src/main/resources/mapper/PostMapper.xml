@@ -93,7 +93,7 @@
         order by COUNT(lk.POST_ID) desc limit 2
     </select>
 
-    <select id="getPostComment" resultType="int">
+    <select id="getPostCommentCount" resultType="int">
         select count(POST_ID) as commentCount
         from study_gh.POST_COMMENT c
         where POST_ID = #{communityId}
