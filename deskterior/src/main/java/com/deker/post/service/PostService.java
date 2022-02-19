@@ -2,11 +2,8 @@ package com.deker.post.service;
 
 import com.deker.cmm.model.PageInfo;
 import com.deker.mkt.model.resultService.ProductReview;
-import com.deker.post.model.MyPost;
-import com.deker.post.model.Post;
+import com.deker.post.model.*;
 
-import com.deker.post.model.PostMain;
-import com.deker.post.model.PostConditions;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,4 +16,6 @@ public interface PostService {
     void regPost(MyPost mp, MultipartFile img) throws IOException;
 
     PostMain getPostMain(String memId);
+
+    PostCommentList getPostComments(PostCommentConditions conditions);
 }

@@ -6,6 +6,7 @@ import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.DeliveryStatus;
 import com.deker.post.model.CommunityProducts;
 import com.deker.post.model.MyPost;
+import com.deker.post.model.PostCommentConditions;
 import com.deker.post.model.PostConditions;
 import com.deker.post.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,7 +49,6 @@ public class PostController {
         mp.setCommunityProducts(cp);
         postService.regPost(mp, img);
 
-
         return ResponseEntity.ok(new Result("200","게시글 작성"
                 ));
     }
@@ -64,6 +64,19 @@ public class PostController {
 
         ));
         
+    }
+
+
+
+    @RequestMapping(value = "/nmb/post/comments", method = RequestMethod.POST)
+    public ResponseEntity<Result> getPostComments(@RequestBody PostCommentConditions conditions){
+
+        //String memId = jwtProvider.getMemIdFromJwtToken(request);
+        return ResponseEntity.ok(new Result("200","커뮤니티 메인",
+                postService.getPostComments(conditions)
+
+        ));
+
     }
 
 }
