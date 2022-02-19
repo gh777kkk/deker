@@ -14,6 +14,7 @@ public class Menu {
     private int menuParent;
     private String menuName;
     private String menuUrl;
+    private String menuImgUrl;
 
     private List<Menu> menu;
     private SubMenu subMenu;
