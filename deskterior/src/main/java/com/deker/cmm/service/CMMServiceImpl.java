@@ -128,10 +128,10 @@ public class CMMServiceImpl implements CMMService {
                 menu.add(me);
             }
             else{
-                if(me.getMenuParent() == 1000000000){
+                if(me.getMenuParent() == 200000000){
                     community.add(me);
                 }
-                else if(me.getMenuParent() == 2000000000){
+                else if(me.getMenuParent() == 300000000){
                     market.add(me);
                 }
             }

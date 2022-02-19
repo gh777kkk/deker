@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 public class PostComment {
 
-    private Date commentUpdateYmdt;
+    private String commentUpdateYmdt;
     private String writeNickname;
     private String writerProfileImgUrl;
     private String content;
