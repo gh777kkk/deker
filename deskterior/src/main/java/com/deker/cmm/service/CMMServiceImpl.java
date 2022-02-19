@@ -124,6 +124,9 @@ public class CMMServiceImpl implements CMMService {
         List<Menu> menus = cmmMapper.getMenu(authorityCode);
 
         for (Menu me : menus) {
+            if(me.getMenuId() == 100000000){
+                me.setMenuImgUrl(CMMUtil.getImg(me.getMenuImgUrl()));
+            }
             if(me.getMenuParent() == 0){
                 menu.add(me);
             }
