@@ -65,6 +65,6 @@ public class CMMController {
 
     @RequestMapping(value = "/nmb/user-test", method = RequestMethod.GET)
     public String userTest() throws Exception {
-        return "2try";
+        return "3try";
     }
 }
