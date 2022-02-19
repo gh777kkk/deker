@@ -282,7 +282,7 @@
                DELIVERY_CODE AS deliveryCode,
                ORDER_ID AS orderId
         FROM study_gh.MKT_ORDER
-        WHERE   ORDER_STATE != 6 and ORDER_CONFIRM = 'N'
+        WHERE   ORDER_STATE in (1, 2, 3, 4, 5) and ORDER_CONFIRM = 'N'
     </select>
 
     <select id="selectMyShoppingOrderState" parameterType="MyShoppingConditions" resultType="MyShoppingOrderState">
