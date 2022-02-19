@@ -46,10 +46,10 @@
     <insert id="insertPostDetail" parameterType="MyPost">
         insert into study_gh.POST_DETAIL
         (
-            POST_DETAIL_ID, POST_ID, POST_IMG, CONTENTS
+            POST_DETAIL_ID, POST_ID, POST_IMG, CONTENTS, POST_TITLE
         )
         VALUES (
-                   #{postDetailId}, #{communityId}, #{postImg}, #{communityContent}
+                   #{postDetailId}, #{communityId}, #{postImg}, #{communityContent}, #{communityTitle}
                )
     </insert>
 
@@ -72,6 +72,54 @@
                    #{id}, #{postDetailId}, #{productId}, #{productDescription}, #{offsetX}, #{offsetY}
                )
     </insert>
+
+    <select id="getPostDetail" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d
+        where l.POST_ID = #{communityId} and d.POST_ID = #{communityId}
+          and m.MEM_ID = l.MEM_ID
+        group by d.POST_ID
+    </select>
+
+    <select id="getPostLike" resultType="PostProperties">
+        select lk.POST_ID AS communityId, count(lk.POST_ID) AS likeCount
+        from study_gh.POST_LIKE lk
+        group by lk.POST_ID
+        order by COUNT(lk.POST_ID) desc limit 2
+    </select>
+
+    <select id="getPostComment" resultType="int">
+        select count(POST_ID) as commentCount
+        from study_gh.POST_COMMENT c
+        where POST_ID = #{communityId}
+    </select>
+
+    <select id="getPostFollow" resultType="String">
+        select if(count(FOLLOWING)=0, 'false', 'true') as followingCheck
+        from study_gh.FOLLOW
+        where FOLLOWER = #{memId} and FOLLOWING = #{userId}
+    </select>
+
+
+    <select id="getPostComment" resultType="PostComment">
+        select c.UPDATE_DT AS commentUpdateYmdt,
+               m.NICKNAME AS writeNickname,
+               m.PROFILE_IMG AS writerProfileImgUrl,
+               c.CONTENTS AS content
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_COMMENT c
+        where l.POST_ID =#{communityId} and c.POST_ID = #{communityId}
+          and m.MEM_ID = l.MEM_ID
+        group by c.POST_COMMENT_ID
+    </select>
+
+
+
+
 
 
 

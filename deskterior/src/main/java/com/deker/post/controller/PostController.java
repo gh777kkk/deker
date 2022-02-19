@@ -55,9 +55,13 @@ public class PostController {
 
 
 
-    @RequestMapping(value = "/nmb/post/", method = RequestMethod.POST)
-    public ResponseEntity<Result> regPost(){
-        return ResponseEntity.ok(new Result("200","커뮤니티 메인"
+    @RequestMapping(value = "/mb/post", method = RequestMethod.POST)
+    public ResponseEntity<Result> regPost(HttpServletRequest request){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        return ResponseEntity.ok(new Result("200","커뮤니티 메인",
+                postService.getPostMain(memId)
+
         ));
         
     }

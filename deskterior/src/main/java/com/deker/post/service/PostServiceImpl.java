@@ -5,10 +5,7 @@ import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
 import com.deker.post.mapper.PostMapper;
-import com.deker.post.model.CommunityProducts;
-import com.deker.post.model.MyPost;
-import com.deker.post.model.Post;
-import com.deker.post.model.PostConditions;
+import com.deker.post.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +65,30 @@ public class PostServiceImpl implements PostService{
             cp.setPostDetailId(pdId);
             postMapper.insertPostItem(cp);
         }
+    }
+
+
+    public PostMain getPostMain(String memId){
+        PostMain pm = new PostMain();
+
+
+        List<PostProperties> postProperties = postMapper.getPostLike();
+        for (PostProperties pp : postProperties) {
+
+            PostProperties mypp = postMapper.getPostDetail(pp.getCommunityId());
+            pp.setCommunityTitle(mypp.getCommunityTitle());
+            pp.setUserId(mypp.getUserId());
+            pp.setUserNick(mypp.getUserNick());
+            pp.setUserProfileImg(CMMUtil.getImg(mypp.getUserProfileImg()));
+            pp.setCommunityImage(CMMUtil.getImg(mypp.getCommunityImage()));
+            pp.setCommentCount(postMapper.getPostComment(pp.getCommunityId()));
+            pp.setMemId(memId);
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
+        }
+        pm.setRanks(postProperties);
+
+        return pm;
     }
 
 
