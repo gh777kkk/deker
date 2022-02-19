@@ -18,6 +18,8 @@ public interface PostMapper {
 
     PostProperties getPostDetail(String communityId);
     List<PostProperties> getPostLike();
-    int getPostComment(String communityId);
+    int getPostCommentCount(String communityId);
     String getPostFollow(PostProperties pp);
+
+    List<PostComment> getPostComment(PostCommentConditions conditions);
 }

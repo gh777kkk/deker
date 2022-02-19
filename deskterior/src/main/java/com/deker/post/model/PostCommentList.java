@@ -11,6 +11,6 @@ import java.util.List;
 public class PostCommentList {
 
     private String communityId;
-    private String totalCommentCount;
+    private int totalCommentCount;
     private List<PostComment> commentList;
 }

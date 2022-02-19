@@ -1,5 +1,10 @@
 package com.deker.cmm.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Setter
 public class PagingConditions {
     /** 현재의 페이지 번호 */
     private int currentPageNo;
@@ -27,12 +32,14 @@ public class PagingConditions {
     public int getStartRowNo() {
         /** 조회할 페이지의 시작 행번호 */
         if (currentPageNo <=0) this.currentPageNo = 1;
-        return ((currentPageNo - 1) * 100);
+        startRowNo =  ((currentPageNo - 1) * 100);
+        return startRowNo;
     }
 
     public int getEndRowNo() {
         /** 조회할 페이지의 끝 행번호 */
         if (currentPageNo <=0) this.currentPageNo = 1;
-        return ((currentPageNo - 1) * 100) + 99;
+        endRowNo = ((currentPageNo - 1) * 100) + 99;
+        return endRowNo;
     }
 }

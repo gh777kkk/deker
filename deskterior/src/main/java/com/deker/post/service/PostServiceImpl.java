@@ -81,7 +81,7 @@ public class PostServiceImpl implements PostService{
             pp.setUserNick(mypp.getUserNick());
             pp.setUserProfileImg(CMMUtil.getImg(mypp.getUserProfileImg()));
             pp.setCommunityImage(CMMUtil.getImg(mypp.getCommunityImage()));
-            pp.setCommentCount(postMapper.getPostComment(pp.getCommunityId()));
+            pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
             pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
 
@@ -89,6 +89,27 @@ public class PostServiceImpl implements PostService{
         pm.setRanks(postProperties);
 
         return pm;
+    }
+
+
+
+    public PostCommentList getPostComments(PostCommentConditions conditions){
+
+
+        int nonpagedCount = postMapper.getPostCommentCount(conditions.getCommunityId());
+        PageInfo<Post> pageInfo = new PageInfo<>(conditions,nonpagedCount);
+
+        PostCommentList postCommentList  = new PostCommentList();
+        postCommentList.setCommunityId(conditions.getCommunityId());
+        postCommentList.setTotalCommentCount(nonpagedCount);
+
+        int end = conditions.getStartRowNo();
+        int start = conditions.getEndRowNo();
+
+        postCommentList.setCommentList(postMapper.getPostComment(conditions));
+
+
+        return postCommentList;
     }
 
 
