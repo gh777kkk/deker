@@ -63,8 +63,8 @@ public class CMMController {
         return ResponseEntity.ok(new Result("200","정상"));
     }
 
-    @RequestMapping(value = "/nmb/user-test", method = RequestMethod.POST)
-    public void userTest() throws Exception {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+    @RequestMapping(value = "/nmb/user-test", method = RequestMethod.GET)
+    public String userTest() throws Exception {
+        return "123TTTTTTTTT";
     }
 }
