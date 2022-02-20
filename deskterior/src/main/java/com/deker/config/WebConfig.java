@@ -21,7 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .exposedHeaders("X-AUTH-TOKEN")
                 .allowCredentials(true)
                 .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("http://211.232.166.228:6015")
                 .allowedMethods("GET", "POST");
     }
 
