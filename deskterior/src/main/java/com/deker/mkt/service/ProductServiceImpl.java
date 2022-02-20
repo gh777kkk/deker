@@ -15,6 +15,7 @@ import com.deker.mkt.model.resultService.ProductDetailExplain;
 import com.deker.mkt.model.resultService.ProductDetailModel;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.model.resultService.RecommendedProduct;
+import com.deker.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -124,12 +125,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductDetail getProductReview(ProductReview pr) {
 
         ProductDetail pd = new ProductDetail();
-        int end, start;
-
-        start = pr.getPageNumber() * 100; //0부터 받아야 됨
-        end = 100;
-        pr.setStart(start);
-        pr.setEnd(end);
         List<ProductReview> reviews = productMapper.getProductReview(pr);
 
 
@@ -146,13 +141,12 @@ public class ProductServiceImpl implements ProductService {
         }
 
 
-
-
-        if(end > reviews.size()){
-            pd.setLastPage(true);
-        }
-
         pd.setReviews(reviews);
+
+        int nonpagedCount = productMapper.getProductReviewCount(pr);
+        PageInfo<ProductReview> pageInfo = new PageInfo<>(pr,nonpagedCount);
+        pageInfo.setList(pd.getReviews());
+
 
         return pd;
     }

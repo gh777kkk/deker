@@ -1,5 +1,6 @@
 package com.deker.mkt.model.resultService;
 
+import com.deker.cmm.model.PagingConditions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductReview {
+public class ProductReview extends PagingConditions {
     private String mktReviewId;
     private String memId;
     private String productId;
