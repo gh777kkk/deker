@@ -32,14 +32,12 @@ public class PagingConditions {
     public int getStartRowNo() {
         /** 조회할 페이지의 시작 행번호 */
         if (currentPageNo <=0) this.currentPageNo = 1;
-        startRowNo =  ((currentPageNo - 1) * 100);
-        return startRowNo;
+        return ((currentPageNo - 1) * 100);
     }
 
     public int getEndRowNo() {
         /** 조회할 페이지의 끝 행번호 */
         if (currentPageNo <=0) this.currentPageNo = 1;
-        endRowNo = ((currentPageNo - 1) * 100) + 99;
-        return endRowNo;
+        return ((currentPageNo - 1) * 100) + 99;
     }
 }

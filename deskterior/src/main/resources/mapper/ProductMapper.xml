@@ -170,7 +170,13 @@
         from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m, study_gh.MKT_PRODUCT_OPTION mpo
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
           and mpo.MKT_PRODUCT_OPTION_ID = r.OPTION_ID and r.MEM_ID = m.MEM_ID
-        limit #{start}, #{end}
+        limit #{startRowNo}, #{endRowNo}
+    </select>
+
+    <select id="getProductReviewCount"  resultType="int">
+        select count(*)
+        from study_gh.MKT_REVIEW r
+        where r.PRODUCT_ID = #{productId}
     </select>
 
 
