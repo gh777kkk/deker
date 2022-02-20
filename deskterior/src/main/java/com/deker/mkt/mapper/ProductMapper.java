@@ -26,6 +26,8 @@ public interface ProductMapper {
     List<ProductReview> getProductReview(ProductReview pr);
     String getCategoryId(String productId);
 
+    int getProductReviewCount(ProductReview pr);
+
     void insertProductCart(ProductOption pc);
     void insertRecentProduct(RecentProduct pp);
 

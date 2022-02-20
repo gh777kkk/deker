@@ -93,23 +93,19 @@ public class PostServiceImpl implements PostService{
 
 
 
-    public PostCommentList getPostComments(PostCommentConditions conditions){
+    public PageInfo<PostComment> getPostComments(PostCommentConditions conditions){
 
 
         int nonpagedCount = postMapper.getPostCommentCount(conditions.getCommunityId());
-        PageInfo<Post> pageInfo = new PageInfo<>(conditions,nonpagedCount);
-
-        PostCommentList postCommentList  = new PostCommentList();
-        postCommentList.setCommunityId(conditions.getCommunityId());
-        postCommentList.setTotalCommentCount(nonpagedCount);
-
-        int end = conditions.getStartRowNo();
-        int start = conditions.getEndRowNo();
-
-        postCommentList.setCommentList(postMapper.getPostComment(conditions));
+        PageInfo<PostComment> pageInfo = new PageInfo<>(conditions,nonpagedCount);
 
 
-        return postCommentList;
+        pageInfo.setObjectData(conditions.getCommunityId());
+        pageInfo.setTotalCount(nonpagedCount);
+        pageInfo.setList(postMapper.getPostComment(conditions));
+
+
+        return pageInfo;
     }
 
 

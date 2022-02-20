@@ -110,13 +110,14 @@
         select c.UPDATE_DT AS commentUpdateYmdt ,
                m.NICKNAME AS writeNickname,
                m.PROFILE_IMG AS writerProfileImgUrl,
-               c.CONTENTS AS content
+               c.CONTENTS AS content,
+               c.POST_COMMENT_ID AS postCommentId
         from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_COMMENT c
-        where l.POST_ID ='cmId_000000000000000' and c.POST_ID = 'cmId_000000000000000'
+        where l.POST_ID = #{communityId} and c.POST_ID = #{communityId}
           and m.MEM_ID = l.MEM_ID
         group by c.POST_COMMENT_ID, c.UPDATE_DT
         order by c.UPDATE_DT desc
-        LIMIT 0, 99
+        LIMIT #{startRowNo}, #{endRowNo}
     </select>
 
 

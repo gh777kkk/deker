@@ -13,4 +13,5 @@ public class PostComment {
     private String writeNickname;
     private String writerProfileImgUrl;
     private String content;
+    private String postCommentId;
 }
