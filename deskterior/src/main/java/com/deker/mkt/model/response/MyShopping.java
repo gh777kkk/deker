@@ -1,5 +1,6 @@
 package com.deker.mkt.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MyShopping {
     private int deposit;        //입금대기
     private int payment;        //결제완료

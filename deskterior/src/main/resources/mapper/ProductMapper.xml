@@ -321,6 +321,18 @@
         AND     MO.MEM_ID = #{memId}
         AND     MO.CREATE_DT > #{period}
         AND     MO.ORDER_STATE = #{deliveryState}
+		LIMIT				#{startRowNo}, #{endRowNo}
+    </select>
+
+    <select id="selectMyShoppingListCount" parameterType="MyShoppingConditions" resultType="Integer">
+        SELECT      COUNT(*)
+        FROM MKT_ORDER MO
+        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        WHERE   1=1
+        AND     MO.MEM_ID = #{memId}
+        AND     MO.CREATE_DT > #{period}
+        AND     MO.ORDER_STATE = #{deliveryState}
     </select>
 
     <update id="updateOrderState" parameterType="DeliveryUpdate">

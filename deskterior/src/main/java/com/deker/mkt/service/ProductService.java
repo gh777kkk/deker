@@ -1,5 +1,6 @@
 package com.deker.mkt.service;
 
+import com.deker.cmm.model.PageInfo;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
@@ -37,7 +38,7 @@ public interface ProductService {
 
 
 
-    MyShopping getOrderProduct(MyShoppingConditions conditions);
+    PageInfo<MyShoppingList> getOrderProduct(MyShoppingConditions conditions);
 
 
 

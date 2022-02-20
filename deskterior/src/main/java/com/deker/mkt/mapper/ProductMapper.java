@@ -57,6 +57,7 @@ public interface ProductMapper {
 
     List<MyShoppingOrderState> selectMyShoppingOrderState(MyShoppingConditions conditions);
     List<MyShoppingList> selectMyShoppingList(MyShoppingConditions conditions);
+    Integer selectMyShoppingListCount(MyShoppingConditions conditions);
 
 }
 

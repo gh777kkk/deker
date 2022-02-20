@@ -1,6 +1,7 @@
 package com.deker.mkt.service;
 
 import com.deker.cmm.model.Menu;
+import com.deker.cmm.model.PageInfo;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
@@ -266,7 +267,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public MyShopping getOrderProduct(MyShoppingConditions conditions){
+    public PageInfo<MyShoppingList> getOrderProduct(MyShoppingConditions conditions){
         MyShopping myShopping = new MyShopping();
         List<MyShoppingOrderState> orderState = productMapper.selectMyShoppingOrderState(conditions);
         if (orderState != null){
@@ -298,7 +299,13 @@ public class ProductServiceImpl implements ProductService {
 
         myShopping.setOrderList(shoppingList);
 
-        return myShopping;
+        int nonpagedCount = productMapper.selectMyShoppingListCount(conditions);
+        PageInfo<MyShoppingList> pageInfo = new PageInfo<>(conditions,nonpagedCount);
+        pageInfo.setList(myShopping.getOrderList());
+        myShopping.setOrderList(null);
+        pageInfo.setObjectData(myShopping);
+
+        return pageInfo;
     }
 
 
