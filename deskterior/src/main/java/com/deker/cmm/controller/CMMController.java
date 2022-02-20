@@ -62,9 +62,4 @@ public class CMMController {
         cmmService.sseTest();
         return ResponseEntity.ok(new Result("200","정상"));
     }
-
-    @RequestMapping(value = "/nmb/user-test", method = RequestMethod.GET)
-    public String userTest() throws Exception {
-        return "된듯 ???";
-    }
 }
