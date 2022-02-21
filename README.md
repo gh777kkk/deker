@@ -113,9 +113,9 @@ build : gradle (ver 6.9)
 
 개발툴 : intellij
 
-배포 : ubuntu에서 doker를 이용하여 배포
+배포 : spring-boot 내장톰캣을 이용하여 build된 jar파일을 ubuntu 에서 docker 컨테이너로 배포
 
-CI/CD : jenkins와 해당 github를 연동하여  
+CI/CD : jenkins와 해당 github를 연동하여 구성
 
 
 
