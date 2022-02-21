@@ -15,15 +15,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${config.img.url}")
     private String imgUrl;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**")
-                .exposedHeaders("X-AUTH-TOKEN")
-                .allowCredentials(true)
-                .allowedOrigins("http://localhost:3000")
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry){
+//        registry.addMapping("/**")
+//                .exposedHeaders("X-AUTH-TOKEN")
+//                .allowCredentials(true)
+//                .allowedOrigins("http://localhost:3000")
 //                .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST");
-    }
+//                .allowedMethods("GET", "POST");
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
