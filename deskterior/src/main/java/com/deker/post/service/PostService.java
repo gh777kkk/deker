@@ -18,4 +18,6 @@ public interface PostService {
     PostMain getPostMain(String memId);
 
     PageInfo<PostComment> getPostComments(PostCommentConditions conditions);
+
+    PostDetail getPostDetail(PostDetail pd);
 }

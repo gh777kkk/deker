@@ -28,8 +28,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -122,13 +124,21 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public ProductDetail getProductReview(ProductReview pr) {
+    public ProductDetail getProductReview(ProductReview pr) throws ParseException {
 
         ProductDetail pd = new ProductDetail();
         List<ProductReview> reviews = productMapper.getProductReview(pr);
 
 
         for (ProductReview review : reviews) {
+            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = dateParser.parse(review.getReviewDate());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String myDate = dateParser.format(date);
+            review.setReviewDate(myDate);
+
+
             review.setProductImg(CMMUtil.getImg(review.getProductImg()));
             review.setProReviewImg(CMMUtil.getImg(review.getProReviewImg()));
 

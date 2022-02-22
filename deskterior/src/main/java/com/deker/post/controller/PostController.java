@@ -4,10 +4,7 @@ package com.deker.post.controller;
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.DeliveryStatus;
-import com.deker.post.model.CommunityProducts;
-import com.deker.post.model.MyPost;
-import com.deker.post.model.PostCommentConditions;
-import com.deker.post.model.PostConditions;
+import com.deker.post.model.*;
 import com.deker.post.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -72,11 +69,26 @@ public class PostController {
     public ResponseEntity<Result> getPostComments(@RequestBody PostCommentConditions conditions){
 
         //String memId = jwtProvider.getMemIdFromJwtToken(request);
-        return ResponseEntity.ok(new Result("200","커뮤니티 메인",
+        return ResponseEntity.ok(new Result("200","커뮤니티 댓글",
                 postService.getPostComments(conditions)
 
         ));
 
     }
+
+
+    @RequestMapping(value = "/nmb/post-detail", method = RequestMethod.POST)
+    public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd){
+
+        //String memId = jwtProvider.getMemIdFromJwtToken(request);
+        return ResponseEntity.ok(new Result("200","포스트 메인",
+                postService.getPostDetail(pd)
+
+        ));
+
+    }
+
+
+
 
 }
