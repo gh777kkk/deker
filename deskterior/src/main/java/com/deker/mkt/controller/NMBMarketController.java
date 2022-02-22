@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -103,7 +104,7 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/get/review", method = RequestMethod.POST)
-    public ResponseEntity<?> getRecoProduct(@RequestBody ProductReview pr) {
+    public ResponseEntity<?> getRecoProduct(@RequestBody ProductReview pr) throws ParseException {
 
 
         return ResponseEntity.ok(
