@@ -144,11 +144,13 @@
     <select id="getPostProduct" resultType="CommunityProducts">
         select post_item_id AS id,
                product_id AS productId,
-               maket_contents AS productDescription,
+               p.PRODUCT_NAME AS productName,
+               p.PRODUCT_PRICE AS productPayment,
+               p.PRODUCT_IMG AS productImgUrl,
                locationx AS offsetX,
                locationy AS offsetY
-        from study_gh.POST_ITEM i
-        where i.POST_DETAIL_ID = #{postDetailId}
+        from study_gh.POST_ITEM i, study_gh.MKT_PRODUCT p
+        where i.POST_DETAIL_ID = #{postDetailId} and PRODUCT_ID = p.MKT_PRODUCT_ID
     </select>
 
 

@@ -123,7 +123,12 @@ public class PostServiceImpl implements PostService{
         mp.setCommunityTags(communityTags);
 
         pd.setCommunityPost(mp);
-        pd.setCommunityPostSelectedProduct(postMapper.getPostProduct(mp.getPostDetailId()));
+
+        List<CommunityProducts> cpList = postMapper.getPostProduct(mp.getPostDetailId());
+        for (CommunityProducts cp : cpList){
+            cp.setProductImgUrl(CMMUtil.getImg(cp.getProductImgUrl()));
+        }
+        pd.setCommunityPostSelectedProduct(cpList);
 
         return pd;
     }
