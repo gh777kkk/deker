@@ -7,6 +7,8 @@ import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
+
 
 public interface ProductService {
 
@@ -18,7 +20,7 @@ public interface ProductService {
 
     ProductDetail getProductDetails(ProductCode pc);
     ProductDetail getRecoProduct(ProductCode pc);
-    ProductDetail getProductReview(ProductReview pr);
+    ProductDetail getProductReview(ProductReview pr) throws ParseException;
 
 
     void insertRecentProduct(ProductCode pc);

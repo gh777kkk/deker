@@ -121,6 +121,41 @@
     </select>
 
 
+    <select id="getSelectPostDetail" resultType="MyPost">
+        select l.POST_ID AS communityId,
+               POST_IMG As postImg,
+               CONTENTS AS communityContent,
+               POST_TITLE AS communityTitle,
+               l.JOB_CODE AS jobCode,
+               l.MOOD_CODE AS moodCode,
+               l.MTRL_CODE AS material,
+               d.POST_DETAIL_ID AS postDetailId
+        from study_gh.POST_DETAIL d, study_gh.POST_LIST l
+        where d.POST_ID = #{communityId} AND l.POST_ID =#{communityId}
+    </select>
+
+
+    <select id="getPostTag" resultType="MyPost">
+        select t.CONTENTS AS tag
+        from study_gh.POST_TAG t
+        where t.POST_DETAIL_ID =#{postDetailId}
+    </select>
+
+    <select id="getPostProduct" resultType="CommunityProducts">
+        select post_item_id AS id,
+               product_id AS productId,
+               maket_contents AS productDescription,
+               locationx AS offsetX,
+               locationy AS offsetY
+        from study_gh.POST_ITEM i
+        where i.POST_DETAIL_ID = #{postDetailId}
+    </select>
+
+
+
+
+
+
 
 
 

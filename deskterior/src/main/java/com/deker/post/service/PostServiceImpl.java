@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -106,6 +107,25 @@ public class PostServiceImpl implements PostService{
 
 
         return pageInfo;
+    }
+
+
+
+    public PostDetail getPostDetail(PostDetail pd){
+
+        MyPost mp = postMapper.getSelectPostDetail(pd.getCommunityPostId());
+
+        List<MyPost> tags = postMapper.getPostTag(mp.getPostDetailId());
+        List<String> communityTags = new ArrayList<>();
+        for (MyPost tag : tags) {
+            communityTags.add(tag.getTag());
+        }
+        mp.setCommunityTags(communityTags);
+
+        pd.setCommunityPost(mp);
+        pd.setCommunityPostSelectedProduct(postMapper.getPostProduct(mp.getPostDetailId()));
+
+        return pd;
     }
 
 

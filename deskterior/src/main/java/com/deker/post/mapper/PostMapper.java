@@ -22,4 +22,8 @@ public interface PostMapper {
     String getPostFollow(PostProperties pp);
 
     List<PostComment> getPostComment(PostCommentConditions conditions);
+
+    MyPost getSelectPostDetail(String communityId);
+    List<MyPost> getPostTag (String postDetailId);
+    List<CommunityProducts> getPostProduct (String postDetailId);
 }
