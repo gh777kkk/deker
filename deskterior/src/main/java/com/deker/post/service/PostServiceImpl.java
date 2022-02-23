@@ -73,8 +73,8 @@ public class PostServiceImpl implements PostService{
         PostMain pm = new PostMain();
 
 
-        List<PostProperties> postProperties = postMapper.getPostLike();
-        for (PostProperties pp : postProperties) {
+        List<PostProperties> rank = postMapper.getPostLike();
+        for (PostProperties pp : rank) {
 
             PostProperties mypp = postMapper.getPostDetail(pp.getCommunityId());
             pp.setCommunityTitle(mypp.getCommunityTitle());
@@ -87,7 +87,24 @@ public class PostServiceImpl implements PostService{
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
 
         }
-        pm.setRanks(postProperties);
+        pm.setRanks(rank);
+
+        List<PostProperties> follow = postMapper.getPostMyFollow(memId);
+        for (PostProperties pp : rank){
+            pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
+            pp.setCommunityImage(pp.getCommunityImage());
+        }
+        pm.setFollow(follow);
+
+        List<PostProperties> custom = postMapper.getPostCustom(memId);
+        for (PostProperties pp : custom){
+            pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
+            pp.setCommunityImage(pp.getCommunityImage());
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+        }
+        pm.setCustom(custom);
+
+
 
         return pm;
     }

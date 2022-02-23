@@ -52,7 +52,7 @@ public class PostController {
 
 
 
-    @RequestMapping(value = "/mb/post", method = RequestMethod.POST)
+    @RequestMapping(value = "/mb/post/get", method = RequestMethod.POST)
     public ResponseEntity<Result> regPost(HttpServletRequest request){
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
@@ -81,7 +81,7 @@ public class PostController {
     public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd){
 
         //String memId = jwtProvider.getMemIdFromJwtToken(request);
-        return ResponseEntity.ok(new Result("200","포스트 메인",
+        return ResponseEntity.ok(new Result("200","포스트 디테일",
                 postService.getPostDetail(pd)
 
         ));

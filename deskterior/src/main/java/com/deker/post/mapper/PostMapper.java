@@ -19,11 +19,14 @@ public interface PostMapper {
     PostProperties getPostDetail(String communityId);
     List<PostProperties> getPostLike();
     int getPostCommentCount(String communityId);
-    String getPostFollow(PostProperties pp);
+    boolean getPostFollow(PostProperties pp);
 
     List<PostComment> getPostComment(PostCommentConditions conditions);
 
     MyPost getSelectPostDetail(String communityId);
     List<MyPost> getPostTag (String postDetailId);
     List<CommunityProducts> getPostProduct (String postDetailId);
+
+    List<PostProperties> getPostMyFollow(String memId);
+    List<PostProperties> getPostCustom(String memId);
 }

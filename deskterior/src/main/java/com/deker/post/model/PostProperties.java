@@ -16,6 +16,6 @@ public class PostProperties {
     private String userProfileImg;
     private int likeCount;
     private int commentCount;
-    private String followingCheck;
+    private boolean followingCheck;
     private String communityImage;
 }
