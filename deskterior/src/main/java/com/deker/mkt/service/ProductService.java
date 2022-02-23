@@ -1,6 +1,7 @@
 package com.deker.mkt.service;
 
 import com.deker.cmm.model.PageInfo;
+import com.deker.cmm.model.PageReview;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
@@ -20,7 +21,7 @@ public interface ProductService {
 
     ProductDetail getProductDetails(ProductCode pc);
     ProductDetail getRecoProduct(ProductCode pc);
-    ProductDetail getProductReview(ProductReview pr) throws ParseException;
+    PageReview<ProductReview> getProductReview(ProductReview pr) throws ParseException;
 
 
     void insertRecentProduct(ProductCode pc);
