@@ -2,6 +2,7 @@ package com.deker.mkt.service;
 
 import com.deker.cmm.model.Menu;
 import com.deker.cmm.model.PageInfo;
+import com.deker.cmm.model.PageReview;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
@@ -124,9 +125,12 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public ProductDetail getProductReview(ProductReview pr) throws ParseException {
+    public PageReview<ProductReview> getProductReview(ProductReview pr) throws ParseException {
 
-        ProductDetail pd = new ProductDetail();
+
+        int nonpagedCount = productMapper.getProductReviewCount(pr);
+        PageReview<ProductReview> pageInfo = new PageReview<>(pr,nonpagedCount);
+
         List<ProductReview> reviews = productMapper.getProductReview(pr);
 
 
@@ -150,16 +154,15 @@ public class ProductServiceImpl implements ProductService {
 
         }
 
+        //pd.setReviews(reviews);
 
-        pd.setReviews(reviews);
-
-        int nonpagedCount = productMapper.getProductReviewCount(pr);
-        PageInfo<ProductReview> pageInfo = new PageInfo<>(pr,nonpagedCount);
-        pageInfo.setList(pd.getReviews());
+        pageInfo.setList(reviews);
 
 
-        return pd;
+        return pageInfo;
     }
+
+
 
 
     public void insertRecentProduct(ProductCode pc){

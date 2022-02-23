@@ -1,5 +1,6 @@
 package com.deker.mkt.model.resultService;
 
+import com.deker.cmm.model.PageReviewConditions;
 import com.deker.cmm.model.PagingConditions;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductReview extends PagingConditions {
+public class ProductReview extends PageReviewConditions {
     private String mktReviewId;
     private String memId;
     private String productId;
@@ -22,10 +23,7 @@ public class ProductReview extends PagingConditions {
     private String productName;
     private String nickname;
     private List<String> productOption;
-    private int pageNumber;
     private String profileImg;
-    private int start;
-    private int end;
     private String orderId;
     private String optionId;
     private String option2DataName;
