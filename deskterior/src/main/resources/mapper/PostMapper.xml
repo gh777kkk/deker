@@ -90,7 +90,7 @@
         select lk.POST_ID AS communityId, count(lk.POST_ID) AS likeCount
         from study_gh.POST_LIKE lk
         group by lk.POST_ID
-        order by COUNT(lk.POST_ID) desc limit 2
+        order by COUNT(lk.POST_ID) desc limit 8
     </select>
 
     <select id="getPostCommentCount" resultType="int">
@@ -99,8 +99,8 @@
         where POST_ID = #{communityId}
     </select>
 
-    <select id="getPostFollow" resultType="String">
-        select if(count(FOLLOWING)=0, 'false', 'true') as followingCheck
+    <select id="getPostFollow" resultType="boolean">
+        select if(count(FOLLOWING)=0, false, true) as followingCheck
         from study_gh.FOLLOW
         where FOLLOWER = #{memId} and FOLLOWING = #{userId}
     </select>
@@ -152,6 +152,46 @@
         from study_gh.POST_ITEM i, study_gh.MKT_PRODUCT p
         where i.POST_DETAIL_ID = #{postDetailId} and PRODUCT_ID = p.MKT_PRODUCT_ID
     </select>
+
+
+
+    <select id="getPostMyFollow" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               l.CREATE_DT,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+             (select FOLLOWING
+              from study_gh.FOLLOW
+              where FOLLOWER = 'memId_00000000000004') as f
+        where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
+        group by l.POST_ID, l.CREATE_DT
+        order by  l.CREATE_DT desc limit 4
+    </select>
+
+
+
+
+    <select id="getPostCustom" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d, study_gh.POST_TAG t,
+             (select CONTENTS
+              from study_gh.MEMBER_TAG
+              where MEM_ID = #{memId}) as mt
+        where t.CONTENTS in (mt.CONTENTS) and t.POST_DETAIL_ID = d.POST_DETAIL_ID
+          and l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID
+        group by l.POST_ID, l.CREATE_DT
+        order by  l.CREATE_DT desc limit 4
+    </select>
+
 
 
 
