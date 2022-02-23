@@ -14,6 +14,10 @@ public class CommunityProducts {
     private String productId;
     private String postDetailId;
     private String productDescription;
+    private String productName;
+    private int productPayment;
+    private String productImgUrl;
+
 
 
 

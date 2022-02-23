@@ -77,7 +77,7 @@ public class PostController {
     }
 
 
-    @RequestMapping(value = "/nmb/post-detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/nmb/post/get/post-detail", method = RequestMethod.POST)
     public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd){
 
         //String memId = jwtProvider.getMemIdFromJwtToken(request);
