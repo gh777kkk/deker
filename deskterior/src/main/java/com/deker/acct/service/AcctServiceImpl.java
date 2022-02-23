@@ -78,6 +78,8 @@ public class AcctServiceImpl implements AcctService {
             acctMapper.insertMember(conditions);
             acctMapper.insertSocialMember(conditions);
         }
+        conditions.setAuthorityCode("ROLE_USER");
+        acctMapper.insertAuthority(conditions);
         return loginPrc(conditions);
     }
     

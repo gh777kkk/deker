@@ -166,4 +166,17 @@
         WHERE MEM_ID = #{memId}
     </update>
 
+    <insert id="insertAuthority" parameterType="AcctConditions">
+        INSERT INTO AUTHORITY
+        (
+                MEM_ID
+            ,   AUTHORITY_CODE
+        )
+        VALUES
+        (
+                #{memId}
+            ,   #{authorityCode}
+        )
+    </insert>
+
 </mapper>

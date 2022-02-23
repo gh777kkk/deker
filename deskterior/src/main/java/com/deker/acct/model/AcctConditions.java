@@ -21,5 +21,6 @@ public class AcctConditions {
     private String checkString;
     private String contents;
     private String memTagId;
+    private String authorityCode;
     private List<String> tag;
 }
