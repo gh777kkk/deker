@@ -11,6 +11,7 @@ import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
+import com.deker.mkt.service.ProductSession;
 import com.deker.mkt.service.Scheduler;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -34,6 +35,7 @@ public class NMBMarketController {
     public final ProductService productService;
     private final JwtProvider jwtProvider;
     private final IamportService iamportService;
+    private final ProductSession productSession;
 
     //reg, get, mod, del
 
@@ -130,22 +132,6 @@ public class NMBMarketController {
 
 
 
-    @RequestMapping(value = "/get/test", method = RequestMethod.POST)
-    public void gettProduct(@RequestBody ProductCode pc) {
-
-//        DeliveryUpdate du = new DeliveryUpdate();
-//        String timeString = "1999-06-03 10:45:00";
-//        String id = "odrId_99999999999999";
-//        du.setId(id);
-//        du.setTimeString(timeString);
-//        productMapper.updateConfirmDate(du);
-
-        //sd.deliveryStatus();
-
-    }
-
-
-
 
     @RequestMapping(value = "/get/verify", method = RequestMethod.POST)
     public void getVerifyPayment() {
@@ -196,6 +182,44 @@ public class NMBMarketController {
         );
 
 
+
+    }
+
+
+
+
+
+    @RequestMapping(value = "/get/test", method = RequestMethod.POST)
+    public void gettProduct(@RequestBody ProductCode pc) {
+
+
+        productSession.setProductId(pc.getProductId());
+
+//        DeliveryUpdate du = new DeliveryUpdate();
+//        String timeString = "1999-06-03 10:45:00";
+//        String id = "odrId_99999999999999";
+//        du.setId(id);
+//        du.setTimeString(timeString);
+//        productMapper.updateConfirmDate(du);
+
+        //sd.deliveryStatus();
+
+    }
+
+    @RequestMapping(value = "/get/testt", method = RequestMethod.POST)
+    public String getttProduct(@RequestBody ProductCode pc) {
+
+
+        return productSession.toString();
+
+//        DeliveryUpdate du = new DeliveryUpdate();
+//        String timeString = "1999-06-03 10:45:00";
+//        String id = "odrId_99999999999999";
+//        du.setId(id);
+//        du.setTimeString(timeString);
+//        productMapper.updateConfirmDate(du);
+
+        //sd.deliveryStatus();
 
     }
 
