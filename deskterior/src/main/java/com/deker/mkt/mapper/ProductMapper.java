@@ -4,6 +4,7 @@ import com.deker.cmm.model.Menu;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.MyShoppingConditions;
 import com.deker.mkt.model.request.ProductBuy;
+import com.deker.mkt.model.request.ProductCartItems;
 import com.deker.mkt.model.request.ProductOrder;
 import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.*;
@@ -29,12 +30,15 @@ public interface ProductMapper {
     int getProductReviewCount(ProductReview pr);
 
     void insertProductCart(ProductOption pc);
+    List<ProductCartItems> getCartList(String memId);
+
+
     void insertRecentProduct(RecentProduct pp);
 
     ProductBuyOption getProductBuyList(ProductBuy pb);
     MarketAddress getAddress(String memId);
 
-    String getProductOptionId(ProductOption po);
+    ProductOption getProductOptionId(ProductOption po);
 
     ProductTracking selectProductTracking(ProductOrder conditions);
     String selectLevelCodeNm(String level);

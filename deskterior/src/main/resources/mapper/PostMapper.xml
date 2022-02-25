@@ -73,6 +73,7 @@
                )
     </insert>
 
+
     <select id="getPostDetail" resultType="PostProperties">
         select d.POST_ID AS communityId,
                d.post_title AS communityTitle,
@@ -157,7 +158,6 @@
 
     <select id="getPostMyFollow" resultType="PostProperties">
         select d.POST_ID AS communityId,
-               l.CREATE_DT,
                d.post_title AS communityTitle,
                l.MEM_ID AS userId,
                m.NICKNAME AS userNick,
@@ -166,7 +166,7 @@
         from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
              (select FOLLOWING
               from study_gh.FOLLOW
-              where FOLLOWER = 'memId_00000000000004') as f
+              where FOLLOWER = #{memId}) as f
         where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
         group by l.POST_ID, l.CREATE_DT
         order by  l.CREATE_DT desc limit 4
@@ -190,6 +190,25 @@
           and l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID
         group by l.POST_ID, l.CREATE_DT
         order by  l.CREATE_DT desc limit 4
+    </select>
+
+
+
+    <select id="getPostNew" parameterType="List" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d
+        where l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID
+          and d.POST_ID NOT IN
+              (<foreach collection="list" item="item" separator=",">
+                #{item.communityId}
+                </foreach> )
+        group by l.POST_ID, l.CREATE_DT
+        order by  l.CREATE_DT desc limit 8
     </select>
 
 

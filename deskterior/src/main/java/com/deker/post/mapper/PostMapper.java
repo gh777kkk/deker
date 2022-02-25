@@ -29,4 +29,7 @@ public interface PostMapper {
 
     List<PostProperties> getPostMyFollow(String memId);
     List<PostProperties> getPostCustom(String memId);
+
+
+    List<PostProperties> getPostNew(List<PostProperties> pp);
 }

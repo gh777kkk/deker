@@ -2,6 +2,7 @@ package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
+import com.deker.mkt.model.ProductOption;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -97,13 +99,12 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
-    public ResponseEntity<?> regCart(@RequestBody ProductCart pc, HttpServletRequest request) {
+    public ResponseEntity<?> regCart(@RequestBody List<ProductOption> po, HttpServletRequest request) {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
-        pc.setMemId(memId);
-        productService.insertProductCart(pc);
+        productService.insertProductCart(po, memId);
         return ResponseEntity.ok(
-                new Result("200", "장바구니 등록"
+                new Result("200", "마켓 장바구니 아이템 추가"
                 )
         );
     }
@@ -111,11 +112,12 @@ public class MBMarketController {
     @RequestMapping(value = "/get/cart", method = RequestMethod.POST)
     public ResponseEntity<?> getCart( HttpServletRequest request) {
 
-//        String memId = jwtProvider.getMemIdFromJwtToken(request);
-//        pc.setMemId(memId);
+      String memId = jwtProvider.getMemIdFromJwtToken(request);
+
 
         return ResponseEntity.ok(
-                new Result("200", "장바구니 목록"
+                new Result("200", "장바구니 목록",
+                        productService.getCartList(memId)
                 )
         );
     }

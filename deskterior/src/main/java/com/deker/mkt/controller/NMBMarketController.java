@@ -2,17 +2,12 @@ package com.deker.mkt.controller;
 
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
-import com.deker.mkt.mapper.ProductMapper;
-import com.deker.mkt.model.DeliveryUpdate;
 import com.deker.mkt.model.ProductKeyword;
-import com.deker.mkt.model.request.Payment;
-import com.deker.mkt.model.request.ProductCart;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
 import com.deker.mkt.service.ProductSession;
-import com.deker.mkt.service.Scheduler;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -24,8 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor

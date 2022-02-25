@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -72,10 +73,8 @@ public class PostServiceImpl implements PostService{
     public PostMain getPostMain(String memId){
         PostMain pm = new PostMain();
 
-
         List<PostProperties> rank = postMapper.getPostLike();
         for (PostProperties pp : rank) {
-
             PostProperties mypp = postMapper.getPostDetail(pp.getCommunityId());
             pp.setCommunityTitle(mypp.getCommunityTitle());
             pp.setUserId(mypp.getUserId());
@@ -85,24 +84,77 @@ public class PostServiceImpl implements PostService{
             pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
             pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
-
         }
         pm.setRanks(rank);
 
+        if (rank.size()==8){
+            pm.setRanks(rank);
+        }
+        else{
+
+            List<PostProperties> postNew = postMapper.getPostNew(rank);
+            for (PostProperties pp : postNew) {
+
+                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
+                pp.setMemId(memId);
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+            }
+
+            List<PostProperties> mergedList = new ArrayList<>();
+            mergedList.addAll(rank);
+            mergedList.addAll(postNew);
+
+            pm.setRanks(mergedList);
+
+        }
+
+
+
         List<PostProperties> follow = postMapper.getPostMyFollow(memId);
-        for (PostProperties pp : rank){
+        for (PostProperties pp : follow){
             pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
-            pp.setCommunityImage(pp.getCommunityImage());
+            pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+            pp.setMemId(memId);
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
         }
         pm.setFollow(follow);
+
+
 
         List<PostProperties> custom = postMapper.getPostCustom(memId);
         for (PostProperties pp : custom){
             pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
-            pp.setCommunityImage(pp.getCommunityImage());
+            pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+            pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
         }
-        pm.setCustom(custom);
+
+        if (custom.size()==4){
+            pm.setCustom(custom);
+        }
+        else{
+//            int size = 8-rank.size();
+//            rank.get(0).setSize(size);
+            List<PostProperties> postNew = postMapper.getPostNew(custom);
+            for (PostProperties pp : postNew) {
+
+                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setMemId(memId);
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+            }
+
+            List<PostProperties> mergedList = new ArrayList<>();
+            mergedList.addAll(custom);
+            mergedList.addAll(postNew);
+
+            pm.setCustom(mergedList);
+
+        }
 
 
 
