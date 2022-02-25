@@ -9,6 +9,7 @@ import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
+import java.util.List;
 
 
 public interface ProductService {
@@ -26,7 +27,11 @@ public interface ProductService {
 
     void insertRecentProduct(ProductCode pc);
 
-    void insertProductCart(ProductCart pc);
+    void insertProductCart(List<ProductOption> po, String memId);
+    ProductCartItems getCartList(String memId);
+
+
+
     ProductBuyOption getProductBuyList(ProductBuy pb);
 
     ProductTracking getProductTracking(ProductOrder conditions) throws Exception;

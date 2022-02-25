@@ -183,10 +183,11 @@
 
 
 
-    <select id="getProductOptionId" resultType="string">
-        select MKT_PRODUCT_OPTION_ID
-        from study_gh.MKT_PRODUCT_OPTION
-        where OPTION1 = #{option1} and OPTION1_DATA = #{option1Data}
+    <select id="getProductOptionId" parameterType="ProductOption" resultType="ProductOption">
+    select MKT_PRODUCT_OPTION_ID AS productOptionId,
+            PRODUCT_PRICE AS productPrice
+    from study_gh.MKT_PRODUCT_OPTION
+    where OPTION1 = #{option1} and OPTION1_DATA = #{option1Data} and PRODUCT_ID = #{mktProductId}
         <choose>
             <when test="option2 == null">
                 and OPTION2 IS NULL and OPTION2_DATA IS NULL
@@ -195,6 +196,7 @@
                 and OPTION2 = #{option2} and OPTION2_DATA= #{option2Data}
             </otherwise>
         </choose>
+
     </select>
 
 
@@ -214,11 +216,27 @@
                 #{mktCartId},
                 #{memId},
                 #{mktProductId},
-                #{price},
-                #{cartQuant},
-                #{productOption}
+                #{productPrice},
+                #{orderQuantity},
+                #{productOptionId}
                )
     </insert>
+
+
+    <select id="getCartList" resultType="ProductCartItems">
+        select mkt_cart_id AS cartId,
+               product_id AS mktProductId,
+               p.PRODUCT_NAME AS productName,
+               p.PRODUCT_PRICE AS productPrice,
+               cart_quant AS productSelectedQuantity,
+               p.PRODUCT_IMG AS productImg,
+               poduct_option AS productOptionId,
+               price AS totalPrice
+        from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
+        where c.MEM_ID = #{memId} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
+    </select>
+
+
 
 
 

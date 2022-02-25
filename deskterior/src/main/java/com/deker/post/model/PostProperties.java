@@ -18,5 +18,4 @@ public class PostProperties {
     private int commentCount;
     private boolean followingCheck;
     private String communityImage;
-    private int size;
 }

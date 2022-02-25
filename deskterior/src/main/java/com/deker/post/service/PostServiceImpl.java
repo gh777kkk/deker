@@ -85,13 +85,13 @@ public class PostServiceImpl implements PostService{
             pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
         }
+        pm.setRanks(rank);
 
         if (rank.size()==8){
             pm.setRanks(rank);
         }
         else{
-//            int size = 8-rank.size();
-//            rank.get(0).setSize(size);
+
             List<PostProperties> postNew = postMapper.getPostNew(rank);
             for (PostProperties pp : postNew) {
 
@@ -116,8 +116,9 @@ public class PostServiceImpl implements PostService{
         for (PostProperties pp : follow){
             pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
             pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-            pp.setFollowingCheck(postMapper.getPostFollow(pp));
             pp.setMemId(memId);
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
         }
         pm.setFollow(follow);
 
@@ -127,12 +128,13 @@ public class PostServiceImpl implements PostService{
         for (PostProperties pp : custom){
             pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
             pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-            pp.setFollowingCheck(postMapper.getPostFollow(pp));
             pp.setMemId(memId);
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
         }
 
         if (custom.size()==4){
-            pm.setRanks(custom);
+            pm.setCustom(custom);
         }
         else{
 //            int size = 8-rank.size();
@@ -150,7 +152,7 @@ public class PostServiceImpl implements PostService{
             mergedList.addAll(custom);
             mergedList.addAll(postNew);
 
-            pm.setRanks(mergedList);
+            pm.setCustom(mergedList);
 
         }
 

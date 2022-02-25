@@ -13,9 +13,9 @@ public class ProductOption {
     private String memId;
     private String mktProductId;
     private String productName;
-    private int quantity;
-    private String productOption;
-    private int price;
+    private int orderQuantity;
+    private String productOptionId;
+    private int productPrice;
     private String option1;
     private String option1Data;
     private String option2;

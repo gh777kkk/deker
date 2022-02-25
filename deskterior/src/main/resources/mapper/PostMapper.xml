@@ -208,7 +208,7 @@
                 #{item.communityId}
                 </foreach> )
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc
+        order by  l.CREATE_DT desc limit 8
     </select>
 
 

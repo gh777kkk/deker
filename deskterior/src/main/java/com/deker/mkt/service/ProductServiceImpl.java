@@ -12,10 +12,7 @@ import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
 
-import com.deker.mkt.model.resultService.ProductDetailExplain;
-import com.deker.mkt.model.resultService.ProductDetailModel;
-import com.deker.mkt.model.resultService.ProductReview;
-import com.deker.mkt.model.resultService.RecommendedProduct;
+import com.deker.mkt.model.resultService.*;
 import com.deker.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -175,17 +172,41 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void insertProductCart(ProductCart pc){
-        List<ProductOption> oList = pc.getProductOption();
+    public void insertProductCart(List<ProductOption> pOption, String memId){
 
-        for (ProductOption productOption : oList) {
-            productOption.setProductOption(productMapper.getProductOptionId(productOption));
-            productOption.setMemId(pc.getMemId());
+        for (ProductOption productOption : pOption) {
+            ProductOption po = productMapper.getProductOptionId(productOption);
+            productOption.setProductOptionId(po.getProductOptionId());
+            productOption.setProductPrice(po.getProductPrice());
+            System.out.println(po.getProductOptionId());
+            int quantity = productOption.getOrderQuantity();
+            productOption.setProductPrice(quantity* productOption.getProductPrice());
+            productOption.setMemId(memId);
             productOption.setMktCartId(CMMUtil.nextId("cartId"));
             productMapper.insertProductCart(productOption);
         }
 
     }
+
+
+
+    public ProductCartItems getCartList(String memId){
+        List<ProductCartItems> productCartItems = productMapper.getCartList(memId);
+        for (ProductCartItems pc : productCartItems) {
+            pc.setProductImg(CMMUtil.getImg(pc.getProductImg()));
+            List<ProductDetailOption> pdo = productMapper.getProductDetailOption(pc.getMktProductId());
+            pc.setProductDetailOption(pdo.get(0));
+
+        }
+        ProductCartItems result = new ProductCartItems();
+        result.setProductCartItems(productCartItems);
+
+        return result;
+    }
+
+
+
+
 
 
     public ProductBuyOption getProductBuyList(ProductBuy pb){
@@ -194,7 +215,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductOption> oList = pb.getProductOption();
 
         for (ProductOption productOption : oList) {
-            productOption.setProductOption(productMapper.getProductOptionId(productOption));
+            //productOption.setProductOption(productMapper.getProductOptionId(productOption));
         }
 
         pbo.setProductOption(oList);
