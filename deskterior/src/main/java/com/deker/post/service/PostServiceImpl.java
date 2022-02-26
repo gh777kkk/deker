@@ -93,6 +93,12 @@ public class PostServiceImpl implements PostService{
         else{
 
             List<PostProperties> postNew = postMapper.getPostNew(rank);
+
+            int size = 8-postNew.size();
+            for (int i=size; i<postNew.size(); i++){
+                postNew.remove(i);
+            }
+
             for (PostProperties pp : postNew) {
 
                 pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
@@ -137,9 +143,13 @@ public class PostServiceImpl implements PostService{
             pm.setCustom(custom);
         }
         else{
-//            int size = 8-rank.size();
-//            rank.get(0).setSize(size);
             List<PostProperties> postNew = postMapper.getPostNew(custom);
+
+            int size = 4-custom.size();
+            for (int i=size; i<postNew.size(); i++){
+                postNew.remove(i);
+            }
+
             for (PostProperties pp : postNew) {
 
                 pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
