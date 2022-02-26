@@ -187,10 +187,10 @@
              (select CONTENTS
               from study_gh.MEMBER_TAG
               where MEM_ID = #{memId}) as mt
-        where t.CONTENTS in (mt.CONTENTS) and t.POST_DETAIL_ID = d.POST_DETAIL_ID
+        where t.POST_DETAIL_ID = d.POST_DETAIL_ID and t.CONTENTS = mt.CONTENTS
           and l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID
-        group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc limit 4
+        group by l.CREATE_DT
+        order by COUNT(d.POST_ID) desc, l.CREATE_DT desc limit 4
     </select>
 
 
@@ -204,12 +204,14 @@
                post_img AS communityImage
         from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d
         where l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID
-          and d.POST_ID NOT IN
-              (<foreach collection="list" item="item" separator=",">
-                #{item.communityId}
-                </foreach> )
+        <if test="list!=null and list.size!=0">
+            and d.POST_ID NOT IN
+            (<foreach collection="list" item="item" separator=",">
+                    #{item.communityId}
+            </foreach> )
+          </if>
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc limit 8
+        order by  l.CREATE_DT desc limit
     </select>
 
 
