@@ -123,17 +123,20 @@ public class MBMarketController {
     }
 
 
-    @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
-    public ResponseEntity<?> getBuyList(@RequestBody ProductBuy pb, HttpServletRequest request) {
+//    @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
+//    public ResponseEntity<?> getBuyList(@RequestBody Product, HttpServletRequest request) {
+//
+//        String memId = jwtProvider.getMemIdFromJwtToken(request);
+//        pb.setMemId(memId);
+//        return ResponseEntity.ok(
+//                new Result("200", "결제 페이지",
+//                        productService.getProductBuyList(pb)
+//                )
+//        );
+//    }
 
-        String memId = jwtProvider.getMemIdFromJwtToken(request);
-        pb.setMemId(memId);
-        return ResponseEntity.ok(
-                new Result("200", "결제 페이지",
-                        productService.getProductBuyList(pb)
-                )
-        );
-    }
+
+
 
     @RequestMapping(value = "/get/tracking", method = RequestMethod.POST)
     public ResponseEntity<?> getTracking(@RequestBody ProductOrder conditions) throws Exception {
