@@ -87,6 +87,7 @@
         group by d.POST_ID
     </select>
 
+
     <select id="getPostLike" resultType="PostProperties">
         select lk.POST_ID AS communityId, count(lk.POST_ID) AS likeCount
         from study_gh.POST_LIKE lk

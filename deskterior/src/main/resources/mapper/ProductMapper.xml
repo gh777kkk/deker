@@ -234,6 +234,7 @@
                price AS totalPrice
         from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
         where c.MEM_ID = #{memId} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
+                and c.USE_YN='N'
     </select>
 
 
