@@ -71,6 +71,9 @@ public class PostServiceImpl implements PostService{
 
 
     public PostMain getPostMain(String memId){
+
+
+
         PostMain pm = new PostMain();
 
         List<PostProperties> rank = postMapper.getPostLike();
@@ -85,88 +88,35 @@ public class PostServiceImpl implements PostService{
             pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
         }
-        pm.setRanks(rank);
 
-        if (rank.size()==8){
             pm.setRanks(rank);
-        }
-        else{
 
-            List<PostProperties> postNew = postMapper.getPostNew(rank);
 
-            int size = 8-postNew.size();
-            for (int i=size; i<postNew.size(); i++){
-                postNew.remove(i);
-            }
+        if(memId != null) {
 
-            for (PostProperties pp : postNew) {
-
-                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
+            List<PostProperties> follow = postMapper.getPostMyFollow(memId);
+            for (PostProperties pp : follow) {
+                pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-                pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
                 pp.setMemId(memId);
                 pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
+            }
+            pm.setFollow(follow);
+
+
+            List<PostProperties> custom = postMapper.getPostCustom(memId);
+            for (PostProperties pp : custom) {
+                pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setMemId(memId);
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
             }
 
-            List<PostProperties> mergedList = new ArrayList<>();
-            mergedList.addAll(rank);
-            mergedList.addAll(postNew);
-
-            pm.setRanks(mergedList);
-
-        }
-
-
-
-        List<PostProperties> follow = postMapper.getPostMyFollow(memId);
-        for (PostProperties pp : follow){
-            pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
-            pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-            pp.setMemId(memId);
-            pp.setFollowingCheck(postMapper.getPostFollow(pp));
-
-        }
-        pm.setFollow(follow);
-
-
-
-        List<PostProperties> custom = postMapper.getPostCustom(memId);
-        for (PostProperties pp : custom){
-            pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
-            pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-            pp.setMemId(memId);
-            pp.setFollowingCheck(postMapper.getPostFollow(pp));
-
-        }
-
-        if (custom.size()==4){
             pm.setCustom(custom);
-        }
-        else{
-            List<PostProperties> postNew = postMapper.getPostNew(custom);
-
-            int size = 4-custom.size();
-            for (int i=size; i<postNew.size(); i++){
-                postNew.remove(i);
-            }
-
-            for (PostProperties pp : postNew) {
-
-                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
-                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
-                pp.setMemId(memId);
-                pp.setFollowingCheck(postMapper.getPostFollow(pp));
-            }
-
-            List<PostProperties> mergedList = new ArrayList<>();
-            mergedList.addAll(custom);
-            mergedList.addAll(postNew);
-
-            pm.setCustom(mergedList);
 
         }
-
-
 
         return pm;
     }
@@ -193,6 +143,7 @@ public class PostServiceImpl implements PostService{
     public PostDetail getPostDetail(PostDetail pd){
 
         MyPost mp = postMapper.getSelectPostDetail(pd.getCommunityPostId());
+        mp.setPostImg(CMMUtil.getImg(mp.getPostImg()));
 
         List<MyPost> tags = postMapper.getPostTag(mp.getPostDetailId());
         List<String> communityTags = new ArrayList<>();

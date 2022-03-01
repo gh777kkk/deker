@@ -3,6 +3,7 @@ package com.deker.acct.controller;
 import com.deker.acct.model.AcctConditions;
 import com.deker.acct.service.AcctService;
 import com.deker.cmm.model.Result;
+import com.deker.post.model.MyPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,8 @@ public class AcctController {
     }
 
     @RequestMapping(value = "/mb/acct/mod/member-info", method = RequestMethod.POST)
-    public ResponseEntity<Result> modMemberInfo(@RequestParam("profileImg") MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception{
+    public ResponseEntity<Result> modMemberInfo(@RequestParam(value = "profileImg", required = false) MultipartFile profileImg,
+                                                @RequestPart("myAccountInfo") AcctConditions conditions,HttpServletRequest request) throws Exception{
         return ResponseEntity.ok(new Result("200","회원정보 변경",acctService.modMemberInfo(profileImg,conditions,request)));
     }
 
