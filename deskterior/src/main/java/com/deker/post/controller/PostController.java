@@ -53,7 +53,7 @@ public class PostController {
 
 
     @RequestMapping(value = "/mb/post/get", method = RequestMethod.POST)
-    public ResponseEntity<Result> regPost(HttpServletRequest request){
+    public ResponseEntity<Result> getPost(HttpServletRequest request){
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         return ResponseEntity.ok(new Result("200","커뮤니티 메인",
@@ -61,6 +61,18 @@ public class PostController {
 
         ));
         
+    }
+
+
+    @RequestMapping(value = "/nmb/post/get", method = RequestMethod.POST)
+    public ResponseEntity<Result> ngetPost(HttpServletRequest request){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        return ResponseEntity.ok(new Result("200","커뮤니티 메인",
+                postService.getPostMain(memId)
+
+        ));
+
     }
 
 
