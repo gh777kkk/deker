@@ -238,6 +238,60 @@
     </select>
 
 
+    <select id="getCheckedCart" resultType="ProductCartToOderItem">
+        select c.product_id AS mktProductId,
+               p.PRODUCT_PRICE AS productPrice,
+               c.cart_quant AS productSelectedQuantity,
+               c.poduct_option AS productOptionId,
+               c.price AS totalPrice
+        from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
+        where c.MKT_CART_ID = #{id} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
+          and c.USE_YN='N'
+    </select>
+
+
+
+    <insert id="insertOrderItem" parameterType="ProductCartToOderItem">
+        insert into study_gh.MKT_ORDER
+        (
+            order_id,
+            mem_id,
+            product_id,
+            option_id,
+            order_price,
+            order_quantity
+        )
+        VALUES (
+                   #{orderItemId},
+                   #{memId},
+                   #{mktProductId},
+                   #{productOptionId},
+                   #{productPrice},
+                   #{productSelectedQuantity}
+               )
+    </insert>
+
+
+
+    <insert id="insertMyOrderItem" parameterType="ProductCartToOderItem">
+        insert into study_gh.MKT_MY_ORDER
+        (
+         my_order_id,
+         order_item_id,
+         mem_id
+
+        )
+        VALUES (
+                   #{myOderId},
+                   #{orderItemId},
+                   #{memId}
+               )
+    </insert>
+
+
+
+
+
 
 
 
