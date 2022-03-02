@@ -179,7 +179,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/review", method = RequestMethod.POST)
-    public ResponseEntity<?> regProductReview( @RequestParam("myImg") MultipartFile myImg, ProductReview pr, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> regProductReview( @RequestParam(value = "myImg", required = false) MultipartFile myImg, ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
@@ -194,7 +194,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
-    public ResponseEntity<?> modReview(@RequestParam("myImg") MultipartFile myImg,
+    public ResponseEntity<?> modReview(@RequestParam(value = "myImg", required = false) MultipartFile myImg,
                                        @RequestBody ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);

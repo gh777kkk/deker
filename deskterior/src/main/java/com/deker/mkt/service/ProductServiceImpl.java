@@ -3,6 +3,7 @@ package com.deker.mkt.service;
 import com.deker.cmm.model.Menu;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.model.PageReview;
+import com.deker.cmm.model.PagingConditions;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
 import com.deker.mkt.mapper.ProductMapper;
@@ -14,6 +15,7 @@ import com.deker.mkt.model.response.*;
 
 import com.deker.mkt.model.resultService.*;
 import com.deker.post.model.Post;
+import com.deker.post.model.PostComment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +68,19 @@ public class ProductServiceImpl implements ProductService {
         return marketMainModel;
     }
 
+
+    public PageInfo<ProductModel> getMoreBestSaleProductList(PagingConditions pc){
+
+
+
+        int nonpagedCount = productMapper.getProductCount();
+        PageInfo<ProductModel> pageInfo = new PageInfo<>(pc,nonpagedCount);
+
+        pageInfo.setList(productMapper.getMoreBestSaleProductList(pc));
+
+
+        return pageInfo;
+    }
 
 
     public ProductCategory getCategoryList(String code){
@@ -206,7 +221,7 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public String insertBuyCartList(ProductCode pc){
+    public ProductCode insertBuyCartList(ProductCode pc){
 
         String myOrderId = CMMUtil.nextId("myOdId");
 
@@ -222,8 +237,9 @@ public class ProductServiceImpl implements ProductService {
 
         }
 
+        pc.setOrderId(myOrderId);
 
-        return myOrderId;
+        return pc;
     }
 
 

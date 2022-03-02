@@ -19,6 +19,28 @@
     </select>
 
 
+    <select id="getMoreBestSaleProductList" resultType="ProductModel">
+        select MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_NAME AS productName,
+               PRODUCT_IMG AS productImg,
+               count(PRODUCT_ID)
+        from study_gh.MKT_PRODUCT p
+                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+            and ORDER_CONFIRM = 'Y'
+        group by MKT_PRODUCT_ID
+        order by count(PRODUCT_ID) desc
+        LIMIT #{startRowNo}, #{endRowNo}
+    </select>
+
+
+
+    <select id="getProductCount" resultType="int">
+        select COUNT(MKT_PRODUCT_ID)
+        from study_gh.MKT_PRODUCT p
+    </select>
+
+
 
     <select id="getNoBestSaleProductList" parameterType="ProductOrder" resultType="ProductModel">
         select p.MKT_PRODUCT_ID AS mktProductId,

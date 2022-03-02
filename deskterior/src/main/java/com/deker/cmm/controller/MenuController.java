@@ -32,7 +32,7 @@ public class MenuController {
 
     //reg, get, mod, del
 
-    @RequestMapping(value = "/nmb", method = RequestMethod.POST)
+    @RequestMapping(value = "/nmb/cmm/get/nav-menu", method = RequestMethod.POST)
     public ResponseEntity<?> getNmbMenu(HttpServletRequest request) {
 
         return ResponseEntity.ok(
@@ -41,7 +41,7 @@ public class MenuController {
         );
     }
 
-    @RequestMapping(value = "/mb", method = RequestMethod.POST)
+    @RequestMapping(value = "/mb/cmm/get/nav-menu", method = RequestMethod.POST)
     public ResponseEntity<?> getMbMenu(HttpServletRequest request) {
 
         return ResponseEntity.ok(

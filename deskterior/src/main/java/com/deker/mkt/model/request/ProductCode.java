@@ -12,4 +12,5 @@ public class ProductCode {
     private String categoryId;
     private String memId;
     private List<String> cartIdArr;
+    private String orderId;
 }
