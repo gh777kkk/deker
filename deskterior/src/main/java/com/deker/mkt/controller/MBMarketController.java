@@ -123,17 +123,17 @@ public class MBMarketController {
     }
 
 
-//    @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
-//    public ResponseEntity<?> getBuyList(@RequestBody Product, HttpServletRequest request) {
-//
-//        String memId = jwtProvider.getMemIdFromJwtToken(request);
-//        pb.setMemId(memId);
-//        return ResponseEntity.ok(
-//                new Result("200", "결제 페이지",
-//                        productService.getProductBuyList(pb)
-//                )
-//        );
-//    }
+    @RequestMapping(value = "/reg/checked-cart", method = RequestMethod.POST)
+    public ResponseEntity<?> getBuyList(@RequestBody ProductCode pc, HttpServletRequest request) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
+        return ResponseEntity.ok(
+                new Result("200", "결제 페이지",
+                        productService.insertBuyCartList(pc)
+                )
+        );
+    }
 
 
 

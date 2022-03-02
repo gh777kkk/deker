@@ -206,6 +206,25 @@ public class ProductServiceImpl implements ProductService {
 
 
 
+    public String insertBuyCartList(ProductCode pc){
+
+        String myOrderId = CMMUtil.nextId("myOdId");
+
+        for(String id : pc.getCartIdArr()){
+            ProductCartToOderItem item = productMapper.getCheckedCart(id);
+
+            item.setOrderItemId(CMMUtil.nextId("ordId"));
+            item.setMemId(pc.getMemId());
+            productMapper.insertOrderItem(item);
+
+            item.setMyOderId(myOrderId);
+            productMapper.insertMyOrderItem(item);
+
+        }
+
+
+        return myOrderId;
+    }
 
 
 
@@ -224,6 +243,11 @@ public class ProductServiceImpl implements ProductService {
 
         return pbo;
     }
+
+
+
+
+
 
     public ProductTracking getProductTracking(ProductOrder conditions) throws Exception{
         ProductTracking result = productMapper.selectProductTracking(conditions);

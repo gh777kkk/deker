@@ -2,10 +2,7 @@ package com.deker.mkt.mapper;
 
 import com.deker.cmm.model.Menu;
 import com.deker.mkt.model.*;
-import com.deker.mkt.model.request.MyShoppingConditions;
-import com.deker.mkt.model.request.ProductBuy;
-import com.deker.mkt.model.request.ProductCartItems;
-import com.deker.mkt.model.request.ProductOrder;
+import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +28,9 @@ public interface ProductMapper {
 
     void insertProductCart(ProductOption pc);
     List<ProductCartItems> getCartList(String memId);
-
+    ProductCartToOderItem getCheckedCart(String id);
+    void insertOrderItem(ProductCartToOderItem item);
+    void insertMyOrderItem(ProductCartToOderItem item);
 
     void insertRecentProduct(RecentProduct pp);
 

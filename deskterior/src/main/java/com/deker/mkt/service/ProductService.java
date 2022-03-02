@@ -29,6 +29,7 @@ public interface ProductService {
 
     void insertProductCart(List<ProductOption> po, String memId);
     ProductCartItems getCartList(String memId);
+    String insertBuyCartList(ProductCode pc);
 
 
 
