@@ -1,6 +1,7 @@
 package com.deker.mkt.mapper;
 
 import com.deker.cmm.model.Menu;
+import com.deker.cmm.model.PagingConditions;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
@@ -13,6 +14,10 @@ import java.util.List;
 public interface ProductMapper {
     List<ProductModel> getBestSaleProductList();
     List<MarketCategory> getProductCategory();
+
+    List<ProductModel> getMoreBestSaleProductList(PagingConditions pc);
+    int getProductCount();
+
 
     List<ProductModel> getBestCategoryProductList(String codeId);
     List<ProductModel> getNewCategoryProductList(String codeId);

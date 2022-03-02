@@ -1,5 +1,6 @@
 package com.deker.mkt.controller;
 
+import com.deker.cmm.model.PagingConditions;
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductKeyword;
@@ -42,11 +43,11 @@ public class NMBMarketController {
     }
 
     @RequestMapping(value = "/get/product/more", method = RequestMethod.POST)
-    public ResponseEntity<?> getProductMore() {
+    public ResponseEntity<?> getProductMore(PagingConditions pc) {
 
         return ResponseEntity.ok(
                 new Result("200", "스토어 메인 더보기",
-                        productService.getBestSaleProductList())
+                        productService.getMoreBestSaleProductList(pc))
         );
     }
 

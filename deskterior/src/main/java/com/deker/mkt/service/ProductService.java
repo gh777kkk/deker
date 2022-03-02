@@ -2,6 +2,7 @@ package com.deker.mkt.service;
 
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.model.PageReview;
+import com.deker.cmm.model.PagingConditions;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface ProductService {
 
     MarketMainModel getBestSaleProductList();
+    PageInfo<ProductModel> getMoreBestSaleProductList(PagingConditions pc);
 
 
     ProductCategory getCategoryList(String code);
@@ -29,7 +31,7 @@ public interface ProductService {
 
     void insertProductCart(List<ProductOption> po, String memId);
     ProductCartItems getCartList(String memId);
-    String insertBuyCartList(ProductCode pc);
+    ProductCode insertBuyCartList(ProductCode pc);
 
 
 
