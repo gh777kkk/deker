@@ -50,6 +50,9 @@ dependencies {
 	//session
 	implementation 'org.springframework.session:spring-session-core'
 
+	//log
+	implementation group: 'org.bgee.log4jdbc-log4j2', name:'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+
 }
 
 test {

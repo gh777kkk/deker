@@ -6,39 +6,18 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-POST http://localhost:6012/nmb/acct/get/member
+
+POST http://localhost:6012/mb/mkt/get/my-address
+Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
-
-{
-  "id" : "test@test.net",
-  "password" : "dekerTest",
-  "platformCode" : "P01"
-}
-
-> {%
-client.global.set("jwtToken", response.body.data.jwtToken);
-%}
 
 ###
 
-POST http://localhost:6012/mb/post/get/my-post-list
+POST http://localhost:6012/mb/post/rmv/post
 Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
 
 {
-  "currentPageNo" : 3
+  "postId" : "cmId_999999999999650"
 }
-###
-
-POST http://localhost:6012/nmb/acct/reg/member
-Content-Type: application/json
-
-{
-  "id" : "test@test.net",
-  "password" : "dekerTest",
-  "platformCode" : "P01",
-  "nickname" : "test",
-  "agreeYn" : "Y"
-}
-
 ###

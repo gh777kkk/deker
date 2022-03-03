@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PostService {
-    PageInfo<Post> getMemberInfo(HttpServletRequest request, PostConditions conditions) throws Exception;
+    PageInfo<Post> getMemberInfo(PostConditions conditions) throws Exception;
 
     void regPost(MyPost mp, MultipartFile img) throws IOException;
 
@@ -22,4 +22,6 @@ public interface PostService {
     PageInfo<PostComment> getPostComments(PostCommentConditions conditions);
 
     PostDetail getPostDetail(PostDetail pd);
+
+    public void rmvPost(PostConditions conditions) throws Exception;
 }

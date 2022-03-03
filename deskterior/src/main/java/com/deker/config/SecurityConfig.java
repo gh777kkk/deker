@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/nmb/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/mb/**").hasRole("USER")
                 .antMatchers("/**").authenticated()
                 .and()

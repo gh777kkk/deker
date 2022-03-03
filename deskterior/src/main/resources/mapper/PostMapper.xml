@@ -302,7 +302,23 @@
         order by  l.CREATE_DT desc limit 8
     </select>
 
+    <select id="selectPostMemId" parameterType="PostConditions" resultType="Post">
+        SELECT      MEM_ID      memId
+        FROM POST_LIST
+        WHERE POST_ID = #{postId}
+    </select>
 
+    <update id="deletePostList" parameterType="PostConditions">
+        UPDATE  POST_LIST
+        SET     USE_YN = 'N'
+        WHERE   POST_ID = #{postId}
+    </update>
+
+    <update id="deletePostDetail" parameterType="PostConditions">
+        UPDATE  POST_DETAIL
+        SET     USE_YN = 'N'
+        WHERE   POST_ID = #{postId}
+    </update>
 
 
 

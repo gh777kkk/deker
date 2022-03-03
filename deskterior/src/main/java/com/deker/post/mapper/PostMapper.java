@@ -42,4 +42,8 @@ public interface PostMapper {
 
 
     List<PostProperties> getPostNew(List<PostProperties> pp);
+
+    Post selectPostMemId(PostConditions conditions);
+    void deletePostList(PostConditions conditions);
+    void deletePostDetail(PostConditions conditions);
 }

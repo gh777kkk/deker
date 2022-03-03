@@ -9,6 +9,7 @@ import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public interface ProductService {
     PageInfo<MyShoppingList> getOrderProduct(MyShoppingConditions conditions);
 
 
+    List<MyAddress> getMyAddressList(String memId);
 
 
 

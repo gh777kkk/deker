@@ -525,9 +525,17 @@
               PRODUCT_EXPLAIN like CONCAT('%', #{keyword}, '%')
     </select>
 
-
-
-
+    <select id="selectMyAddressList" parameterType="String" resultType="MyAddress">
+        SELECT      ADD_ID                                  addId
+                ,   ADD_NICKNAME                            addNickname
+                ,   ADD_ZIP                                 addZip
+                ,   CONCAT(ADDRESS , ' ' , ADD_DETAIL)      address
+                ,   ADD_NAME                                addName
+                ,   PHONE_NUMBER                            phoneNumber
+        FROM MKT_ADDRESS
+        WHERE   MEM_ID = #{memId}
+        AND     ADD_DEFAULT = 'Y'
+    </select>
 
 </mapper>
 
