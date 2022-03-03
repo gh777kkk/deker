@@ -69,5 +69,6 @@ public interface ProductMapper {
     List<MyShoppingList> selectMyShoppingList(MyShoppingConditions conditions);
     Integer selectMyShoppingListCount(MyShoppingConditions conditions);
 
+    List<MyAddress> selectMyAddressList(String memId);
 }
 

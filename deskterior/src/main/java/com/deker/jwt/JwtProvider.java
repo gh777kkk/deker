@@ -40,8 +40,7 @@ public class JwtProvider {
     }
 
     public Date getExpToken(String token) {
-        if (validateJwtToken(token))  Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getExpiration();
-        return null;
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getExpiration();
     }
 
     public String getToken(HttpServletRequest request){

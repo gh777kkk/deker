@@ -220,6 +220,17 @@ public class MBMarketController {
     }
 
 
+    @RequestMapping(value = "/get/my-address", method = RequestMethod.POST)
+    public ResponseEntity<?> getMyAddressList(HttpServletRequest request) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+
+        return ResponseEntity.ok(
+                new Result("200", "나의 배송지",productService.getMyAddressList(memId)
+                )
+        );
+    }
+
 
    //끝
 }

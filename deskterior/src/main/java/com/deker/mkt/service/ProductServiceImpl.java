@@ -6,6 +6,7 @@ import com.deker.cmm.model.PageReview;
 import com.deker.cmm.model.PagingConditions;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
+import com.deker.jwt.JwtProvider;
 import com.deker.mkt.mapper.ProductMapper;
 
 import com.deker.mkt.model.*;
@@ -27,6 +28,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -376,7 +378,9 @@ public class ProductServiceImpl implements ProductService {
         return pageInfo;
     }
 
-
+    public List<MyAddress> getMyAddressList(String memId){
+        return productMapper.selectMyAddressList(memId);
+    }
 
 
     @Async
