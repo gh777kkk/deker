@@ -118,13 +118,25 @@
                m.PROFILE_IMG AS writerProfileImgUrl,
                c.CONTENTS AS content,
                c.POST_COMMENT_ID AS postCommentId
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_COMMENT c
-        where l.POST_ID = #{communityId} and c.POST_ID = #{communityId}
-          and m.MEM_ID = l.MEM_ID
+        from study_gh.MEMBER m, study_gh.POST_COMMENT c
+        where  c.POST_ID = #{communityId}
+          and m.MEM_ID = c.MEM_ID
         group by c.POST_COMMENT_ID, c.UPDATE_DT
         order by c.UPDATE_DT desc
         LIMIT #{startRowNo}, #{endRowNo}
     </select>
+
+
+    <insert id="insertPostComment" parameterType="PostComment">
+        insert into study_gh.POST_COMMENT
+        (
+           post_comment_id, post_id, pre_post_comment_id, contents, MEM_ID
+        )
+        VALUES (
+                   #{postCommentId}, #{communityId}, 'pcId_000000000000000', #{content}, #{memId}
+               )
+    </insert>
+
 
 
     <select id="getSelectPostDetail" resultType="MyPost">

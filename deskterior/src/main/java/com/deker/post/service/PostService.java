@@ -21,6 +21,8 @@ public interface PostService {
 
     PageInfo<PostComment> getPostComments(PostCommentConditions conditions);
 
+    void regPostComments(PostComment pc);
+
     PostDetail getPostDetail(PostDetail pd);
 
     public void rmvPost(PostConditions conditions) throws Exception;

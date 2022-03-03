@@ -197,6 +197,16 @@ public class PostServiceImpl implements PostService{
 
 
 
+    public void regPostComments(PostComment pc){
+
+        pc.setPostCommentId(CMMUtil.nextId("pcId"));
+
+        postMapper.insertPostComment(pc);
+
+    }
+
+
+
     public PostDetail getPostDetail(PostDetail pd){
 
         MyPost mp = postMapper.getSelectPostDetail(pd.getCommunityPostId());

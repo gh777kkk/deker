@@ -32,6 +32,8 @@ public interface PostMapper {
 
 
     List<PostComment> getPostComment(PostCommentConditions conditions);
+    void insertPostComment(PostComment pc);
+
 
     MyPost getSelectPostDetail(String communityId);
     List<MyPost> getPostTag (String postDetailId);
