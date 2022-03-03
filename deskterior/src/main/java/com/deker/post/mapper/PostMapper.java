@@ -21,6 +21,16 @@ public interface PostMapper {
     int getPostCommentCount(String communityId);
     boolean getPostFollow(PostProperties pp);
 
+
+
+    int getMorePostCount();
+    List<PostProperties> getMorePostLike(PostConditions pc);
+    int getPostMyFollowCount(PostConditions pc);
+    List<PostProperties> getMorePostMyFollow(PostConditions pc);
+    int getMorePostCustomCount(PostConditions pc);
+    List<PostProperties> getMorePostCustom(PostConditions pc);
+
+
     List<PostComment> getPostComment(PostCommentConditions conditions);
 
     MyPost getSelectPostDetail(String communityId);

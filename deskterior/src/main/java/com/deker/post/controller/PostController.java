@@ -64,6 +64,34 @@ public class PostController {
     }
 
 
+
+    @RequestMapping(value = "/mb/post/get/more", method = RequestMethod.POST)
+    public ResponseEntity<Result> getMorePost(HttpServletRequest request,@RequestBody PostConditions conditions){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        return ResponseEntity.ok(new Result("200","커뮤니티 메인 더보기",
+                postService.getMorePostMain(conditions)
+
+        ));
+
+    }
+
+    @RequestMapping(value = "/nmb/post/get/more", method = RequestMethod.POST)
+    public ResponseEntity<Result> getNbMorePost(HttpServletRequest request, @RequestBody PostConditions conditions){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        return ResponseEntity.ok(new Result("200","비회원 커뮤니티 메인 더보기",
+                postService.getMorePostMain(conditions)
+
+        ));
+
+    }
+
+
+
+
     @RequestMapping(value = "/nmb/post/get", method = RequestMethod.POST)
     public ResponseEntity<Result> ngetPost(HttpServletRequest request){
 

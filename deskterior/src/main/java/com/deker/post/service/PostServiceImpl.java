@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostService{
                 pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
                 pp.setMemId(memId);
-                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+                pp.setFollowingCheck(true);
 
             }
             pm.setFollow(follow);
@@ -119,6 +119,67 @@ public class PostServiceImpl implements PostService{
         }
 
         return pm;
+    }
+
+
+
+    public PageInfo<PostProperties> getMorePostMain(PostConditions conditions){
+
+        PageInfo<PostProperties> pageInfo = null;
+
+        if(conditions.getType().equals("rank")){
+
+            int nonpagedCount = postMapper.getMorePostCount();
+            pageInfo = new PageInfo<>(conditions,nonpagedCount);
+
+            List<PostProperties> rank = postMapper.getMorePostLike(conditions);
+            for (PostProperties pp : rank) {
+                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
+                pp.setMemId(conditions.getMemId());
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+            }
+
+            pageInfo.setList(rank);
+
+        }
+        else if(conditions.getType().equals("follow")){
+
+            int nonpagedCount = postMapper.getPostMyFollowCount(conditions);
+            pageInfo = new PageInfo<>(conditions,nonpagedCount);
+
+            List<PostProperties> follow = postMapper.getMorePostMyFollow(conditions);
+            for (PostProperties pp : follow) {
+                pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setMemId(conditions.getMemId());
+                pp.setFollowingCheck(true);
+
+            }
+            pageInfo.setList(follow);
+
+
+        }
+        else if(conditions.getType().equals("custom")){
+
+            int nonpagedCount = postMapper.getMorePostCustomCount(conditions);
+            pageInfo = new PageInfo<>(conditions,nonpagedCount);
+
+            List<PostProperties> custom = postMapper.getMorePostCustom(conditions);
+            for (PostProperties pp : custom) {
+                pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setMemId(conditions.getMemId());
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
+            }
+            pageInfo.setList(custom);
+
+
+        }
+        return pageInfo;
+
     }
 
 
