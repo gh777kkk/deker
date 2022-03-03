@@ -35,11 +35,13 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        if (validateJwtToken(token)) return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return null;
     }
 
-    public Date getExpToken(String jwt) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getExpiration();
+    public Date getExpToken(String token) {
+        if (validateJwtToken(token))  Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getExpiration();
+        return null;
     }
 
     public String getToken(HttpServletRequest request){
