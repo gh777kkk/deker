@@ -123,17 +123,17 @@ public class MBMarketController {
     }
 
 
-//    @RequestMapping(value = "/get/buy-now", method = RequestMethod.POST)
-//    public ResponseEntity<?> getBuyList(@RequestBody Product, HttpServletRequest request) {
-//
-//        String memId = jwtProvider.getMemIdFromJwtToken(request);
-//        pb.setMemId(memId);
-//        return ResponseEntity.ok(
-//                new Result("200", "결제 페이지",
-//                        productService.getProductBuyList(pb)
-//                )
-//        );
-//    }
+    @RequestMapping(value = "/reg/checked-cart", method = RequestMethod.POST)
+    public ResponseEntity<?> getBuyList(@RequestBody ProductCode pc, HttpServletRequest request) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
+        return ResponseEntity.ok(
+                new Result("200", "결제 페이지",
+                        productService.insertBuyCartList(pc)
+                )
+        );
+    }
 
 
 
@@ -179,7 +179,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/review", method = RequestMethod.POST)
-    public ResponseEntity<?> regProductReview( @RequestParam("myImg") MultipartFile myImg, ProductReview pr, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> regProductReview( @RequestParam(value = "myImg", required = false) MultipartFile myImg, ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
@@ -194,7 +194,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
-    public ResponseEntity<?> modReview(@RequestParam("myImg") MultipartFile myImg,
+    public ResponseEntity<?> modReview(@RequestParam(value = "myImg", required = false) MultipartFile myImg,
                                        @RequestBody ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
