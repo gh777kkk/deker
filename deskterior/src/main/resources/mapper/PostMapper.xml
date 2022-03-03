@@ -90,12 +90,12 @@
 
     <select id="getPostLike" resultType="PostProperties">
         SELECT L.POST_ID AS communityId,
-                COUNT(K.MEM_ID) AS LIKE_COUNT
+                COUNT(K.MEM_ID) AS likeCount
         FROM study_gh.POST_LIST L
         LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
         WHERE date(L.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
         GROUP BY L.POST_ID, L.CREATE_DT
-        ORDER BY LIKE_COUNT DESC, L.CREATE_DT DESC
+        ORDER BY likeCount DESC, L.CREATE_DT DESC
         limit 8
     </select>
 
@@ -161,6 +161,33 @@
 
 
 
+    <select id="getMorePostCount" resultType="int">
+        SELECT count(L.POST_ID)
+        FROM study_gh.POST_LIST L
+                 LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
+    </select>
+
+
+    <select id="getMorePostLike" resultType="PostProperties">
+        SELECT d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               L.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage,
+               COUNT(K.MEM_ID) AS likeCount
+        FROM study_gh.POST_LIST L
+                 left join study_gh.MEMBER m on L.MEM_ID = m.MEM_ID
+                 Left Join study_gh.POST_DETAIL d on L.POST_ID = d.POST_ID
+                 LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
+        GROUP BY L.POST_ID, L.CREATE_DT
+        ORDER BY likeCount DESC, L.CREATE_DT DESC
+        limit #{startRowNo}, #{endRowNo}
+    </select>
+
+
+
+
     <select id="getPostMyFollow" resultType="PostProperties">
         select d.POST_ID AS communityId,
                d.post_title AS communityTitle,
@@ -177,6 +204,33 @@
         order by  l.CREATE_DT desc limit 4
     </select>
 
+
+    <select id="getPostMyFollowCount" resultType="int">
+        select count(d.POST_ID)
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+             (select FOLLOWING
+              from study_gh.FOLLOW
+              where FOLLOWER = #{memId}) as f
+        where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
+    </select>
+
+
+    <select id="getMorePostMyFollow" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+             (select FOLLOWING
+              from study_gh.FOLLOW
+              where FOLLOWER = #{memId}) as f
+        where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
+        group by l.POST_ID, l.CREATE_DT
+        order by  l.CREATE_DT desc
+        limit #{startRowNo}, #{endRowNo}
+    </select>
 
 
 
@@ -195,6 +249,37 @@
         group by  l.POST_ID, l.CREATE_DT
         order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc limit 4
     </select>
+
+
+    <select id="getMorePostCustomCount" resultType="int">
+        select COUNT(d.POST_ID)
+        from study_gh.MEMBER m, study_gh.POST_LIST l
+                                    LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
+                                    LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
+                                    LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
+        where  m.MEM_ID = l.MEM_ID and date(l.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
+    </select>
+
+
+
+    <select id="getMorePostCustom" resultType="PostProperties">
+        select d.POST_ID AS communityId,
+               d.post_title AS communityTitle,
+               l.MEM_ID AS userId,
+               m.NICKNAME AS userNick,
+               m.PROFILE_IMG AS userProfileImg,
+               post_img AS communityImage
+        from study_gh.MEMBER m, study_gh.POST_LIST l
+                                    LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
+                                    LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
+                                    LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
+        where  m.MEM_ID = l.MEM_ID and date(l.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
+        group by  l.POST_ID, l.CREATE_DT
+        order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc
+        limit #{startRowNo}, #{endRowNo}
+    </select>
+
+
 
 
 

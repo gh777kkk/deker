@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 public class PostConditions extends PagingConditions {
     private String memId;
+    private String type;
     private String postId;
 }
