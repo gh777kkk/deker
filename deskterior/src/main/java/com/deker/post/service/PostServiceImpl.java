@@ -2,6 +2,7 @@ package com.deker.post.service;
 
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.util.CMMUtil;
+import com.deker.exception.PostIdMemIdDifferentException;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
 import com.deker.post.mapper.PostMapper;
@@ -22,16 +23,11 @@ import java.util.List;
 @Transactional
 public class PostServiceImpl implements PostService{
 
-    private final JwtProvider jwtProvider;
-
     private final PostMapper postMapper;
 
     private final CMMUtil CMMUtil;
 
-    @Override
-    public PageInfo<Post> getMemberInfo(HttpServletRequest request, PostConditions conditions) throws Exception{
-//        PostConditions conditions = new PostConditions();
-        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+    public PageInfo<Post> getMemberInfo(PostConditions conditions) throws Exception{
         Post post = new Post();
         if(postMapper.selectMemberProfileImg(conditions) != null) post.setProfileImg(CMMUtil.getImg(postMapper.selectMemberProfileImg(conditions).getProfileImg()));
         post.setPostList(postMapper.selectMyPostList(conditions));
@@ -161,6 +157,13 @@ public class PostServiceImpl implements PostService{
         pd.setCommunityPostSelectedProduct(cpList);
 
         return pd;
+    }
+
+    public void rmvPost(PostConditions conditions) throws Exception{
+        if (postMapper.selectPostMemId(conditions) == null) throw new PostIdMemIdDifferentException();
+        if (!conditions.getMemId().equals(postMapper.selectPostMemId(conditions).getMemId())) throw new PostIdMemIdDifferentException();
+        postMapper.deletePostList(conditions);
+        postMapper.deletePostDetail(conditions);
     }
 
 

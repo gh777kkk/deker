@@ -33,7 +33,8 @@ public class PostController {
 
     @RequestMapping(value = "/mb/post/get/my-post-list", method = RequestMethod.POST)
     public ResponseEntity<Result> getMyPostList(HttpServletRequest request,@RequestBody PostConditions conditions) throws Exception{
-        return ResponseEntity.ok(new Result("200","마이페이지 내가올린글",postService.getMemberInfo(request,conditions)));
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        return ResponseEntity.ok(new Result("200","마이페이지 내가올린글",postService.getMemberInfo(conditions)));
     }
 
 
@@ -100,6 +101,12 @@ public class PostController {
 
     }
 
+    @RequestMapping(value = "/mb/post/rmv/post", method = RequestMethod.POST)
+    public ResponseEntity<Result> rmvPost(HttpServletRequest request,@RequestBody PostConditions conditions) throws Exception{
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        postService.rmvPost(conditions);
+        return ResponseEntity.ok(new Result("200","게시글 삭제 성공"));
+    }
 
 
 

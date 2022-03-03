@@ -52,6 +52,10 @@ public class ExceptionController {
         return ResponseEntity.ok(new Result("401","결제 검증을 실패했습니다."));
     }
 
+    @ExceptionHandler({ PostIdMemIdDifferentException.class })
+    public ResponseEntity<Result> handlePostIdMemIdDifferentException() {
+        return ResponseEntity.ok(new Result("400","게시글 등록자가 아닙니다"));
+    }
 
 
     @ExceptionHandler({ RuntimeException.class })
