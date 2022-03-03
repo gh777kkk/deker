@@ -118,6 +118,22 @@ public class PostController {
     }
 
 
+
+    @RequestMapping(value = "/mb/post/reg/comments", method = RequestMethod.POST)
+    public ResponseEntity<Result> regPostComments(HttpServletRequest request, @RequestBody PostComment pc){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
+        postService.regPostComments(pc);
+        return ResponseEntity.ok(new Result("200","커뮤니티 댓글"
+
+        ));
+
+    }
+
+
+
+
     @RequestMapping(value = "/nmb/post/get/post-detail", method = RequestMethod.POST)
     public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd){
 

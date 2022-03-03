@@ -14,4 +14,6 @@ public class PostComment {
     private String writerProfileImgUrl;
     private String content;
     private String postCommentId;
+    private String communityId;
+    private String memId;
 }
