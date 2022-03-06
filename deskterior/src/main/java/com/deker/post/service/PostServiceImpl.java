@@ -238,5 +238,14 @@ public class PostServiceImpl implements PostService{
     }
 
 
+    public void likePost(Post post){
+        postMapper.likePost(post);
+    }
+
+    public void dislikePost(Post post){
+        postMapper.dislikePost(post);
+    }
+
+
 //end
 }
