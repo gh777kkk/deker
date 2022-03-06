@@ -433,6 +433,13 @@ public class ProductServiceImpl implements ProductService {
         productMapper.deleteMyAddress(conditions);
     }
 
+    public void modAddressMain(MyAddressConditions conditions) throws Exception{
+        int cnt = productMapper.selectMyAddressIdCount(conditions);
+        if (cnt == 0) throw new AddressIdNotFoundException();
+        productMapper.deleteMyAddMain(conditions);
+        productMapper.insertMyAddMain(conditions);
+    }
+
     @Async
     public void getTest() {
         try {

@@ -73,5 +73,9 @@ public interface ProductMapper {
     void insertMyAddress(MyAddressConditions conditions);
     void deleteMyAddress(MyAddressConditions conditions);
     Integer selectMyAddressIdCount(MyAddressConditions conditions);
+    void deleteMyAddMain(MyAddressConditions conditions);
+    void insertMyAddMain(MyAddressConditions conditions);
+
+
 }
 

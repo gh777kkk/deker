@@ -273,6 +273,19 @@ public class MBMarketController {
         );
     }
 
+    @RequestMapping(value = "/mod/address-main", method = RequestMethod.POST)
+    public ResponseEntity<?> modAddressMain(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.modAddressMain(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "대표배송지 지정"
+                )
+        );
+    }
+
 
    //끝
 }

@@ -581,5 +581,18 @@
         AND     ADD_DEFAULT = 'Y'
     </select>
 
+    <update id="deleteMyAddMain" parameterType="MyAddressConditions">
+        UPDATE MKT_ADDRESS
+        SET ADD_MAIN = 'N'
+        WHERE MEM_ID = #{memId}
+    </update>
+
+    <update id="insertMyAddMain" parameterType="MyAddressConditions">
+        UPDATE MKT_ADDRESS
+        SET ADD_MAIN = 'Y'
+        WHERE MEM_ID = #{memId}
+        AND   ADD_ID = #{addId}
+    </update>
+
 </mapper>
 

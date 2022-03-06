@@ -57,6 +57,7 @@ public interface ProductService {
     void regMyAddress(MyAddressConditions conditions) throws Exception;
     void modMyAddress(MyAddressConditions conditions) throws Exception;
     void rmvMyAddress(MyAddressConditions conditions) throws Exception;
+    void modAddressMain(MyAddressConditions conditions) throws Exception;
 
 
 
