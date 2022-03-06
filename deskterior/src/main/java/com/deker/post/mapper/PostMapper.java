@@ -48,4 +48,8 @@ public interface PostMapper {
     Post selectPostMemId(PostConditions conditions);
     void deletePostList(PostConditions conditions);
     void deletePostDetail(PostConditions conditions);
+
+
+    void likePost(Post post);
+    void dislikePost(Post post);
 }

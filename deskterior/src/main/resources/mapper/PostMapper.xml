@@ -340,6 +340,23 @@
     </update>
 
 
+    <insert id="likePost" parameterType="Post">
+        insert into study_gh.POST_LIKE
+        (
+            post_id, mem_id
+        )
+        VALUES (
+                   #{communityId}, #{memId}
+               )
+    </insert>
+
+
+
+    <delete id="dislikePost" parameterType="Post">
+        delete from study_gh.POST_LIKE
+        where POST_ID = #{communityId} and MEM_ID = #{memId}
+    </delete>
+
 
 
 

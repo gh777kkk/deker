@@ -80,5 +80,24 @@
         where a.MEM_ID = #{memId}
     </select>
 
+
+
+    <insert id="follow" parameterType="Follow">
+        insert into study_gh.FOLLOW
+        (
+         follower, following
+        )
+        VALUES (
+                   #{memId}, #{userId}
+               )
+    </insert>
+
+
+    <delete id="unFollow" parameterType="Follow">
+        delete from study_gh.FOLLOW
+        where FOLLOWER = #{memId} and FOLLOWING = #{userId}
+    </delete>
+
+
 </mapper>
 

@@ -154,4 +154,24 @@ public class PostController {
 
 
 
+    @RequestMapping(value = "/mb/post/reg/post-like", method = RequestMethod.POST)
+    public ResponseEntity<Result> regLikePost(HttpServletRequest request,@RequestBody Post conditions) {
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        postService.likePost(conditions);
+        return ResponseEntity.ok(new Result("200","게시글 좋아요"));
+    }
+
+
+    @RequestMapping(value = "/mb/post/rmv/post-like", method = RequestMethod.POST)
+    public ResponseEntity<Result> rmvDislikePost(HttpServletRequest request,@RequestBody Post conditions) {
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        postService.dislikePost(conditions);
+        return ResponseEntity.ok(new Result("200","게시글 좋아요 취소"));
+    }
+
+
+
+
+
+
 }
