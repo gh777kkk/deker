@@ -281,7 +281,8 @@
             product_id,
             option_id,
             order_price,
-            order_quantity
+            order_quantity,
+         ORDER_DELIVERY_PAY
         )
         VALUES (
                    #{orderItemId},
@@ -289,7 +290,8 @@
                    #{mktProductId},
                    #{productOptionId},
                    #{productPrice},
-                   #{productSelectedQuantity}
+                   #{productSelectedQuantity},
+                   #{deliveryPay}
                )
     </insert>
 

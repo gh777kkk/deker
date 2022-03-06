@@ -33,9 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -228,15 +226,43 @@ public class ProductServiceImpl implements ProductService {
 
         String myOrderId = CMMUtil.nextId("myOdId");
 
+        ProductCartToOderItem item= new ProductCartToOderItem();
+        List<ProductCartToOderItem> items = new ArrayList<ProductCartToOderItem>();
+
+        HashMap<String, Integer> dPay = new HashMap<String, Integer>();
+
         for(String id : pc.getCartIdArr()){
-            ProductCartToOderItem item = productMapper.getCheckedCart(id);
+            item = productMapper.getCheckedCart(id);
 
-            item.setOrderItemId(CMMUtil.nextId("ordId"));
-            item.setMemId(pc.getMemId());
-            productMapper.insertOrderItem(item);
+            if(dPay.get(item.getMktProductId())==null){
+                dPay.put(item.getMktProductId(),item.getTotalPrice());
+            }
+            else{
+                dPay.put(item.getMktProductId(),item.getTotalPrice()+dPay.get(item.getMktProductId()));
+            }
 
-            item.setMyOderId(myOrderId);
-            productMapper.insertMyOrderItem(item);
+            items.add(item);
+
+
+
+        }
+
+        for(ProductCartToOderItem myItem : items){
+
+
+            myItem.setOrderItemId(CMMUtil.nextId("ordId"));
+            myItem.setMemId(pc.getMemId());
+
+            if(dPay.get(myItem.getMktProductId())>=30000){
+                myItem.setDeliveryPay(0);
+            }
+            else{
+                myItem.setDeliveryPay(2500);
+            }
+            productMapper.insertOrderItem(myItem);
+
+            myItem.setMyOderId(myOrderId);
+            productMapper.insertMyOrderItem(myItem);
 
         }
 

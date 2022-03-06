@@ -23,6 +23,7 @@ public class ProductCartToOderItem {
     private ProductDetailOption productDetailOption;
     private int totalPrice;
     private String productOptionId;
+    private int deliveryPay;
 
 
 
