@@ -16,4 +16,7 @@ public interface CMMMapper {
 
     List<Menu> getMenu(String authorityCode);
     String getUserRole(String memId);
+
+    void follow(Follow follow);
+    void unFollow(Follow follow);
 }

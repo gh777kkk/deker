@@ -1,10 +1,7 @@
 package com.deker.cmm.service;
 
 import com.deker.cmm.mapper.CMMMapper;
-import com.deker.cmm.model.CMM;
-import com.deker.cmm.model.CMMConditions;
-import com.deker.cmm.model.Menu;
-import com.deker.cmm.model.SubMenu;
+import com.deker.cmm.model.*;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
@@ -147,6 +144,15 @@ public class CMMServiceImpl implements CMMService {
 
         return m;
 
+    }
+
+
+    public void follow(Follow follow){
+        cmmMapper.follow(follow);
+    }
+
+    public void unFollow(Follow follow){
+        cmmMapper.unFollow(follow);
     }
 
 

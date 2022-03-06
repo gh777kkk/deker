@@ -25,5 +25,9 @@ public interface PostService {
 
     PostDetail getPostDetail(PostDetail pd);
 
-    public void rmvPost(PostConditions conditions) throws Exception;
+   void rmvPost(PostConditions conditions) throws Exception;
+
+   void likePost(Post post);
+   void dislikePost(Post post);
+
 }

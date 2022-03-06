@@ -15,4 +15,5 @@ public class Post {
     private String profileImg;
     private String memId;
     private List<Post> postList;
+    private String communityId;
 }

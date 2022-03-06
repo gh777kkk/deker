@@ -2,9 +2,12 @@ package com.deker.cmm.controller;
 
 import com.deker.cmm.model.CMM;
 import com.deker.cmm.model.CMMConditions;
+import com.deker.cmm.model.Follow;
 import com.deker.cmm.model.Result;
 import com.deker.cmm.service.CMMService;
+import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.request.ProductBuy;
+import com.deker.post.model.PostConditions;
 import com.deker.security.CustomUserDetailsService;
 import com.deker.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CMMController {
     private final CMMService cmmService;
+    private final JwtProvider jwtProvider;
+
 
     @RequestMapping(value = "/nmb/cmm/get/code", method = RequestMethod.POST)
     public ResponseEntity<?> getCode(@RequestBody CMMConditions conditions) {
@@ -62,4 +67,22 @@ public class CMMController {
         cmmService.sseTest();
         return ResponseEntity.ok(new Result("200","정상"));
     }
+
+
+    @RequestMapping(value = "/mb/cmm/reg/follow", method = RequestMethod.POST)
+    public ResponseEntity<Result> regFollow(HttpServletRequest request,@RequestBody Follow follow) {
+        follow.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        cmmService.follow(follow);
+        return ResponseEntity.ok(new Result("200","팔로우"));
+    }
+
+
+
+    @RequestMapping(value = "/mb/cmm/rmv/follow", method = RequestMethod.POST)
+    public ResponseEntity<Result> rmvFollow(HttpServletRequest request,@RequestBody Follow follow) {
+        follow.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        cmmService.unFollow(follow);
+        return ResponseEntity.ok(new Result("200","언팔로우"));
+    }
+
 }
