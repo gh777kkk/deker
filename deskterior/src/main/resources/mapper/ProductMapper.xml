@@ -565,5 +565,19 @@
         )
     </insert>
 
+    <update id="deleteMyAddress" parameterType="MyAddressConditions">
+        UPDATE MKT_ADDRESS
+        SET ADD_DEFAULT = 'N'
+        WHERE ADD_ID = #{addId}
+    </update>
+
+    <select id="selectMyAddressIdCount" parameterType="MyAddressConditions" resultType="Integer">
+        SELECT COUNT(*)
+        FROM MKT_ADDRESS
+        WHERE   MEM_ID = #{memId}
+        AND     ADD_ID = #{addId}
+        AND     ADD_DEFAULT = 'Y'
+    </select>
+
 </mapper>
 

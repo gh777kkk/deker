@@ -71,5 +71,7 @@ public interface ProductMapper {
 
     List<MyAddress> selectMyAddressList(String memId);
     void insertMyAddress(MyAddressConditions conditions);
+    void deleteMyAddress(MyAddressConditions conditions);
+    Integer selectMyAddressIdCount(MyAddressConditions conditions);
 }
 

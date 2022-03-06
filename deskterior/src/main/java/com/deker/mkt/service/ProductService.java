@@ -54,7 +54,9 @@ public interface ProductService {
 
 
     List<MyAddress> getMyAddressList(String memId);
-    void regMyAddressList(MyAddressConditions conditions) throws Exception;
+    void regMyAddress(MyAddressConditions conditions) throws Exception;
+    void modMyAddress(MyAddressConditions conditions) throws Exception;
+    void rmvMyAddress(MyAddressConditions conditions) throws Exception;
 
 
 
