@@ -246,7 +246,7 @@ public class MBMarketController {
     }
 
 
-    @RequestMapping(value = "/mov/my-address", method = RequestMethod.POST)
+    @RequestMapping(value = "/mod/my-address", method = RequestMethod.POST)
     public ResponseEntity<?> movMyAddress(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
