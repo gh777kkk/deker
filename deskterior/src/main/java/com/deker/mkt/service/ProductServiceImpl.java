@@ -411,13 +411,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void regMyAddress(MyAddressConditions conditions) throws Exception{
-        myAddressValidation(conditions);
+        List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
+        if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
         conditions.setAddId(CMMUtil.nextId("addId"));
         productMapper.insertMyAddress(conditions);
     }
 
     public void modMyAddress(MyAddressConditions conditions) throws Exception{
-        myAddressValidation(conditions);
+        int cnt = productMapper.selectMyAddressIdCount(conditions);
+        if (cnt == 0) throw new AddressIdNotFoundException();
+        List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
+        if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
         productMapper.deleteMyAddress(conditions);
         conditions.setAddId(CMMUtil.nextId("addId"));
         productMapper.insertMyAddress(conditions);
@@ -427,13 +431,6 @@ public class ProductServiceImpl implements ProductService {
         int cnt = productMapper.selectMyAddressIdCount(conditions);
         if (cnt == 0) throw new AddressIdNotFoundException();
         productMapper.deleteMyAddress(conditions);
-    }
-
-    private void myAddressValidation(MyAddressConditions conditions) throws Exception{
-        int cnt = productMapper.selectMyAddressIdCount(conditions);
-        if (cnt == 0) throw new AddressIdNotFoundException();
-        List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
-        if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
     }
 
     @Async
