@@ -226,7 +226,21 @@ public class MBMarketController {
         String memId = jwtProvider.getMemIdFromJwtToken(request);
 
         return ResponseEntity.ok(
-                new Result("200", "나의 배송지",productService.getMyAddressList(memId)
+                new Result("200", "배송지 관리",productService.getMyAddressList(memId)
+                )
+        );
+    }
+
+
+    @RequestMapping(value = "/reg/my-address", method = RequestMethod.POST)
+    public ResponseEntity<?> regMyAddressList(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.regMyAddressList(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "배송지 저장"
                 )
         );
     }

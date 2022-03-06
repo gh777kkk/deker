@@ -4,6 +4,7 @@ import com.deker.cmm.model.Menu;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.model.PageReview;
 import com.deker.cmm.model.PagingConditions;
+import com.deker.exception.MyAddressListOverException;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
 import com.deker.jwt.JwtProvider;
@@ -380,6 +381,13 @@ public class ProductServiceImpl implements ProductService {
 
     public List<MyAddress> getMyAddressList(String memId){
         return productMapper.selectMyAddressList(memId);
+    }
+
+    public void regMyAddressList(MyAddressConditions conditions) throws Exception{
+        List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
+        if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
+        conditions.setAddId(CMMUtil.nextId("addId"));
+        productMapper.insertMyAddress(conditions);
     }
 
 

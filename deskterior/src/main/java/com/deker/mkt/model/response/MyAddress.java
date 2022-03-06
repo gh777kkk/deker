@@ -10,6 +10,8 @@ public class MyAddress {
     private String addNickname;
     private String addZip;
     private String address;
+    private String addDetail;
     private String addName;
     private String phoneNumber;
+    private String addMain;
 }

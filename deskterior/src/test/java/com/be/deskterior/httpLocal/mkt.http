@@ -21,3 +21,26 @@ Content-Type: application/json
   "postId" : "cmId_999999999999650"
 }
 ###
+
+POST http://localhost:6012/mb/mkt/get/my-address
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "postId" : "cmId_999999999999650"
+}
+###
+
+POST http://localhost:6012/mb/mkt/reg/my-address
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "addNickname": "배송지이름",
+  "addZip": "12345",
+  "address": "메인 주소",
+  "addDetail": "서브 주소",
+  "addName": "Tester",
+  "phoneNumber": "010-1234-5678"
+}
+###

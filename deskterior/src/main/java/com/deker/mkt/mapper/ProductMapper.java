@@ -70,5 +70,6 @@ public interface ProductMapper {
     Integer selectMyShoppingListCount(MyShoppingConditions conditions);
 
     List<MyAddress> selectMyAddressList(String memId);
+    void insertMyAddress(MyAddressConditions conditions);
 }
 

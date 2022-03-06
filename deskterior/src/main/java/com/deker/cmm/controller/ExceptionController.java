@@ -57,6 +57,11 @@ public class ExceptionController {
         return ResponseEntity.ok(new Result("400","게시글 등록자가 아닙니다"));
     }
 
+    @ExceptionHandler({ MyAddressListOverException.class })
+    public ResponseEntity<Result> handleMyAddressListOverException() {
+        return ResponseEntity.ok(new Result("400","배송지는 3개까지 등록이 가능합니다"));
+    }
+
 
     @ExceptionHandler({ RuntimeException.class })
     public ResponseEntity<Result> handleRuntimeException(RuntimeException e) {

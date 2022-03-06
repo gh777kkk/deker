@@ -337,8 +337,7 @@
                PHONE_NUMBER AS phoneNumber,
                ADD_ZIP AS addZip,
                ADDRESS AS address,
-               ADD_DETAIL AS addDetail,
-               REQUEST AS request
+               ADD_DETAIL AS addDetail
         from study_gh.MKT_ADDRESS a
         where a.MEM_ID = #{memId}
     </select>
@@ -529,13 +528,42 @@
         SELECT      ADD_ID                                  addId
                 ,   ADD_NICKNAME                            addNickname
                 ,   ADD_ZIP                                 addZip
-                ,   CONCAT(ADDRESS , ' ' , ADD_DETAIL)      address
+                ,   ADDRESS                                 address
+                ,   ADD_DETAIL                              addDetail
                 ,   ADD_NAME                                addName
                 ,   PHONE_NUMBER                            phoneNumber
+                ,   ADD_MAIN                                addMain
         FROM MKT_ADDRESS
         WHERE   MEM_ID = #{memId}
         AND     ADD_DEFAULT = 'Y'
     </select>
+
+    <insert id="insertMyAddress" parameterType="MyAddressConditions">
+        INSERT INTO MKT_ADDRESS
+        (
+                ADD_ID
+            ,   MEM_ID
+            ,   ADD_NAME
+            ,   PHONE_NUMBER
+            ,   ADD_ZIP
+            ,   ADDRESS
+            ,   ADD_DETAIL
+            ,   ADD_DEFAULT
+            ,   ADD_NICKNAME
+        )
+        VALUES
+        (
+                #{addId}
+            ,   #{memId}
+            ,   #{addName}
+            ,   #{phoneNumber}
+            ,   #{addZip}
+            ,   #{address}
+            ,   #{addDetail}
+            ,   'Y'
+            ,   #{addNickname}
+        )
+    </insert>
 
 </mapper>
 
