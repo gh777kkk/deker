@@ -4,6 +4,7 @@ import com.deker.cmm.model.PagingConditions;
 import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductKeyword;
+import com.deker.mkt.model.request.ProductCategoryConditions;
 import com.deker.mkt.model.request.ProductCode;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
@@ -20,6 +21,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,11 +71,11 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/get/category/product/more", method = RequestMethod.POST)
-    public ResponseEntity<?> getCategoryProductMore() {
+    public ResponseEntity<?> getCategoryProductMore(@RequestBody ProductCategoryConditions conditions) {
 
         return ResponseEntity.ok(
                 new Result("200", "스토어 카테고리 상품 더보기",
-                        productService.getBestSaleProductList())
+                        productService.getMoreCategoryList(conditions))
         );
     }
 
@@ -110,19 +115,6 @@ public class NMBMarketController {
     }
 
 
-
-
-    @RequestMapping(value = "/get/recent-pro", method = RequestMethod.POST)
-    public ResponseEntity<?> getRecentProduct( HttpServletRequest request) {
-
-//        String memId = jwtProvider.getMemIdFromJwtToken(request);
-//        pc.setMemId(memId);
-
-        return ResponseEntity.ok(
-                new Result("200", "장바구니 목록"
-                )
-        );
-    }
 
 
 
@@ -185,10 +177,6 @@ public class NMBMarketController {
 
     @RequestMapping(value = "/get/test", method = RequestMethod.POST)
     public void gettProduct(@RequestBody ProductCode pc) {
-
-
-        productSession.setProductId(pc.getProductId());
-
 //        DeliveryUpdate du = new DeliveryUpdate();
 //        String timeString = "1999-06-03 10:45:00";
 //        String id = "odrId_99999999999999";
@@ -201,10 +189,7 @@ public class NMBMarketController {
     }
 
     @RequestMapping(value = "/get/testt", method = RequestMethod.POST)
-    public String getttProduct(@RequestBody ProductCode pc) {
-
-
-        return productSession.toString();
+    public void getttProduct(@RequestBody ProductCode pc) {
 
 //        DeliveryUpdate du = new DeliveryUpdate();
 //        String timeString = "1999-06-03 10:45:00";
@@ -215,6 +200,34 @@ public class NMBMarketController {
 
         //sd.deliveryStatus();
 
+    }
+
+
+
+    @RequestMapping(value = "/reg/recent-product", method = RequestMethod.POST)
+    public ResponseEntity<?> regRecentProduct(@RequestBody ProductCode pc) {
+
+        productService.nmbRegRecentProduct(pc.getProductId());
+
+        return ResponseEntity.ok(
+                new Result("200", "최근 본 상품 등록",
+                        productSession.toString()
+                )
+        );
+    }
+
+
+
+    @RequestMapping(value = "/get/recent-product", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecentProduct() {
+
+         //pc.setProductId(productSession.getProductId());
+
+        return ResponseEntity.ok(
+                new Result("200", "최근 본 상품",
+                        productService.nmbGetRecentProduct()
+                )
+        );
     }
 
 

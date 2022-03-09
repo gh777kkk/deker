@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -20,6 +22,7 @@ public class ProductSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String productId;
+    private List<String> idArr;
+    private Set<String> checkArr;
 
 }
