@@ -4,6 +4,7 @@ import com.deker.cmm.model.Menu;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.model.PageReview;
 import com.deker.cmm.model.PagingConditions;
+import com.deker.exception.AddressIdNotFoundException;
 import com.deker.exception.MyAddressListOverException;
 import com.deker.exception.TrackingException;
 import com.deker.exception.TrackingKeyException;
@@ -430,13 +431,35 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.selectMyAddressList(memId);
     }
 
-    public void regMyAddressList(MyAddressConditions conditions) throws Exception{
+    public void regMyAddress(MyAddressConditions conditions) throws Exception{
         List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
         if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
         conditions.setAddId(CMMUtil.nextId("addId"));
         productMapper.insertMyAddress(conditions);
     }
 
+    public void modMyAddress(MyAddressConditions conditions) throws Exception{
+        int cnt = productMapper.selectMyAddressIdCount(conditions);
+        if (cnt == 0) throw new AddressIdNotFoundException();
+        List<MyAddress> myAddressList = productMapper.selectMyAddressList(conditions.getMemId());
+        if (myAddressList != null && myAddressList.size()>=3) throw new MyAddressListOverException();
+        productMapper.deleteMyAddress(conditions);
+        conditions.setAddId(CMMUtil.nextId("addId"));
+        productMapper.insertMyAddress(conditions);
+    }
+
+    public void rmvMyAddress(MyAddressConditions conditions) throws Exception{
+        int cnt = productMapper.selectMyAddressIdCount(conditions);
+        if (cnt == 0) throw new AddressIdNotFoundException();
+        productMapper.deleteMyAddress(conditions);
+    }
+
+    public void modAddressMain(MyAddressConditions conditions) throws Exception{
+        int cnt = productMapper.selectMyAddressIdCount(conditions);
+        if (cnt == 0) throw new AddressIdNotFoundException();
+        productMapper.deleteMyAddMain(conditions);
+        productMapper.insertMyAddMain(conditions);
+    }
 
 
     @Async

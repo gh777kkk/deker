@@ -233,14 +233,55 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/my-address", method = RequestMethod.POST)
-    public ResponseEntity<?> regMyAddressList(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+    public ResponseEntity<?> regMyAddress(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         conditions.setMemId(memId);
-        productService.regMyAddressList(conditions);
+        productService.regMyAddress(conditions);
 
         return ResponseEntity.ok(
                 new Result("200", "배송지 저장"
+                )
+        );
+    }
+
+
+    @RequestMapping(value = "/mod/my-address", method = RequestMethod.POST)
+    public ResponseEntity<?> movMyAddress(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.modMyAddress(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "배송지 수정"
+                )
+        );
+    }
+
+
+    @RequestMapping(value = "/rmv/my-address", method = RequestMethod.POST)
+    public ResponseEntity<?> rmvMyAddress(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.rmvMyAddress(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "배송지 삭제"
+                )
+        );
+    }
+
+    @RequestMapping(value = "/mod/address-main", method = RequestMethod.POST)
+    public ResponseEntity<?> modAddressMain(HttpServletRequest request,@RequestBody MyAddressConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.modAddressMain(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "대표배송지 지정"
                 )
         );
     }
