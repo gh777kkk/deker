@@ -7,6 +7,7 @@ import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,6 +36,9 @@ public class CMMServiceImpl implements CMMService {
     private final com.deker.cmm.util.CMMUtil CMMUtil;
 
     private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
+
+    @Value("${menu.main.img}")
+    private String mainMenuImg;
 
     @Override
     public List<CMM> getCode(CMMConditions conditions){
@@ -103,6 +107,9 @@ public class CMMServiceImpl implements CMMService {
 
     public Menu getMenu(HttpServletRequest request){
 
+
+
+
         String authorityCode;
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         if(memId==null){
@@ -121,9 +128,7 @@ public class CMMServiceImpl implements CMMService {
         List<Menu> menus = cmmMapper.getMenu(authorityCode);
 
         for (Menu me : menus) {
-            if(me.getMenuId() == 100000000){
-                me.setMenuImgUrl(CMMUtil.getImg(me.getMenuImgUrl()));
-            }
+
             if(me.getMenuParent() == 0){
                 menu.add(me);
             }
@@ -141,6 +146,7 @@ public class CMMServiceImpl implements CMMService {
 
         m.setMenu(menu);
         m.setSubMenu(subMenu);
+        m.setMenuImgUrl(mainMenuImg);
 
         return m;
 

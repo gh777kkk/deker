@@ -394,7 +394,7 @@
     <select id="selectMyShoppingOrderState" parameterType="MyShoppingConditions" resultType="MyShoppingOrderState">
         SELECT      ORDER_STATE             orderState
                 ,   COUNT(ORDER_STATE)      orderStateCount
-        FROM MKT_ORDER
+        FROM study_gh.MKT_ORDER
         WHERE   1=1
         AND     MEM_ID = #{memId}
         AND     USE_YN = 'Y'
@@ -420,7 +420,7 @@
                 ,   CODE_NAME('ODS',MO.ORDER_STATE)                                     orderStateNm
                 ,   MO.ORDER_PRICE                                                      orderPrice
                 ,   MO.ORDER_QUANTITY                                                   orderQuantity
-        FROM MKT_ORDER MO
+        FROM study_gh.MKT_ORDER MO
         LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
         LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
         WHERE   1=1
@@ -432,7 +432,7 @@
 
     <select id="selectMyShoppingListCount" parameterType="MyShoppingConditions" resultType="Integer">
         SELECT      COUNT(*)
-        FROM MKT_ORDER MO
+        FROM study_gh.MKT_ORDER MO
         LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
         LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
         WHERE   1=1
@@ -539,13 +539,13 @@
                 ,   ADD_NAME                                addName
                 ,   PHONE_NUMBER                            phoneNumber
                 ,   ADD_MAIN                                addMain
-        FROM MKT_ADDRESS
+        FROM study_gh.MKT_ADDRESS
         WHERE   MEM_ID = #{memId}
         AND     ADD_DEFAULT = 'Y'
     </select>
 
     <insert id="insertMyAddress" parameterType="MyAddressConditions">
-        INSERT INTO MKT_ADDRESS
+        INSERT INTO study_gh.MKT_ADDRESS
         (
                 ADD_ID
             ,   MEM_ID
@@ -573,34 +573,28 @@
 
 
 
-
-
-
-
-
-=======
     <update id="deleteMyAddress" parameterType="MyAddressConditions">
-        UPDATE MKT_ADDRESS
+        UPDATE study_gh.MKT_ADDRESS
         SET ADD_DEFAULT = 'N'
         WHERE ADD_ID = #{addId}
     </update>
 
     <select id="selectMyAddressIdCount" parameterType="MyAddressConditions" resultType="Integer">
         SELECT COUNT(*)
-        FROM MKT_ADDRESS
+        FROM study_gh.MKT_ADDRESS
         WHERE   MEM_ID = #{memId}
         AND     ADD_ID = #{addId}
         AND     ADD_DEFAULT = 'Y'
     </select>
 
     <update id="deleteMyAddMain" parameterType="MyAddressConditions">
-        UPDATE MKT_ADDRESS
+        UPDATE study_gh.MKT_ADDRESS
         SET ADD_MAIN = 'N'
         WHERE MEM_ID = #{memId}
     </update>
 
     <update id="insertMyAddMain" parameterType="MyAddressConditions">
-        UPDATE MKT_ADDRESS
+        UPDATE study_gh.MKT_ADDRESS
         SET ADD_MAIN = 'Y'
         WHERE MEM_ID = #{memId}
         AND   ADD_ID = #{addId}
