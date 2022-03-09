@@ -82,21 +82,25 @@
 
 
     <select id="getBestCategoryProductMore" resultType="ProductModel">
-        select p.MKT_PRODUCT_ID AS mktProductId,
+        select MKT_PRODUCT_ID AS mktProductId,
                PRODUCT_PRICE AS productPrice,
-               PRODUCT_QUANTITY AS productQuantity,
-               PRODUCT_CATEGORY AS productCategory,
-               PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
-               PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p,
-             (select PRODUCT_ID
-              from study_gh.MKT_ORDER
-              where ORDER_CONFIRM = 'Y'
-              group by PRODUCT_ID
-              order by COUNT(PRODUCT_ID) desc) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID and PRODUCT_CATEGORY = #{code}
-        limit #{start}, #{end}
+               PRODUCT_IMG AS productImg,
+               count(PRODUCT_ID)
+        from study_gh.MKT_PRODUCT p
+                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+            and ORDER_CONFIRM = 'Y'
+        where PRODUCT_CATEGORY = #{categoryId}
+        group by MKT_PRODUCT_ID
+        order by count(PRODUCT_ID) desc
+        LIMIT #{startRowNo}, #{endRowNo}
+    </select>
+
+
+    <select id="getProductCategoryCount" resultType="int">
+        select COUNT(MKT_PRODUCT_ID)
+        from study_gh.MKT_PRODUCT p
+        where PRODUCT_CATEGORY = #{categoryId}
     </select>
 
 
@@ -567,6 +571,14 @@
         )
     </insert>
 
+
+
+
+
+
+
+
+=======
     <update id="deleteMyAddress" parameterType="MyAddressConditions">
         UPDATE MKT_ADDRESS
         SET ADD_DEFAULT = 'N'
@@ -593,6 +605,7 @@
         WHERE MEM_ID = #{memId}
         AND   ADD_ID = #{addId}
     </update>
+
 
 </mapper>
 

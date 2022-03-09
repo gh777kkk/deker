@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
     private final com.deker.cmm.util.CMMUtil CMMUtil;
+    private final ProductSession productSession;
 
     @Value("${tracking.key}")
     private String trackingKey;
@@ -95,6 +96,26 @@ public class ProductServiceImpl implements ProductService {
 
         return result;
     }
+
+
+    public PageInfo<ProductModel> getMoreCategoryList(ProductCategoryConditions conditions){
+
+        int nonpagedCount = productMapper.getProductCategoryCount(conditions.getCategoryId());
+        PageInfo<ProductModel> pageInfo = new PageInfo<>(conditions,nonpagedCount);
+        List<ProductModel> categoryProduct =productMapper.getBestCategoryProductMore(conditions);
+
+        for (ProductModel cp : categoryProduct) {
+            cp.setProductImg(CMMUtil.getImg(cp.getProductImg()));
+        }
+
+        pageInfo.setList(categoryProduct);
+
+        return pageInfo;
+    }
+
+
+
+
 
 
     public ProductDetail getProductDetails(ProductCode pc) {
@@ -440,6 +461,7 @@ public class ProductServiceImpl implements ProductService {
         productMapper.insertMyAddMain(conditions);
     }
 
+
     @Async
     public void getTest() {
         try {
@@ -451,6 +473,57 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
+
+
+    public void nmbRegRecentProduct(String productId){
+
+        Set<String> mySet = productSession.getCheckArr();
+        List myArr = productSession.getIdArr();
+        int recPro = 10;
+
+        if(mySet == null) {
+            mySet = new HashSet<>();
+        }
+
+        if(myArr == null){
+            myArr = new ArrayList<>();
+        }
+
+        if(mySet.size()<recPro){
+            mySet.add(productId);
+            if(mySet.size() == myArr.size()+1){ //같은 값 없을 때 리스트에 값 추가
+                myArr.add(productId);
+            }
+
+        }
+        else if(mySet.size()==recPro){
+            myArr.remove(0);
+            myArr.add(productId);
+            mySet = new HashSet<>(myArr);
+        }
+
+
+        productSession.setCheckArr(mySet);
+        productSession.setIdArr(myArr);
+
+    }
+
+
+    public List<ProductDetailModel> nmbGetRecentProduct(){
+
+        List<String> idArr = productSession.getIdArr();
+        List<ProductDetailModel> recentList = new ArrayList<>();
+        Collections.reverse(idArr);
+
+        for (int i =0; i<idArr.size(); i++){
+             recentList.add(productMapper.getProductDetail(idArr.get(i)));
+
+        }
+
+        return recentList;
+
+    }
 
 
 

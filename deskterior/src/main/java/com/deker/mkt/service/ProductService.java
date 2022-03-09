@@ -6,6 +6,7 @@ import com.deker.cmm.model.PagingConditions;
 import com.deker.mkt.model.*;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.*;
+import com.deker.mkt.model.resultService.ProductDetailModel;
 import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ public interface ProductService {
 
 
     ProductCategory getCategoryList(String code);
+    PageInfo<ProductModel> getMoreCategoryList(ProductCategoryConditions conditions);
 
 
     ProductDetail getProductDetails(ProductCode pc);
@@ -59,6 +61,7 @@ public interface ProductService {
     void rmvMyAddress(MyAddressConditions conditions) throws Exception;
     void modAddressMain(MyAddressConditions conditions) throws Exception;
 
-
+    void nmbRegRecentProduct(String productId);
+    List<ProductDetailModel> nmbGetRecentProduct();
 
 }

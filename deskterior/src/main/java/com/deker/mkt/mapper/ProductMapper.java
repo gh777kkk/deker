@@ -18,6 +18,9 @@ public interface ProductMapper {
     List<ProductModel> getMoreBestSaleProductList(PagingConditions pc);
     int getProductCount();
 
+    List<ProductModel> getBestCategoryProductMore(PagingConditions conditions);
+    int getProductCategoryCount(String categoryId);
+
 
     List<ProductModel> getBestCategoryProductList(String codeId);
     List<ProductModel> getNewCategoryProductList(String codeId);
