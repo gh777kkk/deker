@@ -3,8 +3,6 @@ package com.deker.post.service;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.exception.PostIdMemIdDifferentException;
-import com.deker.jwt.JwtProvider;
-import com.deker.mkt.model.ProductModel;
 import com.deker.post.mapper.PostMapper;
 import com.deker.post.model.*;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

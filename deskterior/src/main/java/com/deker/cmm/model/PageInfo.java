@@ -27,4 +27,11 @@ public class PageInfo<T> {
         currentPageNo = (conditions.getCurrentPageNo()<=0) ? 1 : conditions.getCurrentPageNo();
         lastPage = conditions.getEndRowNo() >= totalCount;
     }
+
+    public PageInfo(TenPagingConditions conditions, int nonpagedCount) {
+        totalCount = nonpagedCount;
+        currentPageNo = (conditions.getCurrentPageNo()<=0) ? 1 : conditions.getCurrentPageNo();
+        lastPage = conditions.getEndRowNo() >= totalCount;
+    }
+
 }
