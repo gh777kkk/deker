@@ -131,6 +131,33 @@
     </select>
 
 
+    <select id="mbGetRecentProductCheck" resultType="RecentProduct">
+        select MKT_RECENT_PRODUCT_ID AS mktRecentProductId
+        from  study_gh.MKT_RECENT_PRODUCT
+        where MEM_ID = #{memId} and PRODUCT_ID = #{productId}
+    </select>
+
+    <update id="updateRecentProductDate" parameterType="RecentProduct">
+        UPDATE  study_gh.MKT_RECENT_PRODUCT
+        SET     UPDATE_DT = sysdate()
+        WHERE   MKT_RECENT_PRODUCT_ID = #{mktRecentProductId}
+    </update>
+
+
+    <select id="mbGetRecentProduct" resultType="ProductDetailModel">
+        select MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_NAME AS productName,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p, study_gh.MKT_RECENT_PRODUCT m
+        where  p.MKT_PRODUCT_ID = m.PRODUCT_ID and m.MEM_ID = #{memId}
+        order by m.UPDATE_DT desc
+        limit 10
+    </select>
+
+
+
+
     <select id="getProductDetailOption" resultType="ProductDetailOption">
         select PRODUCT_PRICE AS productPrice,
                OPTION1 AS option1,
