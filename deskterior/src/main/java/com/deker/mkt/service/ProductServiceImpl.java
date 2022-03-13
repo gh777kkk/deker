@@ -393,6 +393,38 @@ public class ProductServiceImpl implements ProductService {
                 if (data.getOrderState().equals("9")) myShopping.setFinish(data.getOrderStateCount());
             }
         }
+
+        Date today = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
+        switch (conditions.getPeriod()) {
+            case "day":
+                cal.add(Calendar.DATE, -1);
+                conditions.setPeriod(format.format(cal.getTime()));
+                break;
+            case "week":
+                cal.add(Calendar.DATE, -7);
+                conditions.setPeriod(format.format(cal.getTime()));
+                break;
+            case "month":
+                cal.add(Calendar.MONTH, -1);
+                conditions.setPeriod(format.format(cal.getTime()));
+                break;
+            case "half_year":
+                cal.add(Calendar.MONTH, -6);
+                conditions.setPeriod(format.format(cal.getTime()));
+                break;
+            case "year":
+                cal.add(Calendar.YEAR, -1);
+                conditions.setPeriod(format.format(cal.getTime()));
+                break;
+            default: conditions.setPeriod("");
+                break;
+        }
+//        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         List<MyShoppingList> shoppingList = productMapper.selectMyShoppingList(conditions);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
