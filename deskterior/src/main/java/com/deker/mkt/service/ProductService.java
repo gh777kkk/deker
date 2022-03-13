@@ -64,4 +64,6 @@ public interface ProductService {
     void nmbRegRecentProduct(String productId);
     List<ProductDetailModel> nmbGetRecentProduct();
 
+    List<ProductDetailModel> mbGetRecentProduct(String memId);
+
 }

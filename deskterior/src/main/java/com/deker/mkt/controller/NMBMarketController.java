@@ -84,7 +84,6 @@ public class NMBMarketController {
     @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
     public ResponseEntity<?> getProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
 
-        //productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
                 new Result("200", "상품 디테일",
@@ -210,8 +209,7 @@ public class NMBMarketController {
         productService.nmbRegRecentProduct(pc.getProductId());
 
         return ResponseEntity.ok(
-                new Result("200", "최근 본 상품 등록",
-                        productSession.toString()
+                new Result("200", "최근 본 상품 등록"
                 )
         );
     }

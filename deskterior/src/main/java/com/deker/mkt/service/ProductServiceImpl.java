@@ -200,15 +200,6 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void insertRecentProduct(ProductCode pc){
-        RecentProduct rp = new RecentProduct();
-        rp.setMktRecentProductId(CMMUtil.nextId("mrpId"));
-        rp.setProductId(pc.getProductId());
-        rp.setMemId(pc.getMemId());
-        productMapper.insertRecentProduct(rp);
-    }
-
-
 
     public void insertProductCart(List<ProductOption> pOption, String memId){
 
@@ -476,35 +467,60 @@ public class ProductServiceImpl implements ProductService {
 
 
 
+    public void insertRecentProduct(ProductCode pc){
+
+        RecentProduct r = productMapper.mbGetRecentProductCheck(pc);
+
+        if(r.getMktRecentProductId() == null){
+            RecentProduct rp = new RecentProduct();
+            rp.setMktRecentProductId(CMMUtil.nextId("mrpId"));
+            rp.setProductId(pc.getProductId());
+            rp.setMemId(pc.getMemId());
+            productMapper.insertRecentProduct(rp);
+        }
+        else{
+            productMapper.updateRecentProductDate(r);
+
+        }
+
+    }
+
+
+    public List<ProductDetailModel> mbGetRecentProduct(String memId){
+
+        List<ProductDetailModel> recentList = productMapper.mbGetRecentProduct(memId);
+        for(ProductDetailModel pd : recentList){
+            pd.setProductImg(CMMUtil.getImg(pd.getProductImg()));
+        }
+
+        return recentList;
+
+    }
+
+
+
     public void nmbRegRecentProduct(String productId){
 
         Set<String> mySet = productSession.getCheckArr();
         List myArr = productSession.getIdArr();
         int recPro = 10;
 
-        if(mySet == null) {
-            mySet = new HashSet<>();
-        }
+
 
         if(myArr == null){
             myArr = new ArrayList<>();
         }
 
-        if(mySet.size()<recPro){
-            mySet.add(productId);
-            if(mySet.size() == myArr.size()+1){ //같은 값 없을 때 리스트에 값 추가
-                myArr.add(productId);
-            }
-
-        }
-        else if(mySet.size()==recPro){
-            myArr.remove(0);
+        int num = myArr.indexOf(productId);
+        if(num==-1){
             myArr.add(productId);
-            mySet = new HashSet<>(myArr);
+        }
+        else{
+            myArr.remove(num);
+            myArr.add(productId);
+
         }
 
-
-        productSession.setCheckArr(mySet);
         productSession.setIdArr(myArr);
 
     }
@@ -516,9 +532,16 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDetailModel> recentList = new ArrayList<>();
         Collections.reverse(idArr);
 
-        for (int i =0; i<idArr.size(); i++){
-             recentList.add(productMapper.getProductDetail(idArr.get(i)));
 
+        for (int i =0; i<idArr.size(); i++){
+            if(recentList.size()==10){
+                break;
+            }
+            else {
+                ProductDetailModel pd = productMapper.getProductDetail(idArr.get(i));
+                pd.setProductImg(CMMUtil.getImg(pd.getProductImg()));
+                recentList.add(pd);
+            }
         }
 
         return recentList;

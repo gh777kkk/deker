@@ -79,6 +79,11 @@ public interface ProductMapper {
     void deleteMyAddMain(MyAddressConditions conditions);
     void insertMyAddMain(MyAddressConditions conditions);
 
+    List<ProductDetailModel> mbGetRecentProduct(String memId);
+
+    RecentProduct mbGetRecentProductCheck(ProductCode pc);
+    void updateRecentProductDate(RecentProduct rp);
+
 
 }
 

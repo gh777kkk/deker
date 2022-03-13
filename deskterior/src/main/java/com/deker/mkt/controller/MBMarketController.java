@@ -76,7 +76,6 @@ public class MBMarketController {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pc.setMemId(memId);
-        productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
                 new Result("200", "상품 디테일",
@@ -85,17 +84,36 @@ public class MBMarketController {
     }
 
 
-    @RequestMapping(value = "/get/recent-pro", method = RequestMethod.POST)
-    public ResponseEntity<?> getRecentProduct( HttpServletRequest request) {
 
-//        String memId = jwtProvider.getMemIdFromJwtToken(request);
-//        pc.setMemId(memId);
+    @RequestMapping(value = "/reg/recent-product", method = RequestMethod.POST)
+    public ResponseEntity<?> regRecentProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pc.setMemId(memId);
+        productService.insertRecentProduct(pc);
 
         return ResponseEntity.ok(
-                new Result("200", "장바구니 목록"
+                new Result("200", "최근 본 상품 등록"
                 )
         );
     }
+
+
+
+    @RequestMapping(value = "/get/recent-product", method = RequestMethod.POST)
+    public ResponseEntity<?> getRecentProduct(HttpServletRequest request) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+
+        return ResponseEntity.ok(
+                new Result("200", "최근 본 상품",
+                        productService.mbGetRecentProduct(memId)
+
+                )
+        );
+    }
+
+
 
 
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
