@@ -8,5 +8,6 @@ import lombok.Setter;
 public class Payment {
     private String imp_uid;
     private String memId;
+    private int paid_amount;
 
 }

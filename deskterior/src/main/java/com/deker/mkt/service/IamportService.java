@@ -19,16 +19,19 @@ import org.springframework.web.client.RestTemplate;
 public class IamportService {
 
 
-    private String imp_key = "4575938639252862";
-    private String imp_secret = "57c3d96bafb050ee142eff600cdb053d6901e5144dfad44e75b66f4ff9075963cd160263c3bf430a";
+    private String imp_key = "7009134484888523";
+    private String imp_secret = "4fae91423c5b987c764a3a486b343741c3fbe23ccacdf0f694df2c353c6ca0edfe2b62c11ea6b7fb";
     HttpHeaders headers = new HttpHeaders();
     RestTemplate restTemplate = new RestTemplate();
     JSONObject body = new JSONObject();
 
 
 
-    public Object getBuyerInfor(String imp_uid) throws Exception{
+    public boolean getBuyerInfor(Payment pm) throws Exception{
+        String imp_uid = pm.getImp_uid();
         Iamport iamport = getToken();
+        System.out.println(iamport.getResponse().get("access_token"));
+
         try{
             if(iamport==null){
                 throw new Exception();
@@ -37,9 +40,12 @@ public class IamportService {
             headers.add("Authorization",(String) iamport.getResponse().get("access_token"));
             HttpEntity<JSONObject>entity = new HttpEntity<JSONObject>(headers);
 
-            BuyerInfor buyerInfor = restTemplate.postForObject("https://api.iamport.kt/payments/"+imp_uid+"", entity, BuyerInfor.class);
-            System.out.println(buyerInfor+"fullinfor");
-            return buyerInfor.getResponse().get("amount");
+            BuyerInfor buyerInfor = restTemplate.postForObject("https://api.iamport.kr/payments/"+imp_uid+"", entity, BuyerInfor.class);
+            if(pm.getPaid_amount() ==  Integer.parseInt(buyerInfor.getResponse().get("amount").toString())){
+
+                return true;
+            }
+           return false;
 
         } catch (Exception e){
             e.printStackTrace();
@@ -47,6 +53,8 @@ public class IamportService {
         }
 
     }
+
+
 
     public void cancleBuy(String imp_uid){
 
@@ -87,13 +95,9 @@ public class IamportService {
         body.put("imp_secret", imp_secret);
 
         HttpEntity<JSONObject> entity = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject("https://api.iamport.kt/users/getToken", entity, Iamport.class);
+        return restTemplate.postForObject("https://api.iamport.kr/users/getToken", entity, Iamport.class);
 
-//        System.out.println(token + "fulltoken");
-//        System.out.println(token.getStatusCode() + "tgetsoken");
-//        System.out.println(token.getStatusCodeValue() + "getvaltoken");
-//        System.out.println(token.getBody() + "bodytoken");
-//        System.out.println(token.getBody().get("response") + "bodytoken");
+
     }
 
 

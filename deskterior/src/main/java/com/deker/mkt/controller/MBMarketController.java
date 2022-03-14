@@ -174,7 +174,7 @@ public class MBMarketController {
     public ResponseEntity<?> getVerifyPayment(@RequestBody Payment pm) throws Exception {
         return ResponseEntity.ok(
                 new Result("200", "결제 페이지",
-                        iamportService.getBuyerInfor(pm.getImp_uid())
+                        iamportService.getBuyerInfor(pm)
                 )
         );
     }
