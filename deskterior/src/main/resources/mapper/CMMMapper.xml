@@ -98,6 +98,22 @@
         where FOLLOWER = #{memId} and FOLLOWING = #{userId}
     </delete>
 
+    <select id="getFollowingCount" resultType="int">
+        select count(FOLLOWING)
+        from study_gh.FOLLOW f
+        where f.FOLLOWER = #{memId}
+
+    </select>
+
+    <select id="getFollowing" resultType="Follow">
+        select m.NICKNAME AS nickNm,
+               m.PROFILE_IMG AS profile_img
+        from study_gh.FOLLOW f, study_gh.MEMBER m
+        where f.FOLLOWER = #{memId} and f.FOLLOWING = m.MEM_ID
+        <if test="keyword != null">
+          and m.NICKNAME like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
 
 </mapper>
 

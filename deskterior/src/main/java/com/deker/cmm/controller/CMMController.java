@@ -85,4 +85,16 @@ public class CMMController {
         return ResponseEntity.ok(new Result("200","언팔로우"));
     }
 
+
+
+    @RequestMapping(value = "/mb/cmm/get/follow", method = RequestMethod.POST)
+    public ResponseEntity<Result> getFollow(HttpServletRequest request,@RequestBody Follow follow) {
+
+        follow.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        return ResponseEntity.ok(
+                new Result("200","팔로우 목록",
+                cmmService.getFollowing(follow)
+                ));
+    }
+
 }

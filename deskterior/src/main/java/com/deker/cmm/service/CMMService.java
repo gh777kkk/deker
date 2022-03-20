@@ -1,9 +1,6 @@
 package com.deker.cmm.service;
 
-import com.deker.cmm.model.CMM;
-import com.deker.cmm.model.CMMConditions;
-import com.deker.cmm.model.Follow;
-import com.deker.cmm.model.Menu;
+import com.deker.cmm.model.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -20,5 +17,7 @@ public interface CMMService {
 
     void follow(Follow follow);
     void unFollow(Follow follow);
+
+    PageInfo<Follow> getFollowing(Follow follow);
 
 }

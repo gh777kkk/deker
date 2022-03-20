@@ -1,5 +1,6 @@
 package com.deker.post.service;
 
+import com.deker.cmm.model.Follow;
 import com.deker.cmm.model.PageInfo;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.post.model.*;
@@ -29,5 +30,6 @@ public interface PostService {
 
    void likePost(Post post);
    void dislikePost(Post post);
+
 
 }
