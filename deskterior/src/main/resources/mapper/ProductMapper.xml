@@ -160,6 +160,7 @@
 
     <select id="getProductDetailOption" resultType="ProductDetailOption">
         select PRODUCT_PRICE AS productPrice,
+               MKT_PRODUCT_OPTION_ID AS productOptionId,
                OPTION1 AS option1,
                OPTION1_DATA AS option1Data,
                CODE_NAME('OPK',OPTION1) AS option1Name,
@@ -172,6 +173,10 @@
         from  study_gh.MKT_PRODUCT_OPTION
         where PRODUCT_ID=#{productId}
     </select>
+
+
+
+
 
 
 
@@ -626,6 +631,15 @@
         WHERE MEM_ID = #{memId}
         AND   ADD_ID = #{addId}
     </update>
+
+
+
+
+    <select id="getProductPrice" resultType="int">
+        select PRODUCT_PRICE AS productPrice
+        from  study_gh.MKT_PRODUCT_OPTION
+        where MKT_PRODUCT_OPTION_ID = #{productOptionId}
+    </select>
 
 
 </mapper>

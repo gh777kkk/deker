@@ -200,6 +200,66 @@ public class ProductServiceImpl implements ProductService {
 
 
 
+    public ProductCode getBuyNow(List<ProductOption> pOption, String memId ){
+        ProductCode pc = new ProductCode();
+        String myOrderId = CMMUtil.nextId("myOdId");
+
+        ProductCartToOderItem item= new ProductCartToOderItem();
+        List<ProductCartToOderItem> items = new ArrayList<ProductCartToOderItem>();
+
+        HashMap<String, Integer> dPay = new HashMap<String, Integer>();
+
+        for(ProductOption option : pOption){
+            item.setProductOptionId(option.getProductOptionId());
+            item.setMktProductId(option.getMktProductId());
+            item.setTotalPrice(productMapper.getProductPrice(option.getProductOptionId())*option.getOrderQuantity());
+
+
+            if(dPay.get(item.getMktProductId())==null){
+                dPay.put(item.getMktProductId(),item.getTotalPrice());
+            }
+            else{
+                dPay.put(item.getMktProductId(),item.getTotalPrice()+dPay.get(item.getMktProductId()));
+            }
+
+            items.add(item);
+
+
+
+        }
+
+        for(ProductCartToOderItem myItem : items){
+
+
+            myItem.setOrderItemId(CMMUtil.nextId("ordId"));
+            myItem.setMemId(memId);
+
+            if(dPay.get(myItem.getMktProductId())>=30000){
+                myItem.setDeliveryPay(0);
+            }
+            else{
+                myItem.setDeliveryPay(2500);
+            }
+            productMapper.insertOrderItem(myItem);
+
+            myItem.setMyOderId(myOrderId);
+            productMapper.insertMyOrderItem(myItem);
+
+        }
+
+        pc.setOrderId(myOrderId);
+
+        return pc;
+    }
+
+
+
+
+
+
+
+
+
 
     public void insertProductCart(List<ProductOption> pOption, String memId){
 
@@ -232,6 +292,8 @@ public class ProductServiceImpl implements ProductService {
 
         return result;
     }
+
+
 
 
 

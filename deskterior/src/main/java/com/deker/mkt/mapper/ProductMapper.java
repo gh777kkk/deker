@@ -84,6 +84,7 @@ public interface ProductMapper {
     RecentProduct mbGetRecentProductCheck(ProductCode pc);
     void updateRecentProductDate(RecentProduct rp);
 
+    int getProductPrice(String productOptionId);
 
 }
 

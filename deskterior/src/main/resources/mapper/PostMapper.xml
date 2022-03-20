@@ -96,7 +96,7 @@
         WHERE date(L.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
           and L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
-        ORDER BY likeCount DESC, L.CREATE_DT DESC
+        ORDER BY likeCount DESC, L.CREATE_DT DESC, L.POST_ID DESC
         limit 8
     </select>
 
@@ -196,7 +196,7 @@
                  LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
         where L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
-        ORDER BY likeCount DESC, L.CREATE_DT DESC
+        ORDER BY likeCount DESC, L.CREATE_DT DESC, L.POST_ID desc
         limit #{startRowNo}, #{endRowNo}
     </select>
 
@@ -217,7 +217,8 @@
         where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc limit 4
+        order by  l.CREATE_DT desc, l.POST_ID desc
+        limit 4
     </select>
 
 
@@ -246,7 +247,7 @@
         where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc
+        order by  l.CREATE_DT desc, l.POST_ID desc
         limit #{startRowNo}, #{endRowNo}
     </select>
 
@@ -266,7 +267,8 @@
         where  m.MEM_ID = l.MEM_ID and date(l.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
           and l.USE_YN ='Y'
         group by  l.POST_ID, l.CREATE_DT
-        order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc limit 4
+        order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc, l.POST_ID desc
+        limit 4
     </select>
 
 
@@ -294,7 +296,7 @@
                                     LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
         where l.USE_YN ='Y'
         group by  l.POST_ID, l.CREATE_DT
-        order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc
+        order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc, l.POST_ID desc
         limit #{startRowNo}, #{endRowNo}
     </select>
 
@@ -318,7 +320,8 @@
             </foreach> )
           </if>
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc limit 8
+        order by  l.CREATE_DT desc, l.POST_ID desc
+        limit 8
     </select>
 
     <select id="selectPostMemId" parameterType="PostConditions" resultType="Post">
