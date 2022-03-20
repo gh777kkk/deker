@@ -114,6 +114,20 @@ public class MBMarketController {
     }
 
 
+    @RequestMapping(value = "/reg/buy-now", method = RequestMethod.POST)
+    public ResponseEntity<?> getBuyNow(@RequestBody List<ProductOption> po, HttpServletRequest request) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        productService.insertProductCart(po, memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "바로 결제"
+                )
+        );
+    }
+
+
+
 
 
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
@@ -156,6 +170,7 @@ public class MBMarketController {
 
 
 
+
     @RequestMapping(value = "/get/tracking", method = RequestMethod.POST)
     public ResponseEntity<?> getTracking(@RequestBody ProductOrder conditions) throws Exception {
 
@@ -173,7 +188,7 @@ public class MBMarketController {
     @RequestMapping(value = "/get/verify", method = RequestMethod.POST)
     public ResponseEntity<?> getVerifyPayment(@RequestBody Payment pm) throws Exception {
         return ResponseEntity.ok(
-                new Result("200", "결제 페이지",
+                new Result("200", "결제 완료",
                         iamportService.getBuyerInfor(pm)
                 )
         );

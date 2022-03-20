@@ -94,7 +94,7 @@
         FROM study_gh.POST_LIST L
         LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
         WHERE date(L.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
-          and l.USE_YN ='Y'
+          and L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
         ORDER BY likeCount DESC, L.CREATE_DT DESC
         limit 8
