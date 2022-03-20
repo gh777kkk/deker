@@ -5,6 +5,8 @@ import com.deker.cmm.model.*;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
+import com.deker.post.model.CommunityProducts;
+import com.deker.post.model.PostComment;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -159,6 +161,24 @@ public class CMMServiceImpl implements CMMService {
 
     public void unFollow(Follow follow){
         cmmMapper.unFollow(follow);
+    }
+
+
+    public PageInfo<Follow> getFollowing(Follow follow){
+
+        int nonpagedCount = cmmMapper.getFollowingCount(follow.getMemId());
+        PageInfo<Follow> pageInfo = new PageInfo<>(follow,nonpagedCount);
+
+
+        pageInfo.setTotalCount(nonpagedCount);
+        List<Follow> follows = cmmMapper.getFollowing(follow);
+        for (Follow f : follows){
+            f.setProfile_img(CMMUtil.getImg(f.getProfile_img()));
+        }
+        pageInfo.setList(follows);
+
+
+        return pageInfo;
     }
 
 

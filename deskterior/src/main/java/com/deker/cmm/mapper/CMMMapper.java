@@ -19,4 +19,7 @@ public interface CMMMapper {
 
     void follow(Follow follow);
     void unFollow(Follow follow);
+
+    int getFollowingCount(String memId);
+    List<Follow> getFollowing(Follow follow);
 }

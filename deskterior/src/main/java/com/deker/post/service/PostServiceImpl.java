@@ -1,5 +1,6 @@
 package com.deker.post.service;
 
+import com.deker.cmm.model.Follow;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.util.CMMUtil;
 import com.deker.exception.PostIdMemIdDifferentException;
@@ -190,6 +191,7 @@ public class PostServiceImpl implements PostService{
 
         return pageInfo;
     }
+
 
 
 
