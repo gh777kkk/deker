@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class ProductOption {
 
-
     private String mktCartId;
     private String memId;
     private String mktProductId;

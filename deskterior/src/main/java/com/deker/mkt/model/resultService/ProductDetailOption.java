@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class ProductDetailOption {
 
+    private String productOptionId;
     private int productPrice;
     private String option1;
     private String option1Name;

@@ -118,7 +118,7 @@ public class MBMarketController {
     public ResponseEntity<?> getBuyNow(@RequestBody List<ProductOption> po, HttpServletRequest request) {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
-        productService.insertProductCart(po, memId);
+        productService.getBuyNow(po, memId);
 
         return ResponseEntity.ok(
                 new Result("200", "바로 결제"

@@ -32,6 +32,8 @@ public interface ProductService {
 
     void insertRecentProduct(ProductCode pc);
 
+    ProductCode getBuyNow(List<ProductOption> po, String memId);
+
     void insertProductCart(List<ProductOption> po, String memId);
     ProductCartItems getCartList(String memId);
     ProductCode insertBuyCartList(ProductCode pc);
@@ -65,5 +67,6 @@ public interface ProductService {
     List<ProductDetailModel> nmbGetRecentProduct();
 
     List<ProductDetailModel> mbGetRecentProduct(String memId);
+
 
 }
