@@ -20,4 +20,5 @@ public interface CMMService {
 
     PageInfo<Follow> getFollowing(Follow follow);
 
+    PageInfo<Follow> getFollower(Follow follow);
 }
