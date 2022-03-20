@@ -15,4 +15,5 @@ public interface AcctService {
     Acct memberMailCheck(AcctConditions conditions)throws Exception;
     Acct modMemberInfo(MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception;
     Acct getMemberInfo(HttpServletRequest request) throws Exception;
+    public void modPassword(AcctConditions conditions,HttpServletRequest request)throws Exception;
 }

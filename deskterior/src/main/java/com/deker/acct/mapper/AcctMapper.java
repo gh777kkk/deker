@@ -23,4 +23,5 @@ public interface AcctMapper {
     void deleteTag(AcctConditions conditions);
     void updateMemberInfo(AcctConditions conditions);
     void insertAuthority(AcctConditions conditions);
+    void updatePassword(AcctConditions conditions);
 }

@@ -179,4 +179,10 @@
         )
     </insert>
 
+    <update id="updatePassword" parameterType="AcctConditions">
+        UPDATE study_gh.DEKER_MEMBER
+        SET PASSWORD = #{password}
+        WHERE MEM_ID = #{memId}
+    </update>
+
 </mapper>

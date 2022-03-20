@@ -145,6 +145,14 @@ public class AcctServiceImpl implements AcctService {
         return null;
     }
 
+    @Override
+    public void modPassword(AcctConditions conditions,HttpServletRequest request)throws Exception{
+        if (conditions == null || conditions.getPassword() == null || conditions.getPassword().equals("")) throw new PasswordNullException();
+        conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        conditions.setPassword(passwordEncoder.encode(conditions.getPassword()));
+        acctMapper.updatePassword(conditions);
+    }
+
     private MimeMessage createMessage(String id, String ePw)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 

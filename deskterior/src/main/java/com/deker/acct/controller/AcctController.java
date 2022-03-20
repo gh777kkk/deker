@@ -49,4 +49,10 @@ public class AcctController {
     public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions) throws Exception {
         return ResponseEntity.ok(new Result("200","정상",acctService.memberMailCheck(conditions)));
     }
+
+    @RequestMapping(value = "/mb/acct/mod/password", method = RequestMethod.POST)
+    public ResponseEntity<Result> memberMailCheck(@RequestBody AcctConditions conditions,HttpServletRequest request) throws Exception {
+        acctService.modPassword(conditions,request);
+        return ResponseEntity.ok(new Result("200","정상"));
+    }
 }

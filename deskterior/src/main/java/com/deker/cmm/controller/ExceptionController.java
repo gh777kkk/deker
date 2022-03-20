@@ -34,6 +34,10 @@ public class ExceptionController {
     public ResponseEntity<Result> handleLoginPasswordException() {
         return ResponseEntity.ok(new Result("400","패스워드가 다릅니다"));
     }
+    @ExceptionHandler({ PasswordNullException.class })
+    public ResponseEntity<Result> handlePasswordNullException() {
+        return ResponseEntity.ok(new Result("400","패스워드 값이 없습니다"));
+    }
     @ExceptionHandler({ LoginSocialIdException.class })
     public ResponseEntity<Result> handleNoPaymentException() {
         return ResponseEntity.ok(new Result("401","소셜 아이디가 다릅니다"));
