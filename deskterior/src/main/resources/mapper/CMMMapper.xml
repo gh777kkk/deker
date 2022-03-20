@@ -113,6 +113,27 @@
         <if test="keyword != null">
           and m.NICKNAME like CONCAT('%', #{keyword}, '%')
         </if>
+        limit #{startRowNo}, #{endRowNo}
+    </select>
+
+
+
+    <select id="getFollowerCount" resultType="int">
+        select count(FOLLOWER)
+        from study_gh.FOLLOW f
+        where f.FOLLOWING = #{userId}
+
+    </select>
+
+    <select id="getFollower" resultType="Follow">
+        select m.NICKNAME AS nickNm,
+        m.PROFILE_IMG AS profile_img
+        from study_gh.FOLLOW f, study_gh.MEMBER m
+        where f.FOLLOWING = #{userId} and f.FOLLOWER = m.MEM_ID
+        <if test="keyword != null">
+            and m.NICKNAME like CONCAT('%', #{keyword}, '%')
+        </if>
+        limit #{startRowNo}, #{endRowNo}
     </select>
 
 </mapper>

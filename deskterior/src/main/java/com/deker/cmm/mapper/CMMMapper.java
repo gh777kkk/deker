@@ -22,4 +22,7 @@ public interface CMMMapper {
 
     int getFollowingCount(String memId);
     List<Follow> getFollowing(Follow follow);
+
+    List<Follow> getFollower(Follow follow);
+    int getFollowerCount(String memId);
 }

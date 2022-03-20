@@ -182,4 +182,22 @@ public class CMMServiceImpl implements CMMService {
     }
 
 
+    public PageInfo<Follow> getFollower(Follow follow){
+
+        int nonpagedCount = cmmMapper.getFollowerCount(follow.getMemId());
+        PageInfo<Follow> pageInfo = new PageInfo<>(follow,nonpagedCount);
+
+
+        pageInfo.setTotalCount(nonpagedCount);
+        List<Follow> follows = cmmMapper.getFollower(follow);
+        for (Follow f : follows){
+            f.setProfile_img(CMMUtil.getImg(f.getProfile_img()));
+        }
+        pageInfo.setList(follows);
+
+
+        return pageInfo;
+    }
+
+
 }
