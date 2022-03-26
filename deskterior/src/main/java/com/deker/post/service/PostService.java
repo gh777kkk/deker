@@ -16,6 +16,9 @@ public interface PostService {
 
     void regPost(MyPost mp, MultipartFile img) throws IOException;
 
+    void modPost(MyPost mp, MultipartFile img) throws IOException;
+
+
     PostMain getPostMain(String memId);
 
     PageInfo<PostProperties> getMorePostMain(PostConditions pc);

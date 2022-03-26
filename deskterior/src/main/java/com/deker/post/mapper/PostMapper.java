@@ -11,10 +11,21 @@ public interface PostMapper {
     Integer selectMyPostListCount(PostConditions conditions);
     Post selectMemberProfileImg(PostConditions conditions);
 
+
+
     void insertPost(MyPost myPost);
     void insertPostDetail(MyPost myPost);
     void insertPostTag(MyPost myPost);
     void insertPostItem(CommunityProducts cp);
+
+
+    String getPostDetailId(MyPost myPost);
+    List<String> getPostTagId(MyPost myPost);
+    void updatePost(MyPost myPost);
+    void updatePostDetail(MyPost myPost);
+    void updatePostTag(MyPost myPost);
+    void updatePostItem(CommunityProducts cp);
+
 
     PostProperties getPostDetail(String communityId);
     List<PostProperties> getPostLike();

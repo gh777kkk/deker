@@ -53,6 +53,22 @@ public class PostController {
 
 
 
+    @RequestMapping(value = "mb/post/mod/post-detail", method = RequestMethod.POST)
+    public ResponseEntity<Result> modPost( HttpServletRequest request, @RequestParam(value = "img", required = false) MultipartFile img,
+                                           @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        mp.setMemId(memId);
+        mp.setCommunityProducts(cp);
+        postService.modPost(mp, img);
+
+        return ResponseEntity.ok(new Result("200","게시글 수정"
+        ));
+    }
+
+
+
+
     @RequestMapping(value = "/mb/post/get", method = RequestMethod.POST)
     public ResponseEntity<Result> getPost(HttpServletRequest request){
 
