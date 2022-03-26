@@ -19,6 +19,7 @@ public class MyPost {
     private String postDetailId;
     private String postTagId;
     private String tag;
+    private boolean isLiked;
     private List<String> communityTags;
     private List<CommunityProducts> communityProducts;
 

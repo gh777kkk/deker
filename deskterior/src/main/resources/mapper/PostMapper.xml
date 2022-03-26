@@ -213,6 +213,17 @@
     </select>
 
 
+
+    <select id="getSelectPostDetailLiked" resultType="String">
+        select POST_ID
+        from study_gh.POST_LIKE k
+        where k.POST_ID =#{communityId} and k.MEM_ID = #{memId}
+    </select>
+
+
+
+
+
     <select id="getPostTag" resultType="MyPost">
         select t.CONTENTS AS tag
         from study_gh.POST_TAG t

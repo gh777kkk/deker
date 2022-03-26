@@ -95,12 +95,10 @@ public class PostController {
     }
 
     @RequestMapping(value = "/nmb/post/get/more", method = RequestMethod.POST)
-    public ResponseEntity<Result> getNbMorePost(HttpServletRequest request, @RequestBody PostConditions conditions){
+    public ResponseEntity<Result> getNbMorePost(@RequestBody PostConditions conditions){
 
-        String memId = jwtProvider.getMemIdFromJwtToken(request);
-        conditions.setMemId(memId);
         return ResponseEntity.ok(new Result("200","비회원 커뮤니티 메인 더보기",
-                postService.getMorePostMain(conditions)
+                postService.getNMorePostMain(conditions)
 
         ));
 
@@ -110,11 +108,10 @@ public class PostController {
 
 
     @RequestMapping(value = "/nmb/post/get", method = RequestMethod.POST)
-    public ResponseEntity<Result> ngetPost(HttpServletRequest request){
+    public ResponseEntity<Result> ngetPost(){
 
-        String memId = jwtProvider.getMemIdFromJwtToken(request);
         return ResponseEntity.ok(new Result("200","커뮤니티 메인",
-                postService.getPostMain(memId)
+                postService.getNPostMain()
 
         ));
 
@@ -151,15 +148,32 @@ public class PostController {
 
 
     @RequestMapping(value = "/nmb/post/get/post-detail", method = RequestMethod.POST)
-    public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd){
+    public ResponseEntity<Result> getPostDetail(@RequestBody PostDetail pd) {
 
         //String memId = jwtProvider.getMemIdFromJwtToken(request);
-        return ResponseEntity.ok(new Result("200","포스트 디테일",
+        return ResponseEntity.ok(new Result("200", "포스트 디테일",
                 postService.getPostDetail(pd)
 
         ));
 
     }
+
+
+    @RequestMapping(value = "/mb/post/get/post-detail", method = RequestMethod.POST)
+    public ResponseEntity<Result> getPostDetail(HttpServletRequest request, @RequestBody PostDetail pd){
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        pd.setMemId(memId);
+        return ResponseEntity.ok(new Result("200","포스트 디테일",
+                postService.getMPostDetail(pd)
+
+        ));
+
+    }
+
+
+
+
 
     @RequestMapping(value = "/mb/post/rmv/post", method = RequestMethod.POST)
     public ResponseEntity<Result> rmvPost(HttpServletRequest request,@RequestBody PostConditions conditions) throws Exception{
