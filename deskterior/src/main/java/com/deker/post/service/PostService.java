@@ -20,16 +20,22 @@ public interface PostService {
 
 
     PostMain getPostMain(String memId);
+    PostMain getNPostMain();
 
     PageInfo<PostProperties> getMorePostMain(PostConditions pc);
+    PageInfo<PostProperties> getNMorePostMain(PostConditions pc);
+
 
     PageInfo<PostComment> getPostComments(PostCommentConditions conditions);
 
     void regPostComments(PostComment pc);
 
     PostDetail getPostDetail(PostDetail pd);
+    PostDetail getMPostDetail(PostDetail pd);
 
-   void rmvPost(PostConditions conditions) throws Exception;
+
+
+    void rmvPost(PostConditions conditions) throws Exception;
 
    void likePost(Post post);
    void dislikePost(Post post);

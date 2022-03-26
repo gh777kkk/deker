@@ -11,12 +11,6 @@ public class PostDetail {
     private List<CommunityProducts> communityPostSelectedProduct;
     private MyPost communityPost;
     private String communityPostId;
-
-
-
-
-
-
-
+    private String memId;
 
 }

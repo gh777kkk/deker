@@ -63,4 +63,7 @@ public interface PostMapper {
 
     void likePost(Post post);
     void dislikePost(Post post);
+
+
+    String getSelectPostDetailLiked(MyPost mp);
 }

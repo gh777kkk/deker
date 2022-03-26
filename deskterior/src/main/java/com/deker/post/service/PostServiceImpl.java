@@ -97,9 +97,9 @@ public class PostServiceImpl implements PostService{
 
     public PostMain getPostMain(String memId){
 
-
-
         PostMain pm = new PostMain();
+        MyPost mp = new MyPost();
+        mp.setMemId(memId);
 
         List<PostProperties> rank = postMapper.getPostLike();
         for (PostProperties pp : rank) {
@@ -112,12 +112,20 @@ public class PostServiceImpl implements PostService{
             pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
             pp.setMemId(memId);
             pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
+            mp.setCommunityId(pp.getCommunityId());
+            String myLike = postMapper.getSelectPostDetailLiked(mp);
+            if(myLike.equals(pp.getCommunityId())) {
+                mp.setLiked(true);
+            }
+            else{
+                mp.setLiked(false);
+            }
         }
 
             pm.setRanks(rank);
 
 
-        if(memId != null) {
 
             List<PostProperties> follow = postMapper.getPostMyFollow(memId);
             for (PostProperties pp : follow) {
@@ -125,6 +133,16 @@ public class PostServiceImpl implements PostService{
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
                 pp.setMemId(memId);
                 pp.setFollowingCheck(true);
+
+
+                mp.setCommunityId(pp.getCommunityId());
+                String myLike = postMapper.getSelectPostDetailLiked(mp);
+                if(myLike.equals(pp.getCommunityId())) {
+                    mp.setLiked(true);
+                }
+                else{
+                    mp.setLiked(false);
+                }
 
             }
             pm.setFollow(follow);
@@ -137,11 +155,20 @@ public class PostServiceImpl implements PostService{
                 pp.setMemId(memId);
                 pp.setFollowingCheck(postMapper.getPostFollow(pp));
 
+
+                mp.setCommunityId(pp.getCommunityId());
+                String myLike = postMapper.getSelectPostDetailLiked(mp);
+                if(myLike.equals(pp.getCommunityId())) {
+                    mp.setLiked(true);
+                }
+                else{
+                    mp.setLiked(false);
+                }
             }
 
             pm.setCustom(custom);
 
-        }
+
 
         return pm;
     }
@@ -151,6 +178,8 @@ public class PostServiceImpl implements PostService{
     public PageInfo<PostProperties> getMorePostMain(PostConditions conditions){
 
         PageInfo<PostProperties> pageInfo = null;
+        MyPost mp = new MyPost();
+        mp.setMemId(conditions.getMemId());
 
         if(conditions.getType().equals("rank")){
 
@@ -164,6 +193,16 @@ public class PostServiceImpl implements PostService{
                 pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
                 pp.setMemId(conditions.getMemId());
                 pp.setFollowingCheck(postMapper.getPostFollow(pp));
+
+
+                mp.setCommunityId(pp.getCommunityId());
+                String myLike = postMapper.getSelectPostDetailLiked(mp);
+                if(myLike.equals(pp.getCommunityId())) {
+                    mp.setLiked(true);
+                }
+                else{
+                    mp.setLiked(false);
+                }
             }
 
             pageInfo.setList(rank);
@@ -180,6 +219,15 @@ public class PostServiceImpl implements PostService{
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
                 pp.setMemId(conditions.getMemId());
                 pp.setFollowingCheck(true);
+
+                mp.setCommunityId(pp.getCommunityId());
+                String myLike = postMapper.getSelectPostDetailLiked(mp);
+                if(myLike.equals(pp.getCommunityId())) {
+                    mp.setLiked(true);
+                }
+                else{
+                    mp.setLiked(false);
+                }
 
             }
             pageInfo.setList(follow);
@@ -198,6 +246,14 @@ public class PostServiceImpl implements PostService{
                 pp.setMemId(conditions.getMemId());
                 pp.setFollowingCheck(postMapper.getPostFollow(pp));
 
+                mp.setCommunityId(pp.getCommunityId());
+                String myLike = postMapper.getSelectPostDetailLiked(mp);
+                if(myLike.equals(pp.getCommunityId())) {
+                    mp.setLiked(true);
+                }
+                else{
+                    mp.setLiked(false);
+                }
             }
             pageInfo.setList(custom);
 
@@ -206,6 +262,75 @@ public class PostServiceImpl implements PostService{
         return pageInfo;
 
     }
+
+
+
+
+
+
+
+
+    public PostMain getNPostMain(){
+
+        PostMain pm = new PostMain();
+
+        List<PostProperties> rank = postMapper.getPostLike();
+        for (PostProperties pp : rank) {
+            PostProperties mypp = postMapper.getPostDetail(pp.getCommunityId());
+            pp.setCommunityTitle(mypp.getCommunityTitle());
+            pp.setUserId(mypp.getUserId());
+            pp.setUserNick(mypp.getUserNick());
+            pp.setUserProfileImg(CMMUtil.getImg(mypp.getUserProfileImg()));
+            pp.setCommunityImage(CMMUtil.getImg(mypp.getCommunityImage()));
+            pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
+            pp.setFollowingCheck(postMapper.getPostFollow(pp));
+            pp.setLiked(false);
+        }
+
+        pm.setRanks(rank);
+
+
+
+        return pm;
+    }
+
+
+
+    public PageInfo<PostProperties> getNMorePostMain(PostConditions conditions){
+
+        PageInfo<PostProperties> pageInfo = null;
+
+        if(conditions.getType().equals("rank")){
+
+            int nonpagedCount = postMapper.getMorePostCount();
+            pageInfo = new PageInfo<>(conditions,nonpagedCount);
+
+            List<PostProperties> rank = postMapper.getMorePostLike(conditions);
+            for (PostProperties pp : rank) {
+                PostProperties mypp = postMapper.getPostDetail(pp.getCommunityId());
+                pp.setCommunityTitle(mypp.getCommunityTitle());
+                pp.setUserId(mypp.getUserId());
+                pp.setUserNick(mypp.getUserNick());
+                pp.setUserProfileImg(CMMUtil.getImg(mypp.getUserProfileImg()));
+                pp.setCommunityImage(CMMUtil.getImg(mypp.getCommunityImage()));
+                pp.setCommentCount(postMapper.getPostCommentCount(pp.getCommunityId()));
+                pp.setFollowingCheck(postMapper.getPostFollow(pp));
+                pp.setLiked(false);
+            }
+
+            pageInfo.setList(rank);
+
+        }
+
+        return pageInfo;
+
+    }
+
+
+
+
+
+
 
 
 
@@ -241,6 +366,7 @@ public class PostServiceImpl implements PostService{
 
         MyPost mp = postMapper.getSelectPostDetail(pd.getCommunityPostId());
         mp.setPostImg(CMMUtil.getImg(mp.getPostImg()));
+        mp.setLiked(false);
 
         List<MyPost> tags = postMapper.getPostTag(mp.getPostDetailId());
         List<String> communityTags = new ArrayList<>();
@@ -259,6 +385,49 @@ public class PostServiceImpl implements PostService{
 
         return pd;
     }
+
+
+
+
+    public PostDetail getMPostDetail(PostDetail pd){
+
+        MyPost mp = postMapper.getSelectPostDetail(pd.getCommunityPostId());
+        mp.setPostImg(CMMUtil.getImg(mp.getPostImg()));
+
+        mp.setMemId(pd.getMemId());
+        String myLike = postMapper.getSelectPostDetailLiked(mp);
+        if(myLike.equals(pd.getCommunityPostId())) {
+            mp.setLiked(true);
+        }
+        else{
+            mp.setLiked(false);
+        }
+
+        List<MyPost> tags = postMapper.getPostTag(mp.getPostDetailId());
+        List<String> communityTags = new ArrayList<>();
+        for (MyPost tag : tags) {
+            communityTags.add(tag.getTag());
+        }
+        mp.setCommunityTags(communityTags);
+
+        pd.setCommunityPost(mp);
+
+        List<CommunityProducts> cpList = postMapper.getPostProduct(mp.getPostDetailId());
+        for (CommunityProducts cp : cpList){
+            cp.setProductImgUrl(CMMUtil.getImg(cp.getProductImgUrl()));
+        }
+        pd.setCommunityPostSelectedProduct(cpList);
+
+        return pd;
+    }
+
+
+
+
+
+
+
+
 
     public void rmvPost(PostConditions conditions) throws Exception{
         if (postMapper.selectPostMemId(conditions) == null) throw new PostIdMemIdDifferentException();
