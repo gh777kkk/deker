@@ -79,7 +79,13 @@ public class ProductServiceImpl implements ProductService {
         int nonpagedCount = productMapper.getProductCount();
         PageInfo<ProductModel> pageInfo = new PageInfo<>(pc,nonpagedCount);
 
-        pageInfo.setList(productMapper.getMoreBestSaleProductList(pc));
+        List<ProductModel> myList = productMapper.getMoreBestSaleProductList(pc);
+        for (ProductModel pm : myList) {
+            pm.setProductImg(CMMUtil.getImg(pm.getProductImg()));
+            }
+
+
+        pageInfo.setList(myList);
 
 
         return pageInfo;

@@ -42,7 +42,9 @@ public class PostServiceImpl implements PostService{
 
 
     public void regPost(MyPost mp, MultipartFile img) throws IOException {
-        mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
+        if (img != null) {
+            mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
+        }
         mp.setCommunityId(CMMUtil.nextId("cmId"));
         postMapper.insertPost(mp);
 
@@ -61,6 +63,36 @@ public class PostServiceImpl implements PostService{
             postMapper.insertPostItem(cp);
         }
     }
+
+
+
+    public void modPost(MyPost mp, MultipartFile img) throws IOException {
+        if (img != null) {
+            mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
+        }
+        postMapper.updatePost(mp);
+
+        String pdId = postMapper.getPostDetailId(mp);
+        mp.setPostDetailId(pdId);
+        postMapper.updatePostDetail(mp);
+
+        List<String> tagId = postMapper.getPostTagId(mp);
+        List<String> tags = mp.getCommunityTags();
+
+        for (int i =0; i<tagId.size(); i++) {
+            mp.setTag(tags.get(i));
+            mp.setPostTagId(tagId.get(i));
+            postMapper.updatePostTag(mp);
+        }
+
+        for (CommunityProducts cp : mp.getCommunityProducts()) {
+            cp.setPostDetailId(pdId);
+            postMapper.updatePostItem(cp);
+        }
+    }
+
+
+
 
 
     public PostMain getPostMain(String memId){

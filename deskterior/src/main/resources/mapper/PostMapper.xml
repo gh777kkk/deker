@@ -43,6 +43,33 @@
                )
     </insert>
 
+
+
+    <update id="updatePost" parameterType="MyPost">
+        UPDATE  study_gh.POST_LIST
+        SET     JOB_CODE = #{jobCode} and MOOD_CODE = #{moodcode} and MTRL_CODE = #{materialCode}
+        WHERE   POST_ID = #{communityId}
+    </update>
+
+
+    <select id="getPostDetailId" resultType="String">
+        select d.POST_DETAIL_ID as postDetailId
+        from study_gh.POST_DETAIL d
+        where POST_ID = #{communityId}
+    </select>
+
+
+    <select id="getPostTagId" resultType="String">
+        select t.POST_TAG_ID
+        from study_gh.POST_TAG t
+        where t.POST_DETAIL_ID = #{postDetailId}
+    </select>
+
+
+
+
+
+
     <insert id="insertPostDetail" parameterType="MyPost">
         insert into study_gh.POST_DETAIL
         (
@@ -52,6 +79,18 @@
                    #{postDetailId}, #{communityId}, #{postImg}, #{communityContent}, #{communityTitle}
                )
     </insert>
+
+
+
+    <update id="updatePostDetail" parameterType="MyPost">
+        UPDATE  study_gh.POST_DETAIL
+        SET     POST_IMG = #{postImg}, CONTENTS=#{communityContent}, POST_TITLE =#{communityTitle}
+        WHERE   POST_ID = #{communityId}
+    </update>
+
+
+
+
 
     <insert id="insertPostTag" parameterType="MyPost">
         insert into study_gh.POST_TAG
@@ -63,6 +102,16 @@
                )
     </insert>
 
+
+
+    <update id="updatePostTag" parameterType="MyPost">
+        UPDATE  study_gh.POST_TAG
+        SET     CONTENTS = #{tag}
+        WHERE   POST_TAG_ID = #{postTagId}
+    </update>
+
+
+
     <insert id="insertPostItem" parameterType="CommunityProducts">
         insert into study_gh.POST_ITEM
         (
@@ -72,6 +121,15 @@
                    #{id}, #{postDetailId}, #{productId}, #{productDescription}, #{offsetX}, #{offsetY}
                )
     </insert>
+
+
+
+    <update id="updatePostItem" parameterType="CommunityProducts">
+        UPDATE  study_gh.POST_ITEM
+        SET     POST_ITEM_ID = #{id} and PRODUCT_ID = #{productId} and MAKET_CONTENTS = #{productDescription}
+                                   and LOCATIONX = #{offsetX} and LOCATIONY = #{offsetY}
+        WHERE   POST_DETAIL_ID = #{postDetailId}
+    </update>
 
 
     <select id="getPostDetail" resultType="PostProperties">

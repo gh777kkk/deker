@@ -9,13 +9,12 @@
                PRODUCT_PRICE AS productPrice,
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p,
-             (select PRODUCT_ID
-              from study_gh.MKT_ORDER
-              where ORDER_CONFIRM = 'Y'
-              group by PRODUCT_ID
-              order by COUNT(PRODUCT_ID) desc limit 8) o
-        where p.MKT_PRODUCT_ID = o.PRODUCT_ID
+        from study_gh.MKT_PRODUCT p
+                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+            and ORDER_CONFIRM = 'Y'
+        group by MKT_PRODUCT_ID
+        order by count(PRODUCT_ID), MKT_PRODUCT_ID desc
+        limit 8
     </select>
 
 
@@ -29,7 +28,7 @@
                  left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
             and ORDER_CONFIRM = 'Y'
         group by MKT_PRODUCT_ID
-        order by count(PRODUCT_ID) desc
+        order by count(PRODUCT_ID), MKT_PRODUCT_ID desc
         LIMIT #{startRowNo}, #{endRowNo}
     </select>
 
