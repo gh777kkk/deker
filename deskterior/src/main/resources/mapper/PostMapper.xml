@@ -273,20 +273,24 @@
 
 
     <select id="getPostMyFollow" resultType="PostProperties">
-        select d.POST_ID AS communityId,
-               d.post_title AS communityTitle,
-               l.MEM_ID AS userId,
-               m.NICKNAME AS userNick,
+        select d.POST_ID     AS communityId,
+               d.post_title  AS communityTitle,
+               l.MEM_ID      AS userId,
+               m.NICKNAME    AS userNick,
                m.PROFILE_IMG AS userProfileImg,
-               post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+               post_img      AS communityImage
+        from study_gh.MEMBER m,
+             study_gh.POST_LIST l,
+             study_gh.POST_DETAIL d,
              (select FOLLOWING
               from study_gh.FOLLOW
               where FOLLOWER = #{memId}) as f
-        where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
+        where l.POST_ID = d.POST_ID
+          and l.MEM_ID in (f.FOLLOWING)
+          and m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
         group by l.POST_ID, l.CREATE_DT
-        order by  l.CREATE_DT desc, l.POST_ID desc
+        order by l.CREATE_DT desc, l.POST_ID desc
         limit 4
     </select>
 
