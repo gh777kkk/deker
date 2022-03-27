@@ -257,6 +257,17 @@ public class MBMarketController {
 
 
 
+    @RequestMapping(value = "/get/order-list", method = RequestMethod.POST)
+    public ResponseEntity<?> getOderList(@RequestBody MyShoppingConditions conditions, HttpServletRequest request) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "주문서",productService.getOrderProduct(conditions)
+                )
+        );
+    }
 
 
 
