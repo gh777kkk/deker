@@ -337,13 +337,17 @@ public class PostServiceImpl implements PostService{
     public PageInfo<PostComment> getPostComments(PostCommentConditions conditions){
 
 
+        List<PostComment> myComm = postMapper.getPostComment(conditions);
         int nonpagedCount = postMapper.getPostCommentCount(conditions.getCommunityId());
         PageInfo<PostComment> pageInfo = new PageInfo<>(conditions,nonpagedCount);
 
-
+        for (PostComment pc : myComm) {
+            pc.setWriterProfileImgUrl(CMMUtil.getImg(pc.getWriterProfileImgUrl()));
+        }
         pageInfo.setObjectData(conditions.getCommunityId());
         pageInfo.setTotalCount(nonpagedCount);
-        pageInfo.setList(postMapper.getPostComment(conditions));
+
+        pageInfo.setList(myComm);
 
 
         return pageInfo;

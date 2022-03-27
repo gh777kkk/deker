@@ -370,14 +370,14 @@
 
 
     <select id="getAddress" resultType="MarketAddress">
-        select ADD_NAME AS addName,
-               PHONE_NUMBER AS phoneNumber,
-               ADD_ZIP AS addZip,
-               ADDRESS AS address,
-               ADD_DETAIL AS addDetail
-        from study_gh.MKT_ADDRESS a
-        where a.MEM_ID = #{memId}
-    </select>
+    select ADD_NAME AS addName,
+           PHONE_NUMBER AS phoneNumber,
+           ADD_ZIP AS addZip,
+           ADDRESS AS address,
+           ADD_DETAIL AS addDetail
+    from study_gh.MKT_ADDRESS a
+    where a.MEM_ID = #{memId}
+</select>
 
     <select id="selectProductTracking" parameterType="ProductOrder" resultType="ProductTracking">
         SELECT      MP.MKT_PRODUCT_ID                                                   productId
