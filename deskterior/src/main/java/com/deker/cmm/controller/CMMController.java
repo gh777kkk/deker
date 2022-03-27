@@ -108,4 +108,13 @@ public class CMMController {
                 ));
     }
 
+    @RequestMapping(value = "/mb/cmm/rmv/follow-me", method = RequestMethod.POST)
+    public ResponseEntity<Result> rmvFollowMe(HttpServletRequest request,@RequestBody Follow follow)throws Exception {
+
+        follow.setMemId(jwtProvider.getMemIdFromJwtToken(request));
+        cmmService.rmvFollowMe(follow);
+        return ResponseEntity.ok(
+                new Result("200","나를 팔로워한 계정 삭제"));
+    }
+
 }

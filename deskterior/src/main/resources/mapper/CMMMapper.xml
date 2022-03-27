@@ -136,5 +136,11 @@
         limit #{startRowNo}, #{endRowNo}
     </select>
 
+    <delete id="deleteFollowMe" parameterType="Follow">
+        DELETE FROM study_gh.FOLLOW
+        WHERE   FOLLOWER = #{userId}
+        AND     FOLLOWING = #{memId}
+    </delete>
+
 </mapper>
 

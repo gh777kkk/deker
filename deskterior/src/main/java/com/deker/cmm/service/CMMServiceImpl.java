@@ -3,6 +3,7 @@ package com.deker.cmm.service;
 import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.*;
 import com.deker.cmm.util.CMMUtil;
+import com.deker.exception.MemberNotFoundException;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
 import com.deker.post.model.CommunityProducts;
@@ -199,5 +200,9 @@ public class CMMServiceImpl implements CMMService {
         return pageInfo;
     }
 
+    public void rmvFollowMe(Follow follow)throws Exception{
+        if (follow.getUserId() == null || follow.getUserId().equals("")) throw new MemberNotFoundException();
+        cmmMapper.deleteFollowMe(follow);
+    }
 
 }
