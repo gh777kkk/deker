@@ -30,6 +30,10 @@ public class ExceptionController {
     public ResponseEntity<Result> handleImgNotFoundException() {
         return ResponseEntity.ok(new Result("400","이미지를 찾을 수 없습니다"));
     }
+    @ExceptionHandler({ ImgExtentionNotFoundException.class })
+    public ResponseEntity<Result> handleImgExtentionNotFoundException() {
+        return ResponseEntity.ok(new Result("400","이미지 확장자를 찾을 수 없습니다"));
+    }
     @ExceptionHandler({ LoginPasswordException.class })
     public ResponseEntity<Result> handleLoginPasswordException() {
         return ResponseEntity.ok(new Result("400","패스워드가 다릅니다"));

@@ -4,6 +4,7 @@ import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.Img;
 import com.deker.cmm.model.ImgConditions;
 
+import com.deker.exception.ImgExtentionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,10 +38,11 @@ public class CMMUtil {
         return result;
     }
 
-    public String setImg(MultipartFile img,String memId) throws IOException {
+    public String setImg(MultipartFile img,String memId) throws IOException,Exception {
         ImgConditions imgConditions = new ImgConditions();
         String filename = img.getOriginalFilename();
         String extention = filename.substring(filename.lastIndexOf('.')+1);
+        if (extention.equals("")) throw new ImgExtentionNotFoundException();
         File file = new File(String.format("%s%s.%s", imgPath, UUID.randomUUID().toString(),extention));
         img.transferTo(file);
 
