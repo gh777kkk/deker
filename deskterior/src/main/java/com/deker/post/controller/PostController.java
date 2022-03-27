@@ -40,7 +40,7 @@ public class PostController {
 
     @RequestMapping(value = "/mb/post/reg/write-post", method = RequestMethod.POST)
     public ResponseEntity<Result> regPost( HttpServletRequest request, @RequestParam(value = "img", required = false) MultipartFile img,
-                                          @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException {
+                                          @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException,Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         mp.setMemId(memId);
@@ -55,7 +55,7 @@ public class PostController {
 
     @RequestMapping(value = "mb/post/mod/post-detail", method = RequestMethod.POST)
     public ResponseEntity<Result> modPost( HttpServletRequest request, @RequestParam(value = "img", required = false) MultipartFile img,
-                                           @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException {
+                                           @RequestPart("community") MyPost mp, @RequestPart("product") List<CommunityProducts> cp) throws IOException,Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         mp.setMemId(memId);

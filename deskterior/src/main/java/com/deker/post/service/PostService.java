@@ -14,9 +14,9 @@ import java.util.List;
 public interface PostService {
     PageInfo<Post> getMemberInfo(PostConditions conditions) throws Exception;
 
-    void regPost(MyPost mp, MultipartFile img) throws IOException;
+    void regPost(MyPost mp, MultipartFile img) throws IOException,Exception;
 
-    void modPost(MyPost mp, MultipartFile img) throws IOException;
+    void modPost(MyPost mp, MultipartFile img) throws IOException,Exception;
 
 
     PostMain getPostMain(String memId);

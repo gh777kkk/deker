@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService{
 
 
 
-    public void regPost(MyPost mp, MultipartFile img) throws IOException {
+    public void regPost(MyPost mp, MultipartFile img) throws IOException,Exception {
         if (img != null) {
             mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
         }
@@ -66,7 +66,7 @@ public class PostServiceImpl implements PostService{
 
 
 
-    public void modPost(MyPost mp, MultipartFile img) throws IOException {
+    public void modPost(MyPost mp, MultipartFile img) throws IOException,Exception {
         if (img != null) {
             mp.setPostImg(CMMUtil.setImg(img, mp.getMemId()));
         }
