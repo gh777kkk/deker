@@ -115,11 +115,11 @@ public class PostServiceImpl implements PostService{
 
             mp.setCommunityId(pp.getCommunityId());
             String myLike = postMapper.getSelectPostDetailLiked(mp);
-            if(myLike.equals(pp.getCommunityId())) {
-                mp.setLiked(true);
+            if(pp.getCommunityId().equals(myLike)) {
+                pp.setLiked(true);
             }
             else{
-                mp.setLiked(false);
+                pp.setLiked(false);
             }
         }
 
@@ -137,11 +137,11 @@ public class PostServiceImpl implements PostService{
 
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
-                if(myLike.equals(pp.getCommunityId())) {
-                    mp.setLiked(true);
+                if(pp.getCommunityId().equals(myLike)) {
+                    pp.setLiked(true);
                 }
                 else{
-                    mp.setLiked(false);
+                    pp.setLiked(false);
                 }
 
             }
@@ -158,11 +158,11 @@ public class PostServiceImpl implements PostService{
 
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
-                if(myLike.equals(pp.getCommunityId())) {
-                    mp.setLiked(true);
+                if(pp.getCommunityId().equals(myLike)) {
+                    pp.setLiked(true);
                 }
                 else{
-                    mp.setLiked(false);
+                    pp.setLiked(false);
                 }
             }
 
@@ -197,7 +197,7 @@ public class PostServiceImpl implements PostService{
 
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
-                if(myLike.equals(pp.getCommunityId())) {
+                if(pp.getCommunityId().equals(myLike)) {
                     mp.setLiked(true);
                 }
                 else{
@@ -222,7 +222,7 @@ public class PostServiceImpl implements PostService{
 
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
-                if(myLike.equals(pp.getCommunityId())) {
+                if(pp.getCommunityId().equals(myLike)) {
                     mp.setLiked(true);
                 }
                 else{
@@ -248,7 +248,7 @@ public class PostServiceImpl implements PostService{
 
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
-                if(myLike.equals(pp.getCommunityId())) {
+                if(pp.getCommunityId().equals(myLike)) {
                     mp.setLiked(true);
                 }
                 else{
@@ -396,7 +396,7 @@ public class PostServiceImpl implements PostService{
 
         mp.setMemId(pd.getMemId());
         String myLike = postMapper.getSelectPostDetailLiked(mp);
-        if(myLike.equals(pd.getCommunityPostId())) {
+        if(pd.getCommunityPostId().equals(myLike)) {
             mp.setLiked(true);
         }
         else{
