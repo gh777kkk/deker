@@ -208,7 +208,7 @@
                POST_TITLE AS communityTitle,
                l.JOB_CODE AS jobCode,
                l.MOOD_CODE AS moodCode,
-               l.MTRL_CODE AS material,
+               l.MTRL_CODE AS materialCode,
                d.POST_DETAIL_ID AS postDetailId
         from study_gh.POST_DETAIL d, study_gh.POST_LIST l
         where d.POST_ID = #{communityId} AND l.POST_ID =#{communityId}
