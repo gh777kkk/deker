@@ -47,7 +47,7 @@
 
     <update id="updatePost" parameterType="MyPost">
         UPDATE  study_gh.POST_LIST
-        SET     JOB_CODE = #{jobCode} and MOOD_CODE = #{moodcode} and MTRL_CODE = #{materialCode}
+        SET     JOB_CODE = #{jobCode} and MOOD_CODE = #{moodCode} and MTRL_CODE = #{materialCode}
         WHERE   POST_ID = #{communityId}
     </update>
 
@@ -84,7 +84,10 @@
 
     <update id="updatePostDetail" parameterType="MyPost">
         UPDATE  study_gh.POST_DETAIL
-        SET     POST_IMG = #{postImg}, CONTENTS=#{communityContent}, POST_TITLE =#{communityTitle}
+        SET     <if test="postImg != null">
+                    POST_IMG = #{postImg} and
+                 </if>
+            CONTENTS=#{communityContent} and POST_TITLE =#{communityTitle}
         WHERE   POST_ID = #{communityId}
     </update>
 

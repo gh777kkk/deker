@@ -68,5 +68,7 @@ public interface ProductService {
 
     List<ProductDetailModel> mbGetRecentProduct(String memId);
 
+    OrderList getOrderList(OrderList orderList);
+
 
 }
