@@ -280,6 +280,10 @@
     </insert>
 
 
+
+
+
+
     <select id="getCartList" resultType="ProductCartItems">
         select mkt_cart_id AS cartId,
                product_id AS mktProductId,
@@ -639,6 +643,37 @@
         from  study_gh.MKT_PRODUCT_OPTION
         where MKT_PRODUCT_OPTION_ID = #{productOptionId}
     </select>
+
+
+
+
+
+    <select id="getMainAddress" resultType="MarketAddress">
+        select ADD_NAME AS addName,
+               PHONE_NUMBER AS phoneNumber,
+               ADD_ZIP AS addZip,
+               ADDRESS AS address,
+               ADD_DETAIL AS addDetail
+        from study_gh.MKT_ADDRESS a
+        where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
+    </select>
+
+
+
+
+    <select id="getProductOption" resultType="ProductOption">
+        select ADD_NAME AS addName,
+               PHONE_NUMBER AS phoneNumber,
+               ADD_ZIP AS addZip,
+               ADDRESS AS address,
+               ADD_DETAIL AS addDetail
+        from study_gh.MKT_MY_ORDER mo, study_gh.MKT_ORDER o,
+        where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
+    </select>
+
+
+
+
 
 
 </mapper>

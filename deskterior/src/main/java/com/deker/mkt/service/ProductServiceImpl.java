@@ -649,5 +649,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    public OrderList getOrderList(OrderList orderList){
+
+        orderList.setMarketAddress(productMapper.getMainAddress(orderList.getMemId()));
+        ProductOption po = productMapper.getProductOption(orderList.getOrderId());
+
+
+        return orderList;
+    }
+
+
 
 }

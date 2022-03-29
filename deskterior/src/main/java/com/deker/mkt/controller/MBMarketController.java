@@ -4,6 +4,7 @@ import com.deker.cmm.model.Result;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductOption;
 import com.deker.mkt.model.request.*;
+import com.deker.mkt.model.response.OrderList;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
@@ -258,13 +259,13 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/get/order-list", method = RequestMethod.POST)
-    public ResponseEntity<?> getOderList(@RequestBody MyShoppingConditions conditions, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> getOderList(@RequestBody OrderList orderList, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
-        conditions.setMemId(memId);
+        orderList.setMemId(memId);
 
         return ResponseEntity.ok(
-                new Result("200", "주문서",productService.getOrderProduct(conditions)
+                new Result("200", "주문서",productService.getOrderList(orderList)
                 )
         );
     }
