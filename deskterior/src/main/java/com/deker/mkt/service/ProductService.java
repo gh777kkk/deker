@@ -54,7 +54,7 @@ public interface ProductService {
 
 
 
-    PageInfo<MyShoppingList> getOrderProduct(MyShoppingConditions conditions);
+    PageInfo<MyShoppingItem> getOrderProduct(MyShoppingConditions conditions)throws Exception;
 
 
     List<MyAddress> getMyAddressList(String memId);

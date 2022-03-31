@@ -8,6 +8,7 @@ import com.deker.mkt.model.response.*;
 import com.deker.mkt.model.resultService.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -69,7 +70,7 @@ public interface ProductMapper {
     List<Menu> getMbMenu();
 
     List<MyShoppingOrderState> selectMyShoppingOrderState(MyShoppingConditions conditions);
-    List<MyShoppingList> selectMyShoppingList(MyShoppingConditions conditions);
+    ArrayList<MyShoppingList> selectMyShoppingList(MyShoppingConditions conditions);
     Integer selectMyShoppingListCount(MyShoppingConditions conditions);
 
     List<MyAddress> selectMyAddressList(String memId);

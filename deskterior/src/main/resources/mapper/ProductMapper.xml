@@ -437,43 +437,61 @@
     </select>
 
     <select id="selectMyShoppingList" parameterType="MyShoppingConditions" resultType="MyShoppingList">
-        SELECT      MP.MKT_PRODUCT_ID                                                   productId
-                ,   MO.ORDER_ID                                                         orderId
-                ,   MP.PRODUCT_IMG                                                      productImg
-                ,   'deker'                                                             productBrand
-                ,   MP.PRODUCT_NAME                                                     productName
-                ,   OPTION1                                                             option1
-                ,   OPTION1_DATA                                                        option1Data
-                ,   CODE_NAME('OPK',MPO.OPTION1)                                        option1Nm
-                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)        option1DataNm
-                ,   OPTION2                                                             option2
-                ,   OPTION2_DATA                                                        option2Data
-                ,   CODE_NAME('OPK',MPO.OPTION2)                                        option2Nm
-                ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION2,MPO.OPTION2_DATA)        option2DataNm
-                ,   MO.CREATE_DT                                                        createDt
-                ,   MO.ORDER_STATE                                                      orderState
-                ,   CODE_NAME('ODS',MO.ORDER_STATE)                                     orderStateNm
-                ,   MO.ORDER_PRICE                                                      orderPrice
-                ,   MO.ORDER_QUANTITY                                                   orderQuantity
-        FROM study_gh.MKT_ORDER MO
-        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
-        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
-        WHERE   1=1
-        AND     MO.MEM_ID = #{memId}
-        AND     MO.CREATE_DT > #{period}
-        AND     MO.ORDER_STATE = #{deliveryState}
-		LIMIT				#{startRowNo}, #{endRowNo}
+        SELECT              X.myOrderId                                                         myOrderId
+                        ,   MP.MKT_PRODUCT_ID                                                   productId
+                        ,   MO.ORDER_ID                                                         orderId
+                        ,   MP.PRODUCT_IMG                                                      productImg
+                        ,   'deker'                                                             productBrand
+                        ,   MP.PRODUCT_NAME                                                     productName
+                        ,   OPTION1                                                             option1
+                        ,   OPTION1_DATA                                                        option1Data
+                        ,   CODE_NAME('OPK',MPO.OPTION1)                                        option1Nm
+                        ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION1,MPO.OPTION1_DATA)        option1DataNm
+                        ,   OPTION2                                                             option2
+                        ,   OPTION2_DATA                                                        option2Data
+                        ,   CODE_NAME('OPK',MPO.OPTION2)                                        option2Nm
+                        ,   MKT_OPTION_NAME(MPO.PRODUCT_ID,MPO.OPTION2,MPO.OPTION2_DATA)        option2DataNm
+                        ,   MO.CREATE_DT                                                        createDt
+                        ,   MO.ORDER_STATE                                                      orderState
+                        ,   CODE_NAME('ODS',MO.ORDER_STATE)                                     orderStateNm
+                        ,   MO.ORDER_PRICE                                                      orderPrice
+                        ,   MO.ORDER_QUANTITY                                                   orderQuantity
+        FROM    (
+                SELECT      MY_ORDER_ID         myOrderId
+                FROM MKT_MY_ORDER MMO
+                LEFT OUTER JOIN MKT_ORDER MO on MMO.ORDER_ITEM_ID = MO.ORDER_ID
+                WHERE   1=1
+                AND     MMO.CREATE_DT > #{period}
+                AND     MMO.MEM_ID = #{memId}
+        <if test="deliveryState != null and !deliveryState.equals('')">
+                AND     MO.ORDER_STATE = #{deliveryState}
+        </if>
+                AND     MMO.USE_YN = 'Y'
+                GROUP BY myOrderId
+                LIMIT  #{startRowNo}, #{endRowNo}
+                )X
+        LEFT OUTER JOIN MKT_MY_ORDER MMO        ON X.myOrderId = MMO.MY_ORDER_ID
+        LEFT OUTER JOIN MKT_ORDER MO            ON MMO.ORDER_ITEM_ID = MO.ORDER_ID
+                                                AND MO.USE_YN = 'Y'
+        LEFT OUTER JOIN MKT_PRODUCT_OPTION MPO  ON MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+                                                AND MPO.USE_YN = 'Y'
+        LEFT OUTER JOIN MKT_PRODUCT MP          ON MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+                                                AND MP.USE_YN = 'Y'
     </select>
 
     <select id="selectMyShoppingListCount" parameterType="MyShoppingConditions" resultType="Integer">
-        SELECT      COUNT(*)
-        FROM study_gh.MKT_ORDER MO
-        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
-        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        SELECT      COUNT(X.MY_ORDER_ID)
+        FROM (  SELECT      MY_ORDER_ID,COUNT(MY_ORDER_ID)
+        FROM MKT_MY_ORDER MMO
+        LEFT OUTER JOIN MKT_ORDER MO on MMO.ORDER_ITEM_ID = MO.ORDER_ID
         WHERE   1=1
-        AND     MO.MEM_ID = #{memId}
-        AND     MO.CREATE_DT > #{period}
+        AND     MMO.CREATE_DT > #{period}
+        AND     MMO.MEM_ID = #{memId}
+        <if test="deliveryState != null and !deliveryState.equals('')">
         AND     MO.ORDER_STATE = #{deliveryState}
+        </if>
+        AND     MMO.USE_YN = 'Y'
+        GROUP BY MY_ORDER_ID)X
     </select>
 
     <update id="updateOrderState" parameterType="DeliveryUpdate">

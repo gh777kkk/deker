@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 @Getter
 public class MyShoppingList {
+    private String myOrderId;
     private String productId;
     private String orderId;
     private String productImg;

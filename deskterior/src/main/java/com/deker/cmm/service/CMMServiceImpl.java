@@ -73,33 +73,15 @@ public class CMMServiceImpl implements CMMService {
 
     @Override
     public CMM sseTest(){
-//        CMM cmm = new CMM();
-//        cmm.setValue("sse 전송");
-//        CLIENTS.forEach((id,emitter)->{
-//            try{
-//                emitter.send(cmm, MediaType.APPLICATION_JSON);
-//            }catch (Exception e){
-//                emitter.complete();
-//            }
-//        });
-//        return null;
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        JSONObject body = new JSONObject();
-        headers.clear();
-        headers.add("Content-Type","application/json;charset=UTF-8");
-        body.clear();
-        body.put("response_type", "code");
-        body.put("client_id", "3b9fe406-a181-4694-866b-0878498112d0");
-        body.put("redirect_uri", "https://localhost:6012/");
-        body.put("scope", "login inquiry transfer");
-        body.put("state", "b80BLsfigm90okPTjy03elbJqRH0fGSY");
-        body.put("auth_type", "0");
-
-
-        HttpEntity<JSONObject>entity = new HttpEntity<JSONObject>(body, headers);
-        ResponseEntity<JSONObject> test = restTemplate.postForEntity("https://testapi.openbanking.or.kr/oauth/2.0/authorize", entity, JSONObject.class);
-        System.out.println(test);
+        CMM cmm = new CMM();
+        cmm.setValue("sse 전송");
+        CLIENTS.forEach((id,emitter)->{
+            try{
+                emitter.send(cmm, MediaType.APPLICATION_JSON);
+            }catch (Exception e){
+                emitter.complete();
+            }
+        });
         return null;
     }
 

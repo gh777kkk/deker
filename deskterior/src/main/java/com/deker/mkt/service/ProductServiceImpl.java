@@ -4,10 +4,7 @@ import com.deker.cmm.model.Menu;
 import com.deker.cmm.model.PageInfo;
 import com.deker.cmm.model.PageReview;
 import com.deker.cmm.model.PagingConditions;
-import com.deker.exception.AddressIdNotFoundException;
-import com.deker.exception.MyAddressListOverException;
-import com.deker.exception.TrackingException;
-import com.deker.exception.TrackingKeyException;
+import com.deker.exception.*;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.mapper.ProductMapper;
 
@@ -445,7 +442,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public PageInfo<MyShoppingList> getOrderProduct(MyShoppingConditions conditions){
+    public PageInfo<MyShoppingItem> getOrderProduct(MyShoppingConditions conditions) throws Exception{
         MyShopping myShopping = new MyShopping();
         List<MyShoppingOrderState> orderState = productMapper.selectMyShoppingOrderState(conditions);
         if (orderState != null){
@@ -493,7 +490,7 @@ public class ProductServiceImpl implements ProductService {
         }
 //        format.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        List<MyShoppingList> shoppingList = productMapper.selectMyShoppingList(conditions);
+        ArrayList<MyShoppingList> shoppingList = productMapper.selectMyShoppingList(conditions);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -507,10 +504,28 @@ public class ProductServiceImpl implements ProductService {
             data.setOrderNumber(data.getOrderId().substring(6));
         }
 
-        myShopping.setOrderList(shoppingList);
+        ArrayList<MyShoppingItem> myShoppingItems = new ArrayList<>();
+
+        while (shoppingList.size() > 0) {
+            String myOrderId = shoppingList.get(0).getMyOrderId();
+            ArrayList<MyShoppingList> myShoppingList = new ArrayList<>();
+            MyShoppingItem item = new MyShoppingItem();
+            item.setOrderNumber(myOrderId.substring(7));
+            for (int i = 0; i < shoppingList.size();){
+                if (myOrderId.equals(shoppingList.get(i).getMyOrderId())){
+                    myShoppingList.add(shoppingList.get(i));
+                    shoppingList.remove(i);
+                }else i++;
+            }
+            item.setOrderList(myShoppingList);
+            myShoppingItems.add(item);
+        }
+
+        myShopping.setOrderList(myShoppingItems);
+        if (myShopping.getOrderList().size() == 0) throw new OrderNullPintException();
 
         int nonpagedCount = productMapper.selectMyShoppingListCount(conditions);
-        PageInfo<MyShoppingList> pageInfo = new PageInfo<>(conditions,nonpagedCount);
+        PageInfo<MyShoppingItem> pageInfo = new PageInfo<>(conditions,nonpagedCount);
         pageInfo.setList(myShopping.getOrderList());
         myShopping.setOrderList(null);
         pageInfo.setObjectData(myShopping);

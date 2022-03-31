@@ -16,5 +16,5 @@ public class MyShopping {
     private int delivery;       //배송중
     private int complete;       //배송완료
     private int finish;         //구매확정
-    private List<MyShoppingList> orderList;
+    private List<MyShoppingItem> orderList;
 }

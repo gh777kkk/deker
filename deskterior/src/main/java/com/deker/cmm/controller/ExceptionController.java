@@ -54,6 +54,10 @@ public class ExceptionController {
     public ResponseEntity<Result> handleTrackingException(TrackingException e) {
         return ResponseEntity.ok(new Result("400",e.getMsg()));
     }
+    @ExceptionHandler({ OrderNullPintException.class })
+    public ResponseEntity<Result> handleOrderNullPintException() {
+        return ResponseEntity.ok(new Result("400","주문내역이 없습니다"));
+    }
 
     @ExceptionHandler({ PaymentVerificationException.class })
     public ResponseEntity<Result> handleLoginSocialIdException() {
