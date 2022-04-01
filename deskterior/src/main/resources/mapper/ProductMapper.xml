@@ -471,6 +471,12 @@
                 LIMIT  #{startRowNo}, #{endRowNo}
                 )X
         LEFT OUTER JOIN MKT_MY_ORDER MMO        ON X.myOrderId = MMO.MY_ORDER_ID
+                                                AND     MMO.CREATE_DT > #{period}
+                                                AND     MMO.MEM_ID = #{memId}
+                                                <if test="deliveryState != null and !deliveryState.equals('')">
+                                                    AND     MO.ORDER_STATE = #{deliveryState}
+                                                </if>
+                                                AND     MMO.USE_YN = 'Y'
         LEFT OUTER JOIN MKT_ORDER MO            ON MMO.ORDER_ITEM_ID = MO.ORDER_ID
                                                 AND MO.USE_YN = 'Y'
         LEFT OUTER JOIN MKT_PRODUCT_OPTION MPO  ON MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
