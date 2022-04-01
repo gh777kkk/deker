@@ -70,5 +70,7 @@ public interface ProductService {
 
     OrderList getOrderList(OrderList orderList);
 
+    void modDeliveryCompleted(OrderConditions conditions) throws Exception;
+
 
 }

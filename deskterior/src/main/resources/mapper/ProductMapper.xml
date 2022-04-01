@@ -689,7 +689,21 @@
         where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
     </select>
 
-
+    <select id="selectOrderState" parameterType="OrderConditions" resultType="MyShoppingOrderState">
+        SELECT  ORDER_STATE         orderState
+        FROM    MKT_ORDER
+        WHERE   ORDER_ID    = #{orderId}
+        AND     MEM_ID      = #{memId}
+    </select>
+    
+    <update id="updateOrderStateCompleted" parameterType="OrderConditions">
+        UPDATE  MKT_ORDER
+        SET     ORDER_STATE = '9'
+            ,   UPDATE_ID   = #{memId}
+            ,   UPDATE_DT   = SYSDATE()
+        WHERE   ORDER_ID    = #{orderId}
+        AND     MEM_ID      = #{memId}
+    </update>
 
 
 

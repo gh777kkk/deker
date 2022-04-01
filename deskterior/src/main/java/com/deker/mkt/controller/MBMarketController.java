@@ -342,6 +342,19 @@ public class MBMarketController {
         );
     }
 
+    @RequestMapping(value = "/mod/delivery-completed", method = RequestMethod.POST)
+    public ResponseEntity<?> modDeliveryCompleted(HttpServletRequest request,@RequestBody OrderConditions conditions) throws Exception {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        conditions.setMemId(memId);
+        productService.modDeliveryCompleted(conditions);
+
+        return ResponseEntity.ok(
+                new Result("200", "배송상태 변경"
+                )
+        );
+    }
+
 
    //끝
 }

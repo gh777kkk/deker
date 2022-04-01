@@ -58,6 +58,10 @@ public class ExceptionController {
     public ResponseEntity<Result> handleOrderNullPintException() {
         return ResponseEntity.ok(new Result("400","주문내역이 없습니다"));
     }
+    @ExceptionHandler({ OrderIdNotFoundException.class })
+    public ResponseEntity<Result> handleOrderIdNotFoundException() {
+        return ResponseEntity.ok(new Result("401","잘못된 orderId값"));
+    }
 
     @ExceptionHandler({ PaymentVerificationException.class })
     public ResponseEntity<Result> handleLoginSocialIdException() {

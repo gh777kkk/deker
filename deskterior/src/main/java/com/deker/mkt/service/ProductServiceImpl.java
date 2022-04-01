@@ -673,6 +673,12 @@ public class ProductServiceImpl implements ProductService {
         return orderList;
     }
 
+    public void modDeliveryCompleted(OrderConditions conditions) throws Exception {
+        List<MyShoppingOrderState> a = productMapper.selectOrderState(conditions);
+        if (productMapper.selectOrderState(conditions).size()<1) throw new OrderIdNotFoundException();
+        productMapper.updateOrderStateCompleted(conditions);
+    }
+
 
 
 }
