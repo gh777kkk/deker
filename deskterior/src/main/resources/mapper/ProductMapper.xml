@@ -686,13 +686,23 @@
 
 
     <select id="getProductOption" resultType="ProductOption">
-        select ADD_NAME AS addName,
-               PHONE_NUMBER AS phoneNumber,
-               ADD_ZIP AS addZip,
-               ADDRESS AS address,
-               ADD_DETAIL AS addDetail
-        from study_gh.MKT_MY_ORDER mo, study_gh.MKT_ORDER o,
-        where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
+        select o.OPTION_ID as productOptionId,
+               ORDER_PRICE as productPrice,
+               ORDER_QUANTITY as orderQuantity,
+               ORDER_DELIVERY_PAY as deliveryPay,
+               CODE_NAME('OPK',po.OPTION1) as option1,
+               MKT_OPTION_NAME(po.PRODUCT_ID,po.OPTION1,po.OPTION1_DATA) as option1Data,
+               CODE_NAME('OPK',po.OPTION2) as option2,
+               MKT_OPTION_NAME(po.PRODUCT_ID,po.OPTION2,po.OPTION2_DATA) as option2Data,
+               'deker' as productBrand,
+               p.PRODUCT_NAME as productName,
+               p.PRODUCT_IMG as productImg,
+               p.MKT_PRODUCT_ID as mktProductId
+        from study_gh.MKT_MY_ORDER mo, study_gh.MKT_ORDER o
+            left join study_gh.MKT_PRODUCT_OPTION po on o.OPTION_ID = po.MKT_PRODUCT_OPTION_ID
+            left join study_gh.MKT_PRODUCT p on o.PRODUCT_ID = p.MKT_PRODUCT_ID
+        where mo.MY_ORDER_ID = #{orderId} and mo.ORDER_ITEM_ID = o.ORDER_ID
+
     </select>
 
     <select id="selectOrderState" parameterType="OrderConditions" resultType="MyShoppingOrderState">

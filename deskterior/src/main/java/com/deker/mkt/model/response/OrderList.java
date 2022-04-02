@@ -13,7 +13,7 @@ public class OrderList {
     private String memId;
     private String orderId;
     private MarketAddress marketAddress;
-    private ProductOption productOption;
+    private List<ProductOption> productOption;
     private int totalPrice;
     private int totalDeliveryPay;
     private List<String> cartList;

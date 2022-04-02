@@ -12,5 +12,5 @@ public class PostDetail {
     private MyPost communityPost;
     private String communityPostId;
     private String memId;
-
+    private boolean isCommunityPostIsUserWrtitten;
 }
