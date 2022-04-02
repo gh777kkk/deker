@@ -399,6 +399,12 @@ public class PostServiceImpl implements PostService{
         mp.setPostImg(CMMUtil.getImg(mp.getPostImg()));
 
         mp.setMemId(pd.getMemId());
+        if (mp.getMemId().equals(pd.getMemId())){
+            pd.setCommunityPostIsUserWrtitten(true);
+        }
+        else{
+            pd.setCommunityPostIsUserWrtitten(false);
+        }
         String myLike = postMapper.getSelectPostDetailLiked(mp);
         if(pd.getCommunityPostId().equals(myLike)) {
             mp.setLiked(true);

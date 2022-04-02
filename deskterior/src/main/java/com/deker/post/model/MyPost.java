@@ -20,6 +20,7 @@ public class MyPost {
     private String postTagId;
     private String tag;
     private boolean isLiked;
+    private int communityPostLikeCount;
     private List<String> communityTags;
     private List<CommunityProducts> communityProducts;
 

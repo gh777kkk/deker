@@ -88,7 +88,7 @@ public interface ProductMapper {
 
 
     MarketAddress getMainAddress(String memId);
-    ProductOption getProductOption(String orderId);
+    List<ProductOption> getProductOption(String orderId);
 
 }
 

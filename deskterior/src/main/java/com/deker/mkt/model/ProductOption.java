@@ -21,6 +21,7 @@ public class ProductOption {
     private String option2Data;
     private String productImg;
     private String productBrand;
+    private int deliveryPay;
 
 
 

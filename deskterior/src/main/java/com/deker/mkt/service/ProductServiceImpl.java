@@ -651,9 +651,15 @@ public class ProductServiceImpl implements ProductService {
 
     public OrderList getOrderList(OrderList orderList){
 
+        int totalPrice=0;
         orderList.setMarketAddress(productMapper.getMainAddress(orderList.getMemId()));
-        ProductOption po = productMapper.getProductOption(orderList.getOrderId());
-
+        List<ProductOption> po = productMapper.getProductOption(orderList.getOrderId());
+        for(ProductOption mypo: po){
+            mypo.setProductImg(CMMUtil.getImg(mypo.getProductImg()));
+            totalPrice+=(mypo.getProductPrice()*mypo.getOrderQuantity());
+        }
+        orderList.setTotalDeliveryPay(po.get(0).getDeliveryPay());
+        orderList.setTotalPrice(totalPrice);
 
         return orderList;
     }
