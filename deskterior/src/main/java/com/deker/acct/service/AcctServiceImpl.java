@@ -114,6 +114,7 @@ public class AcctServiceImpl implements AcctService {
 
         tegConditions.setMemId(conditions.getMemId());
         acctMapper.deleteTag(conditions);
+        if (conditions.getTag() == null) return null;
         for(String contents : conditions.getTag()){
             tegConditions.setContents(contents);
             tegConditions.setMemTagId(CMMUtil.nextId("mtgId"));
