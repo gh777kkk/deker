@@ -218,11 +218,11 @@ public class ProductServiceImpl implements ProductService {
             item.setTotalPrice(productMapper.getProductPrice(option.getProductOptionId())*option.getOrderQuantity());
 
 
-            if(dPay.get(item.getMktProductId())==null){
-                dPay.put(item.getMktProductId(),item.getTotalPrice());
+            if(dPay.get("deker")==null){
+                dPay.put("deker",item.getTotalPrice());
             }
             else{
-                dPay.put(item.getMktProductId(),item.getTotalPrice()+dPay.get(item.getMktProductId()));
+                dPay.put("deker",item.getTotalPrice()+dPay.get("deker"));
             }
 
             items.add(item);
@@ -237,7 +237,7 @@ public class ProductServiceImpl implements ProductService {
             myItem.setOrderItemId(CMMUtil.nextId("ordId"));
             myItem.setMemId(memId);
 
-            if(dPay.get(myItem.getMktProductId())>=30000){
+            if(dPay.get("deker")>=30000){
                 myItem.setDeliveryPay(0);
             }
             else{
@@ -312,11 +312,11 @@ public class ProductServiceImpl implements ProductService {
         for(String id : pc.getCartIdArr()){
             item = productMapper.getCheckedCart(id);
 
-            if(dPay.get(item.getMktProductId())==null){
-                dPay.put(item.getMktProductId(),item.getTotalPrice());
+            if(dPay.get("deker")==null){
+                dPay.put("deker",item.getTotalPrice());
             }
             else{
-                dPay.put(item.getMktProductId(),item.getTotalPrice()+dPay.get(item.getMktProductId()));
+                dPay.put("deker",item.getTotalPrice()+dPay.get("deker"));
             }
 
             items.add(item);
@@ -331,7 +331,7 @@ public class ProductServiceImpl implements ProductService {
             myItem.setOrderItemId(CMMUtil.nextId("ordId"));
             myItem.setMemId(pc.getMemId());
 
-            if(dPay.get(myItem.getMktProductId())>=30000){
+            if(dPay.get("deker")>=30000){
                 myItem.setDeliveryPay(0);
             }
             else{

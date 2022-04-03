@@ -677,7 +677,8 @@
                PHONE_NUMBER AS phoneNumber,
                ADD_ZIP AS addZip,
                ADDRESS AS address,
-               ADD_DETAIL AS addDetail
+               ADD_DETAIL AS addDetail,
+               ADD_ID AS addId
         from study_gh.MKT_ADDRESS a
         where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
     </select>
