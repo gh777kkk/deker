@@ -109,7 +109,7 @@ public class AcctServiceImpl implements AcctService {
     public Acct modMemberInfo(MultipartFile profileImg,AcctConditions conditions,HttpServletRequest request) throws Exception{
         AcctConditions tegConditions = new AcctConditions();
         conditions.setMemId(jwtProvider.getMemIdFromJwtToken(request));
-        conditions.setProfileImg(CMMUtil.setImg(profileImg,conditions.getMemId()));
+        if (profileImg != null) conditions.setProfileImg(CMMUtil.setImg(profileImg,conditions.getMemId()));
         acctMapper.updateMemberInfo(conditions);
 
         tegConditions.setMemId(conditions.getMemId());
