@@ -211,7 +211,7 @@
                l.MTRL_CODE      AS materialCode,
                d.POST_DETAIL_ID AS postDetailId,
                l.MEM_ID         AS memId,
-               count(k.MEM_ID)
+               count(k.MEM_ID)  AS communityPostLikeCount
         from study_gh.POST_DETAIL d,
              study_gh.POST_LIST l,
              study_gh.POST_LIKE k

@@ -386,6 +386,7 @@ public class PostServiceImpl implements PostService{
             cp.setProductImgUrl(CMMUtil.getImg(cp.getProductImgUrl()));
         }
         pd.setCommunityPostSelectedProduct(cpList);
+        pd.setCommunityPostIsUserWrtitten(false);
 
         return pd;
     }
