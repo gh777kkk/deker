@@ -16,6 +16,7 @@ public class MarketAddress {
     private String address;
     private String addDetail;
     private String request;
+    private String addId;
 
 
 }
