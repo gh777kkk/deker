@@ -62,7 +62,7 @@
     <select id="getPostTagId" resultType="String">
         select t.POST_TAG_ID
         from study_gh.POST_TAG t
-        where t.POST_DETAIL_ID = #{postDetailId}
+        where t.POST_DETAIL_ID = #{postDetailId} and USE_YN = 'Y'
     </select>
 
 
@@ -115,6 +115,14 @@
 
 
 
+    <update id="updatePostTagNo" parameterType="MyPost">
+        UPDATE  study_gh.POST_TAG
+        SET     USE_YN = 'N'
+        WHERE   POST_TAG_ID = #{postTagId}
+    </update>
+
+
+
     <insert id="insertPostItem" parameterType="CommunityProducts">
         insert into study_gh.POST_ITEM
         (
@@ -154,12 +162,13 @@
                 COUNT(K.MEM_ID) AS likeCount
         FROM study_gh.POST_LIST L
         LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
-        WHERE date(L.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
-          and L.USE_YN ='Y'
+        WHERE L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
         ORDER BY likeCount DESC, L.CREATE_DT DESC, L.POST_ID DESC
         limit 8
     </select>
+    <!--date(L.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
+          and -->
 
     <select id="getPostCommentCount" resultType="int">
         select count(POST_ID) as commentCount
@@ -345,12 +354,13 @@
             LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
             LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
             LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
-        where  m.MEM_ID = l.MEM_ID and date(l.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))
+        where  m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
         group by  l.POST_ID, l.CREATE_DT
         order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc, l.POST_ID desc
         limit 4
     </select>
+    <!--and date(l.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY))-->
 
 
     <select id="getMorePostCustomCount" resultType="int">
