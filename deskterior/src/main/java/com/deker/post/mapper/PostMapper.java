@@ -66,4 +66,6 @@ public interface PostMapper {
 
 
     String getSelectPostDetailLiked(MyPost mp);
+
+    void updatePostTagNo(String tagId);
 }

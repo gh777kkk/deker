@@ -72,6 +72,7 @@ public class PostServiceImpl implements PostService{
         }
         postMapper.updatePost(mp);
 
+
         String pdId = postMapper.getPostDetailId(mp);
         mp.setPostDetailId(pdId);
         postMapper.updatePostDetail(mp);
@@ -79,11 +80,36 @@ public class PostServiceImpl implements PostService{
         List<String> tagId = postMapper.getPostTagId(mp);
         List<String> tags = mp.getCommunityTags();
 
-        for (int i =0; i<tagId.size(); i++) {
-            mp.setTag(tags.get(i));
-            mp.setPostTagId(tagId.get(i));
-            postMapper.updatePostTag(mp);
+        if(tagId.size()==tags.size()){
+            for (int i =0; i<tagId.size(); i++) {
+                mp.setTag(tags.get(i));
+                mp.setPostTagId(tagId.get(i));
+                postMapper.updatePostTag(mp);
+            }
         }
+        else if(tagId.size()>tags.size()){
+            for (int i =0; i<tags.size(); i++) {
+                mp.setTag(tags.get(i));
+                mp.setPostTagId(tagId.get(i));
+                postMapper.updatePostTag(mp);
+            }
+            for(int i=tags.size(); i<tagId.size(); i++){
+                postMapper.updatePostTagNo(tagId.get(i));
+            }
+        }
+        else{
+            for (int i =0; i<tagId.size(); i++) {
+                mp.setTag(tags.get(i));
+                mp.setPostTagId(tagId.get(i));
+                postMapper.updatePostTag(mp);
+            }
+            for(int i=tagId.size(); i<tags.size(); i++){
+                mp.setPostTagId(CMMUtil.nextId("tagId"));
+                mp.setTag(tags.get(i));
+                postMapper.insertPostTag(mp);
+            }
+        }
+
 
         for (CommunityProducts cp : mp.getCommunityProducts()) {
             cp.setPostDetailId(pdId);
@@ -131,6 +157,7 @@ public class PostServiceImpl implements PostService{
             for (PostProperties pp : follow) {
                 pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setMemId(memId);
                 pp.setFollowingCheck(true);
 
@@ -152,6 +179,7 @@ public class PostServiceImpl implements PostService{
             for (PostProperties pp : custom) {
                 pp.setMemId(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setCommunityImage(CMMUtil.getImg(pp.getCommunityImage()));
+                pp.setUserProfileImg(CMMUtil.getImg(pp.getUserProfileImg()));
                 pp.setMemId(memId);
                 pp.setFollowingCheck(postMapper.getPostFollow(pp));
 
@@ -198,10 +226,10 @@ public class PostServiceImpl implements PostService{
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
                 if(pp.getCommunityId().equals(myLike)) {
-                    mp.setLiked(true);
+                    pp.setLiked(true);
                 }
                 else{
-                    mp.setLiked(false);
+                    pp.setLiked(false);
                 }
             }
 
@@ -223,10 +251,10 @@ public class PostServiceImpl implements PostService{
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
                 if(pp.getCommunityId().equals(myLike)) {
-                    mp.setLiked(true);
+                    pp.setLiked(true);
                 }
                 else{
-                    mp.setLiked(false);
+                    pp.setLiked(false);
                 }
 
             }
@@ -249,10 +277,10 @@ public class PostServiceImpl implements PostService{
                 mp.setCommunityId(pp.getCommunityId());
                 String myLike = postMapper.getSelectPostDetailLiked(mp);
                 if(pp.getCommunityId().equals(myLike)) {
-                    mp.setLiked(true);
+                    pp.setLiked(true);
                 }
                 else{
-                    mp.setLiked(false);
+                    pp.setLiked(false);
                 }
             }
             pageInfo.setList(custom);

@@ -16,6 +16,6 @@ public class OrderList {
     private List<ProductOption> productOption;
     private int totalPrice;
     private int totalDeliveryPay;
-    private List<String> cartList;
+    private List<String> cartIdArr;
 
 }
