@@ -161,7 +161,9 @@
     <update id="updateMemberInfo" parameterType="AcctConditions">
         UPDATE MEMBER
         SET     JOB_CODE = #{jobCode}
+        <if test="profileImg != null and !profileImg.equals('')">
             ,   PROFILE_IMG = #{profileImg}
+        </if>
             ,   NICKNAME    = #{nickname}
         WHERE MEM_ID = #{memId}
     </update>
