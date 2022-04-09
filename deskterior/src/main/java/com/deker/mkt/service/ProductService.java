@@ -72,5 +72,6 @@ public interface ProductService {
 
     void modDeliveryCompleted(OrderConditions conditions) throws Exception;
 
+    void modProduct(Payment pm);
 
 }

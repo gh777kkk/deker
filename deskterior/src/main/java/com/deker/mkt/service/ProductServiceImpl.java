@@ -243,12 +243,16 @@ public class ProductServiceImpl implements ProductService {
             else{
                 myItem.setDeliveryPay(2500);
             }
+            MarketAddress ma= productMapper.getMainAddress(memId);
+            myItem.setAddId(ma.getAddId());
             productMapper.insertOrderItem(myItem);
 
             myItem.setMyOderId(myOrderId);
             productMapper.insertMyOrderItem(myItem);
 
         }
+
+
 
         pc.setOrderId(myOrderId);
 
@@ -285,6 +289,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductCartItems getCartList(String memId){
         List<ProductCartItems> productCartItems = productMapper.getCartList(memId);
         for (ProductCartItems pc : productCartItems) {
+            System.out.println(pc.getProductImg());
             pc.setProductImg(CMMUtil.getImg(pc.getProductImg()));
             List<ProductDetailOption> pdo = productMapper.getProductDetailOption(pc.getMktProductId());
             pc.setProductDetailOption(pdo.get(0));
@@ -337,6 +342,8 @@ public class ProductServiceImpl implements ProductService {
             else{
                 myItem.setDeliveryPay(2500);
             }
+            MarketAddress ma= productMapper.getMainAddress(pc.getMemId());
+            myItem.setAddId(ma.getAddId());
             productMapper.insertOrderItem(myItem);
 
             myItem.setMyOderId(myOrderId);
@@ -690,6 +697,21 @@ public class ProductServiceImpl implements ProductService {
         productMapper.updateOrderStateCompleted(conditions);
     }
 
+
+    public void modProduct(Payment pm){
+        if(pm.getCartIdArr()!=null){
+            for(String id : pm.getCartIdArr()){
+                productMapper.deletCartId(id);
+            }
+        }
+        for(int i=0; i<pm.getProductOptionId().size(); i++){
+            pm.setOptionId(pm.getProductOptionId().get(i));
+            pm.setQuantity(pm.getOrderQuantity().get(i));
+            productMapper.modOption(pm);
+        }
+        productMapper.insertAddress(pm.getAddId());
+
+    }
 
 
 }
