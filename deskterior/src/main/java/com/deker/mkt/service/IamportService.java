@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 public class IamportService {
 
 
+    public final ProductService productService;
     private String imp_key = "7009134484888523";
     private String imp_secret = "4fae91423c5b987c764a3a486b343741c3fbe23ccacdf0f694df2c353c6ca0edfe2b62c11ea6b7fb";
     HttpHeaders headers = new HttpHeaders();
@@ -42,6 +43,8 @@ public class IamportService {
 
             BuyerInfor buyerInfor = restTemplate.postForObject("https://api.iamport.kr/payments/"+imp_uid+"", entity, BuyerInfor.class);
             if(pm.getPaid_amount() ==  Integer.parseInt(buyerInfor.getResponse().get("amount").toString())){
+
+                productService.modProduct(pm);
 
                 return true;
             }

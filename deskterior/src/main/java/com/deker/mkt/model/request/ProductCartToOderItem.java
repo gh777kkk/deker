@@ -24,6 +24,7 @@ public class ProductCartToOderItem {
     private int totalPrice;
     private String productOptionId;
     private int deliveryPay;
+    private String addId;
 
 
 

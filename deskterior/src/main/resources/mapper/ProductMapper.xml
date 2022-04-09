@@ -321,7 +321,8 @@
             option_id,
             order_price,
             order_quantity,
-         ORDER_DELIVERY_PAY
+         ORDER_DELIVERY_PAY,
+         ADD_ID
         )
         VALUES (
                    #{orderItemId},
@@ -330,7 +331,8 @@
                    #{productOptionId},
                    #{productPrice},
                    #{productSelectedQuantity},
-                   #{deliveryPay}
+                   #{deliveryPay},
+                  #{addId}
                )
     </insert>
 
@@ -721,6 +723,15 @@
         WHERE   ORDER_ID    = #{orderId}
         AND     MEM_ID      = #{memId}
     </update>
+
+
+    <delete id="deleteTest">
+        delete from study_gh.MKT_CART
+        where MKT_CART_ID = #{id}
+    </delete>
+
+
+
 
 
 

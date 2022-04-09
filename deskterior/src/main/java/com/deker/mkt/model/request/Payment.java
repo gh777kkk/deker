@@ -12,9 +12,10 @@ public class Payment {
     private String memId;
     private int paid_amount;
     private List<String> cartIdArr;
-    private String productOptionId;
-    private int orderQuantity;
+    private List<String> productOptionId;
+    private List<Integer> orderQuantity;
     private String addId;
-
+    private String optionId;
+    private int quantity;
 
 }

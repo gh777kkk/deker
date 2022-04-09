@@ -94,5 +94,10 @@ public interface ProductMapper {
     List<MyShoppingOrderState> selectOrderState(OrderConditions conditions);
     void updateOrderStateCompleted(OrderConditions conditions);
 
+
+    void deletCartId(String id);
+    void modOption(Payment pm);
+    void insertAddress(String addId);
+
 }
 
