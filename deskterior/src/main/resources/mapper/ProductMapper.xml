@@ -664,7 +664,7 @@
 
 
 
-    <select id="getProductPrice" resultType="int">
+    <select id="getProductPrice" resultType="Integer">
         select PRODUCT_PRICE AS productPrice
         from  study_gh.MKT_PRODUCT_OPTION
         where MKT_PRODUCT_OPTION_ID = #{productOptionId}
