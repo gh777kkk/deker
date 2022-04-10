@@ -243,8 +243,6 @@ public class ProductServiceImpl implements ProductService {
             else{
                 myItem.setDeliveryPay(2500);
             }
-            MarketAddress ma= productMapper.getMainAddress(memId);
-            myItem.setAddId(ma.getAddId());
             productMapper.insertOrderItem(myItem);
 
             myItem.setMyOderId(myOrderId);
@@ -268,18 +266,21 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void insertProductCart(List<ProductOption> pOption, String memId){
+    public void insertProductCart(List<ProductOption> pOption, String memId) throws Exception{
 
-        for (ProductOption productOption : pOption) {
-            ProductOption po = productMapper.getProductOptionId(productOption);
-            productOption.setProductOptionId(po.getProductOptionId());
-            productOption.setProductPrice(po.getProductPrice());
-            System.out.println(po.getProductOptionId());
-            int quantity = productOption.getOrderQuantity();
-            productOption.setProductPrice(quantity* productOption.getProductPrice());
-            productOption.setMemId(memId);
-            productOption.setMktCartId(CMMUtil.nextId("cartId"));
-            productMapper.insertProductCart(productOption);
+        if(pOption.size()==0) throw new FailedAddCart();
+        else {
+            for (ProductOption productOption : pOption) {
+                ProductOption po = productMapper.getProductOptionId(productOption);
+                productOption.setProductOptionId(po.getProductOptionId());
+                productOption.setProductPrice(po.getProductPrice());
+                System.out.println(po.getProductOptionId());
+                int quantity = productOption.getOrderQuantity();
+                productOption.setProductPrice(quantity * productOption.getProductPrice());
+                productOption.setMemId(memId);
+                productOption.setMktCartId(CMMUtil.nextId("cartId"));
+                productMapper.insertProductCart(productOption);
+            }
         }
 
     }
@@ -342,8 +343,7 @@ public class ProductServiceImpl implements ProductService {
             else{
                 myItem.setDeliveryPay(2500);
             }
-            MarketAddress ma= productMapper.getMainAddress(pc.getMemId());
-            myItem.setAddId(ma.getAddId());
+
             productMapper.insertOrderItem(myItem);
 
             myItem.setMyOderId(myOrderId);
@@ -709,7 +709,11 @@ public class ProductServiceImpl implements ProductService {
             pm.setQuantity(pm.getOrderQuantity().get(i));
             productMapper.modOption(pm);
         }
-        productMapper.insertAddress(pm.getAddId());
+        List<String> orderItem = productMapper.getItemOrderId(pm);
+        for(String id: orderItem){
+            pm.setItemOrderId(id);
+            productMapper.insertAddress(pm);
+        }
 
     }
 

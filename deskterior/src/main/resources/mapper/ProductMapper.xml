@@ -321,8 +321,7 @@
             option_id,
             order_price,
             order_quantity,
-         ORDER_DELIVERY_PAY,
-         ADD_ID
+         ORDER_DELIVERY_PAY
         )
         VALUES (
                    #{orderItemId},
@@ -331,8 +330,7 @@
                    #{productOptionId},
                    #{productPrice},
                    #{productSelectedQuantity},
-                   #{deliveryPay},
-                  #{addId}
+                   #{deliveryPay}
                )
     </insert>
 
@@ -729,6 +727,12 @@
         delete from study_gh.MKT_CART
         where MKT_CART_ID = #{id}
     </delete>
+
+    <update id="insertAddress" parameterType="Payment">
+        UPDATE  study_gh.MKT_ORDER
+        SET     ADD_ID = #{addId}
+        WHERE   ORDER_ID = ${itemOrderId}
+    </update>
 
 
 

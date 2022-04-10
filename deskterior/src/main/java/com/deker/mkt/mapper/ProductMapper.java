@@ -97,7 +97,9 @@ public interface ProductMapper {
 
     void deletCartId(String id);
     void modOption(Payment pm);
-    void insertAddress(String addId);
+    void insertAddress(Payment pm);
+
+    List<String>getItemOrderId(Payment pm);
 
 }
 

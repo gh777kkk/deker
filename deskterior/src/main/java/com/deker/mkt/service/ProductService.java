@@ -34,7 +34,7 @@ public interface ProductService {
 
     ProductCode getBuyNow(List<ProductOption> po, String memId);
 
-    void insertProductCart(List<ProductOption> po, String memId);
+    void insertProductCart(List<ProductOption> po, String memId) throws Exception;
     ProductCartItems getCartList(String memId);
     ProductCode insertBuyCartList(ProductCode pc);
 
