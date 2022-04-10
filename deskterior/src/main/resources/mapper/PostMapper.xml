@@ -222,10 +222,9 @@
                l.MEM_ID         AS memId,
                count(k.MEM_ID)  AS communityPostLikeCount
         from study_gh.POST_DETAIL d,
-             study_gh.POST_LIST l,
-             study_gh.POST_LIKE k
+             study_gh.POST_LIST l
+             left join study_gh.POST_LIKE k on k.POST_ID = #{communityId}
         where d.POST_ID = #{communityId} AND l.POST_ID = #{communityId}
-          and k.POST_ID = #{communityId}
           and l.USE_YN = 'Y'
     </select>
 
