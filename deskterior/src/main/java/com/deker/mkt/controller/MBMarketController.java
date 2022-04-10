@@ -133,7 +133,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/add-cart", method = RequestMethod.POST)
-    public ResponseEntity<?> regCart(@RequestBody List<ProductOption> po, HttpServletRequest request) {
+    public ResponseEntity<?> regCart(@RequestBody List<ProductOption> po, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         productService.insertProductCart(po, memId);

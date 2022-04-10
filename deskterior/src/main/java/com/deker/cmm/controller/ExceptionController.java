@@ -92,4 +92,9 @@ public class ExceptionController {
     public ResponseEntity<Result> handleException(Exception e) {
         return ResponseEntity.ok(new Result("420",e.toString()));
     }
+
+    @ExceptionHandler({ FailedAddCart.class })
+    public ResponseEntity<Result> handlerFailedAddCart() {
+        return ResponseEntity.ok(new Result("400","옵션이 없어 장바구니 추가 실패"));
+    }
 }

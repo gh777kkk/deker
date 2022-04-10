@@ -17,5 +17,7 @@ public class Payment {
     private String addId;
     private String optionId;
     private int quantity;
+    private String orderId;
+    private String itemOrderId;
 
 }
