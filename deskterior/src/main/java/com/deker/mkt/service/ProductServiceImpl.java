@@ -718,4 +718,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+
+    public List<ReviewItem> getReviewableItem(ReviewItem ri) {
+
+        List<ReviewItem> myList = productMapper.getReviewableItem(ri.getMemId());
+
+        for (ReviewItem r : myList){
+            r.setProductImg(CMMUtil.getImg(r.getProductImg()));
+            r.setProductTotalPrice(r.getProductTotalPrice()+r.getDeliveryPay());
+        }
+        return myList;
+    }
+
+
+    public List<ReviewItem> getReviewedItem(ReviewItem ri) {
+
+        List<ReviewItem> myList = productMapper.getReviewedItem(ri.getMemId());
+
+        for (ReviewItem r : myList){
+            r.setProductImg(CMMUtil.getImg(r.getProductImg()));
+            r.setProductTotalPrice(r.getProductTotalPrice()+r.getDeliveryPay());
+        }
+        return myList;
+
+    }
+
+    public void deleteCartItem(ProductCode pc){
+
+        for(String id : pc.getCartIdArr()){
+            productMapper.deletCartId(id);
+        }
+    }
 }
