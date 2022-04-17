@@ -142,5 +142,29 @@
         AND     FOLLOWING = #{memId}
     </delete>
 
+    <select id="selectAlarm" parameterType="String" resultType="Alarm">
+        SELECT      A.ALARM_ID                                                          alarmId
+                ,   A.SNET_INFO                                                         sentInfo
+                ,   A.ALARM_CODE                                                        alarmCode
+                ,   A.CREATE_DT                                                         createDt
+                ,   AI.URL                                                              url
+                ,   CONCAT(ALARM_FROM_NAME(A.SNET_INFO,A.ALARM_CODE),AI.MESSAGE)        message
+                ,   ALARM_FROM_NAME(A.SNET_INFO,A.ALARM_CODE)                           alarmFromNm
+                ,   IMG_STRE_NM(ALARM_FROM_IMG(A.SNET_INFO,A.ALARM_CODE))               alarmFromImg
+                ,   ALARM_DELAY(TIMESTAMPDIFF(second , A.CREATE_DT , NOW()))            alarmDelay
+        FROM ALARM  A
+        LEFT OUTER JOIN ALARM_INFO AI ON A.ALARM_CODE = AI.ALARM_CODE
+        WHERE   1=1
+        AND     MEM_ID = #{memId}
+        AND     NOE_READ = 'N'
+        AND     USE_YN = 'Y'
+    </select>
+
+    <update id="updateAlarmRead" parameterType="String">
+        UPDATE ALARM
+        SET NOE_READ = 'Y'
+        WHERE ALARM_ID = #{alarmId}
+    </update>
+
 </mapper>
 

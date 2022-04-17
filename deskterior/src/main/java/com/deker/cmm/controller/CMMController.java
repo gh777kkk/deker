@@ -117,4 +117,21 @@ public class CMMController {
                 new Result("200","나를 팔로워한 계정 삭제"));
     }
 
+    @RequestMapping(value = "/mb/alarm", method = RequestMethod.POST)
+    public ResponseEntity<Result> getAlarm(HttpServletRequest request) {
+
+        return ResponseEntity.ok(
+                new Result("200","알람 목록",
+                        cmmService.getAlarm(jwtProvider.getMemIdFromJwtToken(request))
+                ));
+    }
+
+    @RequestMapping(value = "/mb/alarm-read", method = RequestMethod.POST)
+    public ResponseEntity<Result> getAlarmRead(@RequestParam(value = "alarmId")String alarmId) {
+
+        cmmService.modAlarmRead(alarmId);
+        return ResponseEntity.ok(
+                new Result("200","알람 읽음"
+                ));
+    }
 }

@@ -27,4 +27,8 @@ public interface CMMMapper {
     int getFollowerCount(String memId);
 
     void deleteFollowMe(Follow follow);
+
+    List<Alarm> selectAlarm(String memId);
+
+    void updateAlarmRead(String alarmId);
 }

@@ -23,4 +23,7 @@ public interface CMMService {
     PageInfo<Follow> getFollower(Follow follow);
 
     void rmvFollowMe(Follow follow)throws Exception;
+
+    List<Alarm> getAlarm(String memId);
+    void modAlarmRead(String alarmId);
 }

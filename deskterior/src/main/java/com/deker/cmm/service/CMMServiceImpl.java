@@ -85,7 +85,15 @@ public class CMMServiceImpl implements CMMService {
         return null;
     }
 
+    @Override
+    public List<Alarm> getAlarm(String memId){
+        return cmmMapper.selectAlarm(memId);
+    }
 
+    @Override
+    public void modAlarmRead(String alarmId){
+        cmmMapper.updateAlarmRead(alarmId);
+    }
 
 
     //메뉴
