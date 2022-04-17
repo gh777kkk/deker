@@ -593,7 +593,7 @@ public class ProductServiceImpl implements ProductService {
 
         RecentProduct r = productMapper.mbGetRecentProductCheck(pc);
 
-        if(r.getMktRecentProductId() == null){
+        if(r==null){
             RecentProduct rp = new RecentProduct();
             rp.setMktRecentProductId(CMMUtil.nextId("mrpId"));
             rp.setProductId(pc.getProductId());
