@@ -5,6 +5,7 @@ import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductOption;
 import com.deker.mkt.model.request.*;
 import com.deker.mkt.model.response.OrderList;
+import com.deker.mkt.model.response.ReviewItem;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
@@ -355,6 +356,54 @@ public class MBMarketController {
                 )
         );
     }
+
+
+
+
+
+    @RequestMapping(value = "/get/reviewed-items", method = RequestMethod.POST)
+    public ResponseEntity<?> getReviewedItems(HttpServletRequest request, @RequestBody ReviewItem ri) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        ri.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "리뷰 작성된 상품",
+                        productService.getReviewedItem(ri)
+                )
+        );
+    }
+
+
+    @RequestMapping(value = "/get/reviewable-items", method = RequestMethod.POST)
+    public ResponseEntity<?> getReviewableItems(HttpServletRequest request, @RequestBody ReviewItem ri) {
+
+        String memId = jwtProvider.getMemIdFromJwtToken(request);
+        ri.setMemId(memId);
+
+        return ResponseEntity.ok(
+                new Result("200", "리뷰 작성 안 된 상품",
+                        productService.getReviewableItem(ri)
+                )
+        );
+    }
+
+
+
+    @RequestMapping(value = "/rmv/cartIem", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteCartItem(@RequestBody ProductCode pc) {
+
+
+        productService.deleteCartItem(pc);
+        return ResponseEntity.ok(
+                new Result("200", "장바구니 아이템 삭제"
+
+                )
+        );
+    }
+
+
+
 
 
    //끝

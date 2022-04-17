@@ -101,5 +101,8 @@ public interface ProductMapper {
 
     List<String>getItemOrderId(Payment pm);
 
+    List<ReviewItem> getReviewableItem(String memId);
+    List<ReviewItem> getReviewedItem(String memId);
+
 }
 

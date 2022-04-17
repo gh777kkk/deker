@@ -74,4 +74,11 @@ public interface ProductService {
 
     void modProduct(Payment pm);
 
+
+
+    List<ReviewItem> getReviewableItem(ReviewItem ri);
+    List<ReviewItem> getReviewedItem(ReviewItem ri);
+
+    void deleteCartItem(ProductCode pc);
+
 }
