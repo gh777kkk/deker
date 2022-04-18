@@ -215,9 +215,9 @@
                POST_IMG         As postImg,
                CONTENTS         AS communityContent,
                POST_TITLE       AS communityTitle,
-               l.JOB_CODE       AS jobCode,
-               l.MOOD_CODE      AS moodCode,
-               l.MTRL_CODE      AS materialCode,
+               CODE_NAME('JOB',l.JOB_CODE)       AS jobCode,
+               CODE_NAME('MOOD',l.MOOD_CODE)      AS moodCode,
+               CODE_NAME('DKP',l.MTRL_CODE)      AS materialCode,
                d.POST_DETAIL_ID AS postDetailId,
                l.MEM_ID         AS memId,
                count(k.MEM_ID)  AS communityPostLikeCount

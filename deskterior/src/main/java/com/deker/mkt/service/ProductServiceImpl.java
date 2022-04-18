@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -621,50 +622,71 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void nmbRegRecentProduct(String productId){
+    public void nmbRegRecentProduct(String productId, HttpServletRequest request){
 
-        Set<String> mySet = productSession.getCheckArr();
-        List myArr = productSession.getIdArr();
-        int recPro = 10;
+        HttpSession session = request.getSession(false);
 
+        if(session != null){
+            List myArr = (List) session.getAttribute(SessionConst.PRODUCT_ID);
+            int num = myArr.indexOf(productId);
+            if(num==-1){
+                myArr.add(productId);
+            }
+            else{
+                myArr.remove(num);
+                myArr.add(productId);
 
-
-        if(myArr == null){
-            myArr = new ArrayList<>();
-        }
-
-        int num = myArr.indexOf(productId);
-        if(num==-1){
-            myArr.add(productId);
+            }
+            session.setAttribute(SessionConst.PRODUCT_ID, myArr);
         }
         else{
-            myArr.remove(num);
+            session = request.getSession(true);
+            List myArr = new ArrayList<>();
             myArr.add(productId);
+
+            int num = myArr.indexOf(productId);
+            if(num==-1){
+                myArr.add(productId);
+            }
+            else{
+                myArr.remove(num);
+                myArr.add(productId);
+
+            }
+            session.setAttribute(SessionConst.PRODUCT_ID, myArr);
 
         }
 
-        productSession.setIdArr(myArr);
 
     }
 
 
-    public List<ProductDetailModel> nmbGetRecentProduct(){
+    public List<ProductDetailModel> nmbGetRecentProduct(HttpServletRequest request){
 
-        List<String> idArr = productSession.getIdArr();
+        HttpSession session = request.getSession(false);
         List<ProductDetailModel> recentList = new ArrayList<>();
-        Collections.reverse(idArr);
+
+        if(session == null){
+        }
+        else{
+            List<String> idArr = (List)session.getAttribute(SessionConst.PRODUCT_ID);
+
+            Collections.reverse(idArr);
 
 
-        for (int i =0; i<idArr.size(); i++){
-            if(recentList.size()==10){
-                break;
-            }
-            else {
-                ProductDetailModel pd = productMapper.getProductDetail(idArr.get(i));
-                pd.setProductImg(CMMUtil.getImg(pd.getProductImg()));
-                recentList.add(pd);
+            for (int i =0; i<idArr.size(); i++){
+                if(recentList.size()==10){
+                    break;
+                }
+                else {
+                    ProductDetailModel pd = productMapper.getProductDetail(idArr.get(i));
+                    pd.setProductImg(CMMUtil.getImg(pd.getProductImg()));
+                    recentList.add(pd);
+                }
             }
         }
+
+
 
         return recentList;
 

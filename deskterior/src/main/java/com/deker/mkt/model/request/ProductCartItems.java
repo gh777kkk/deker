@@ -22,6 +22,7 @@ public class ProductCartItems {
     private ProductDetailOption productDetailOption;
     private int totalPrice;
     private String productOptionId;
+    private String productBrand;
 
 
 }

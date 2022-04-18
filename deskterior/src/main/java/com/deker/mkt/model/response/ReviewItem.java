@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class ReviewItem {
 
+    private String reviewId;
     private String memId;
     private String mktProductId;
     private String productName;
