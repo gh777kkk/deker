@@ -63,8 +63,8 @@ public interface ProductService {
     void rmvMyAddress(MyAddressConditions conditions) throws Exception;
     void modAddressMain(MyAddressConditions conditions) throws Exception;
 
-    void nmbRegRecentProduct(String productId);
-    List<ProductDetailModel> nmbGetRecentProduct();
+    void nmbRegRecentProduct(String productId, HttpServletRequest request);
+    List<ProductDetailModel> nmbGetRecentProduct(HttpServletRequest request);
 
     List<ProductDetailModel> mbGetRecentProduct(String memId);
 

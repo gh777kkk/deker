@@ -292,7 +292,8 @@
                cart_quant AS productSelectedQuantity,
                p.PRODUCT_IMG AS productImg,
                poduct_option AS productOptionId,
-               price AS totalPrice
+               price AS totalPrice,
+               'deker' AS productBrand
         from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
         where c.MEM_ID = #{memId} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
                 and c.USE_YN='N'
@@ -742,6 +743,7 @@
 
     <select id="getReviewedItem" resultType="ReviewItem">
         select o.ORDER_PRICE AS productTotalPrice,
+               r.MKT_REVIEW_ID AS reviewId,
                o.ORDER_DELIVERY_PAY AS deliveryPay,
                p.PRODUCT_IMG AS productImg,
                p.MKT_PRODUCT_ID AS mktProductId,
@@ -768,7 +770,7 @@
                p.MKT_PRODUCT_ID AS mktProductId,
                p.PRODUCT_NAME AS productName,
                po.OPTION1 AS option1,
-               CODE_NAME('OPK',po.OPTION1) as option1Name,
+               CODE_NAME('OPK',po.OPTION1) as optio1Name,
                po.OPTION1_DATA AS option1Data,
                MKT_OPTION_NAME(po.PRODUCT_ID,po.OPTION1,po.OPTION1_DATA) as option1DataName,
                po.option2 AS option2,

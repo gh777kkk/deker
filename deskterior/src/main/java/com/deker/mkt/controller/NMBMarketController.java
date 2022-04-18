@@ -204,9 +204,9 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/reg/recent-product", method = RequestMethod.POST)
-    public ResponseEntity<?> regRecentProduct(@RequestBody ProductCode pc) {
+    public ResponseEntity<?> regRecentProduct(@RequestBody ProductCode pc, HttpServletRequest request) {
 
-        productService.nmbRegRecentProduct(pc.getProductId());
+        productService.nmbRegRecentProduct(pc.getProductId(),request);
 
         return ResponseEntity.ok(
                 new Result("200", "최근 본 상품 등록"
@@ -217,13 +217,13 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/get/recent-product", method = RequestMethod.POST)
-    public ResponseEntity<?> getRecentProduct() {
+    public ResponseEntity<?> getRecentProduct(HttpServletRequest request) {
 
          //pc.setProductId(productSession.getProductId());
 
         return ResponseEntity.ok(
                 new Result("200", "최근 본 상품",
-                        productService.nmbGetRecentProduct()
+                        productService.nmbGetRecentProduct(request)
                 )
         );
     }
