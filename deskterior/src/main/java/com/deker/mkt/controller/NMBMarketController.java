@@ -13,14 +13,11 @@ import com.deker.mkt.service.ProductSession;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
@@ -234,11 +231,14 @@ public class NMBMarketController {
     @RequestMapping(value = "/get/ctest", method = RequestMethod.POST)
     public Object getctest(HttpServletResponse response) {
 
-        Cookie id = new Cookie("memId", "jeh7124");
-        response.addCookie(id);
 
-        response.setHeader("Set-Cookie", "Test1=TestCookieValue1; Secure; WebFluxProperties.SameSite=None");
-
+        ResponseCookie cookie = ResponseCookie.from("memId", "sameSiteCookieValue")
+                .domain("211.232.166.228:6015")
+                .sameSite("None")
+                .secure(true)
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return "성공";
     }
