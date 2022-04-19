@@ -19,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -227,6 +229,27 @@ public class NMBMarketController {
                 )
         );
     }
+
+    @RequestMapping(value = "/get/ctest", method = RequestMethod.POST)
+    public Object getctest(HttpServletResponse response) {
+
+        Cookie id = new Cookie("memId", "jeh7124");
+        response.addCookie(id);
+
+        return "성공";
+    }
+
+
+
+    @RequestMapping(value = "/get/cctest", method = RequestMethod.POST)
+    public Object getcctest(@CookieValue(name = "memId", required = false) String memId) {
+
+
+        return memId;
+
+    }
+
+
 
 
 
