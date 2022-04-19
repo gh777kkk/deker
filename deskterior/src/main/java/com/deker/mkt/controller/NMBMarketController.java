@@ -12,6 +12,7 @@ import com.deker.mkt.service.ProductService;
 import com.deker.mkt.service.ProductSession;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -235,6 +236,9 @@ public class NMBMarketController {
 
         Cookie id = new Cookie("memId", "jeh7124");
         response.addCookie(id);
+
+        response.setHeader("Set-Cookie", "Test1=TestCookieValue1; Secure; WebFluxProperties.SameSite=None");
+
 
         return "성공";
     }
