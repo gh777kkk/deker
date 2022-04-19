@@ -232,7 +232,7 @@ public class NMBMarketController {
     public Object getctest(HttpServletResponse response) {
 
 
-        ResponseCookie cookie = ResponseCookie.from("sameSiteCookie", "sameSiteCookieValue")
+        ResponseCookie cookie = ResponseCookie.from("memId", "sameSiteCookieValue")
                 .domain("211.232.166.228:6015")
                 .sameSite("None")
                 .secure(true)
