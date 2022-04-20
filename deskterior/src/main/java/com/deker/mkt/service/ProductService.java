@@ -11,6 +11,7 @@ import com.deker.mkt.model.resultService.ProductReview;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.List;
 
@@ -63,8 +64,8 @@ public interface ProductService {
     void rmvMyAddress(MyAddressConditions conditions) throws Exception;
     void modAddressMain(MyAddressConditions conditions) throws Exception;
 
-    void nmbRegRecentProduct(String productId, HttpServletRequest request);
-    List<ProductDetailModel> nmbGetRecentProduct(HttpServletRequest request);
+    void nmbRegRecentProduct(String productId, HttpSession session);
+    List<ProductDetailModel> nmbGetRecentProduct(HttpSession session);
 
     List<ProductDetailModel> mbGetRecentProduct(String memId);
 

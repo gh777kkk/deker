@@ -622,9 +622,7 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void nmbRegRecentProduct(String productId, HttpServletRequest request){
-
-        HttpSession session = request.getSession(false);
+    public void nmbRegRecentProduct(String productId, HttpSession session){
 
         if(session != null){
             List myArr = (List) session.getAttribute(SessionConst.PRODUCT_ID);
@@ -640,7 +638,7 @@ public class ProductServiceImpl implements ProductService {
             session.setAttribute(SessionConst.PRODUCT_ID, myArr);
         }
         else{
-            session = request.getSession(true);
+
             List myArr = new ArrayList<>();
             myArr.add(productId);
 
@@ -661,9 +659,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public List<ProductDetailModel> nmbGetRecentProduct(HttpServletRequest request){
+    public List<ProductDetailModel> nmbGetRecentProduct(HttpSession session){
 
-        HttpSession session = request.getSession(false);
+        //HttpSession session = request.getSession(false);
         List<ProductDetailModel> recentList = new ArrayList<>();
 
         if(session == null){
