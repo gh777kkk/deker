@@ -11,20 +11,17 @@ import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
 import com.deker.mkt.service.ProductSession;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
-import org.springframework.http.*;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -229,16 +226,9 @@ public class NMBMarketController {
     }
 
     @RequestMapping(value = "/get/ctest", method = RequestMethod.POST)
-    public Object getctest(HttpServletResponse response) {
+    public Object getctest(HttpSession session) {
 
-
-        ResponseCookie cookie = ResponseCookie.from("memId", "sameSiteCookieValue")
-                .domain("211.232.166.228:6015")
-                .sameSite("None")
-                .secure(true)
-                .path("/")
-                .build();
-        response.addHeader("Set-Cookie", cookie.toString());
+        session.setAttribute("memId", "jeh7124");
 
         return "성공";
     }
@@ -246,8 +236,9 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/get/cctest", method = RequestMethod.POST)
-    public Object getcctest(@CookieValue(name = "memId", required = false) String memId) {
+    public Object getcctest(HttpSession session) {
 
+        String memId = (String) session.getAttribute("memId");
 
         return memId;
 
