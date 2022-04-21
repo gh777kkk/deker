@@ -624,22 +624,22 @@ public class ProductServiceImpl implements ProductService {
 
     public void nmbRegRecentProduct(String productId, HttpSession session){
 
-        if(session != null){
-            List myArr = (List) session.getAttribute(SessionConst.PRODUCT_ID);
-            int num = myArr.indexOf(productId);
-            if(num==-1){
-                myArr.add(productId);
+
+            List myArr = (List) session.getAttribute("productId");
+            if(myArr!=null) {
+                int num = myArr.indexOf(productId);
+                if (num == -1) {
+                    myArr.add(productId);
+                } else {
+                    myArr.remove(num);
+                    myArr.add(productId);
+
+                }
+                session.setAttribute("productId", myArr);
             }
             else{
-                myArr.remove(num);
-                myArr.add(productId);
 
-            }
-            session.setAttribute(SessionConst.PRODUCT_ID, myArr);
-        }
-        else{
-
-            List myArr = new ArrayList<>();
+            myArr = new ArrayList<>();
             myArr.add(productId);
 
             int num = myArr.indexOf(productId);
@@ -651,9 +651,9 @@ public class ProductServiceImpl implements ProductService {
                 myArr.add(productId);
 
             }
-            session.setAttribute(SessionConst.PRODUCT_ID, myArr);
+            session.setAttribute("productId", myArr);
 
-        }
+             }
 
 
     }
@@ -667,7 +667,7 @@ public class ProductServiceImpl implements ProductService {
         if(session == null){
         }
         else{
-            List<String> idArr = (List)session.getAttribute(SessionConst.PRODUCT_ID);
+            List<String> idArr = (List)session.getAttribute("productId");
 
             Collections.reverse(idArr);
 
