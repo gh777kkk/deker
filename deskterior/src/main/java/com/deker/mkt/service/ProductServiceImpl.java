@@ -655,7 +655,7 @@ public class ProductServiceImpl implements ProductService {
 
              }
 
-            return session.getAttribute("productId");
+            return session.getId();
 
 
     }
