@@ -622,7 +622,7 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public void nmbRegRecentProduct(String productId, HttpSession session){
+    public Object nmbRegRecentProduct(String productId, HttpSession session){
 
 
             List myArr = (List) session.getAttribute("productId");
@@ -655,6 +655,8 @@ public class ProductServiceImpl implements ProductService {
 
              }
 
+            return session.getAttribute("productId");
+
 
     }
 
@@ -664,9 +666,8 @@ public class ProductServiceImpl implements ProductService {
         //HttpSession session = request.getSession(false);
         List<ProductDetailModel> recentList = new ArrayList<>();
 
-        if(session == null){
-        }
-        else{
+
+        if(session != null){
             List<String> idArr = (List)session.getAttribute("productId");
 
             Collections.reverse(idArr);
