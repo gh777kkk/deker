@@ -203,10 +203,11 @@ public class NMBMarketController {
     @RequestMapping(value = "/reg/recent-product", method = RequestMethod.POST)
     public ResponseEntity<?> regRecentProduct(@RequestBody ProductCode pc, HttpSession session) {
 
-        productService.nmbRegRecentProduct(pc.getProductId(),session);
+
 
         return ResponseEntity.ok(
-                new Result("200", "최근 본 상품 등록"
+                new Result("200", "최근 본 상품 등록",
+                        productService.nmbRegRecentProduct(pc.getProductId(),session)
                 )
         );
     }
