@@ -428,8 +428,10 @@ public class ProductServiceImpl implements ProductService {
 
     public void modReview(ProductReview pr, MultipartFile img)throws Exception{
 
-        String reviewId = CMMUtil.setImg(img, pr.getMemId());
-        pr.setProReviewImg(reviewId);
+        if (img != null) {
+            String reviewId = CMMUtil.setImg(img, pr.getMemId());
+            pr.setProReviewImg(reviewId);
+        }
 
         productMapper.modReview(pr);
 
@@ -661,14 +663,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public List<ProductDetailModel> nmbGetRecentProduct(HttpSession session){
+    public List<ProductDetailModel> nmbGetRecentProduct(HttpSession session) throws Exception {
 
         //HttpSession session = request.getSession(false);
         List<ProductDetailModel> recentList = new ArrayList<>();
 
+        List<String> idArr = (List)session.getAttribute("productId");
 
-        if(session != null){
-            List<String> idArr = (List)session.getAttribute("productId");
+        if(idArr == null) throw new RecentProductNotFound();
+        else{
 
             Collections.reverse(idArr);
 

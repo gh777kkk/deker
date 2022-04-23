@@ -215,7 +215,7 @@ public class NMBMarketController {
 
 
     @RequestMapping(value = "/get/recent-product", method = RequestMethod.POST)
-    public ResponseEntity<?> getRecentProduct(HttpSession session) {
+    public ResponseEntity<?> getRecentProduct(HttpSession session) throws Exception {
 
          //pc.setProductId(productSession.getProductId());
 

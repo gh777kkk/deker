@@ -97,4 +97,9 @@ public class ExceptionController {
     public ResponseEntity<Result> handlerFailedAddCart() {
         return ResponseEntity.ok(new Result("400","옵션이 없어 장바구니 추가 실패"));
     }
+
+    @ExceptionHandler({ RecentProductNotFound.class })
+    public ResponseEntity<Result> handlerNoRecentProduct() {
+        return ResponseEntity.ok(new Result("200","최근 본 상품이 없습니다"));
+    }
 }
