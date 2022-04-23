@@ -9,6 +9,7 @@ import com.deker.mkt.model.response.ReviewItem;
 import com.deker.mkt.model.resultService.ProductReview;
 import com.deker.mkt.service.IamportService;
 import com.deker.mkt.service.ProductService;
+import com.deker.post.model.MyPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -215,7 +216,7 @@ public class MBMarketController {
 
 
     @RequestMapping(value = "/reg/review", method = RequestMethod.POST)
-    public ResponseEntity<?> regProductReview( @RequestParam(value = "myImg", required = false) MultipartFile myImg, @RequestPart("") ProductReview pr, HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> regProductReview( @RequestParam(value = "myImg", required = false) MultipartFile myImg, @RequestPart("myReview") ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
@@ -231,7 +232,7 @@ public class MBMarketController {
 
     @RequestMapping(value = "/mod/review", method = RequestMethod.POST)
     public ResponseEntity<?> modReview(@RequestParam(value = "myImg", required = false) MultipartFile myImg,
-                                       @RequestBody ProductReview pr, HttpServletRequest request) throws Exception {
+                                       @RequestPart("myReivew") ProductReview pr, HttpServletRequest request) throws Exception {
 
         String memId = jwtProvider.getMemIdFromJwtToken(request);
         pr.setMemId(memId);
