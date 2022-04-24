@@ -3,6 +3,7 @@ package com.deker.cmm.service;
 import com.deker.cmm.mapper.CMMMapper;
 import com.deker.cmm.model.*;
 import com.deker.cmm.util.CMMUtil;
+import com.deker.cmm.util.IDSUtil;
 import com.deker.exception.MemberNotFoundException;
 import com.deker.jwt.JwtProvider;
 import com.deker.mkt.model.ProductModel;
@@ -148,10 +149,22 @@ public class CMMServiceImpl implements CMMService {
 
     public void follow(Follow follow){
         cmmMapper.follow(follow);
+        AlarmConditions alarmConditions = new AlarmConditions();
+        alarmConditions.setMemId(follow.getUserId());
+        alarmConditions.setAlarmId(CMMUtil.nextId("alm"));
+        alarmConditions.setAlarmCode("FOLLOW");
+        alarmConditions.setSentInfo(follow.getMemId());
+        cmmMapper.insertAlarm(alarmConditions);
     }
 
     public void unFollow(Follow follow){
         cmmMapper.unFollow(follow);
+        AlarmConditions alarmConditions = new AlarmConditions();
+        alarmConditions.setMemId(follow.getUserId());
+        alarmConditions.setAlarmId(CMMUtil.nextId("alm"));
+        alarmConditions.setAlarmCode("UNFOLLOW");
+        alarmConditions.setSentInfo(follow.getMemId());
+        cmmMapper.insertAlarm(alarmConditions);
     }
 
 

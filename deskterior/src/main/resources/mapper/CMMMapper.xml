@@ -166,5 +166,18 @@
         WHERE ALARM_ID = #{alarmId}
     </update>
 
+    <insert id="insertAlarm" parameterType="AlarmConditions">
+        INSERT INTO ALARM
+        (       ALARM_ID
+            ,   MEM_ID
+            ,   SNET_INFO
+            ,   ALARM_CODE)
+        VALUES
+        (       #{alarmId}
+            ,   #{memId}
+            ,   #{sentInfo}
+            ,   #{alarmCode})
+    </insert>
+
 </mapper>
 

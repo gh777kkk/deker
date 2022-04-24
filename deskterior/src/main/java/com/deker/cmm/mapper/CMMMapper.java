@@ -31,4 +31,6 @@ public interface CMMMapper {
     List<Alarm> selectAlarm(String memId);
 
     void updateAlarmRead(String alarmId);
+
+    void insertAlarm(AlarmConditions alarmConditions);
 }

@@ -117,7 +117,7 @@ public class CMMController {
                 new Result("200","나를 팔로워한 계정 삭제"));
     }
 
-    @RequestMapping(value = "/mb/alarm", method = RequestMethod.POST)
+    @RequestMapping(value = "/mb/cmm/get/alarm", method = RequestMethod.POST)
     public ResponseEntity<Result> getAlarm(HttpServletRequest request) {
 
         return ResponseEntity.ok(
