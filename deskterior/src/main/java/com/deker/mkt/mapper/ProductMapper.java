@@ -108,6 +108,7 @@ public interface ProductMapper {
 
     void insertNBRecentProduct(ProductCode pc);
     List<ProductDetailModel> GetNBRecentProduct(ProductCode pc);
+    void updateNBRecentProductDate(ProductCode pc);
 
 }
 
