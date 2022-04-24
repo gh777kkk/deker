@@ -104,5 +104,10 @@ public interface ProductMapper {
     List<ReviewItem> getReviewableItem(String memId);
     List<ReviewItem> getReviewedItem(String memId);
 
+
+
+    void insertNBRecentProduct(ProductCode pc);
+    List<ProductDetailModel> GetNBRecentProduct(ProductCode pc);
+
 }
 

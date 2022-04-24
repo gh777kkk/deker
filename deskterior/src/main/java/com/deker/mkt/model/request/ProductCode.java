@@ -13,4 +13,6 @@ public class ProductCode {
     private String memId;
     private List<String> cartIdArr;
     private String orderId;
+    private String sessionId;
+    private String recentId;
 }
