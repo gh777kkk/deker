@@ -705,6 +705,7 @@ public class ProductServiceImpl implements ProductService {
             pm.setQuantity(pm.getOrderQuantity().get(i));
             productMapper.modOption(pm);
         }
+
         List<String> orderItem = productMapper.getItemOrderId(pm);
         for(String id: orderItem){
             pm.setItemOrderId(id);

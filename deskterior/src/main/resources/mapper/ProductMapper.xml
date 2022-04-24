@@ -771,10 +771,25 @@
         WHERE   ORDER_ID = ${itemOrderId}
     </update>
 
+
+    <update id="modOption" parameterType="Payment">
+        UPDATE  study_gh.MKT_PRODUCT_OPTION
+        SET     OPTION_QUANTITY = #{quantity}
+        WHERE   MKT_PRODUCT_OPTION_ID = #{optionId}
+    </update>
+
     <delete id="deletCartId">
         delete from study_gh.MKT_CART
         where MKT_CART_ID = #{id}
     </delete>
+
+
+
+    <select id="getItemOrderId" resultType="String">
+        SELECT  ORDER_ITEM_ID
+        FROM    study_gh.MKT_MY_ORDER o
+        WHERE   o.MY_ORDER_ID = #{orderId}
+    </select>
 
 
     <select id="getReviewedItem" resultType="ReviewItem">
