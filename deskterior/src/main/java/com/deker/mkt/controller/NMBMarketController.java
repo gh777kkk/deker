@@ -28,7 +28,7 @@ public class NMBMarketController {
     public final ProductService productService;
     private final JwtProvider jwtProvider;
     private final IamportService iamportService;
-    private final ProductSession productSession;
+
 
     //reg, get, mod, del
 
