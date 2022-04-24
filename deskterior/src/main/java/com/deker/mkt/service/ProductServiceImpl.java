@@ -42,7 +42,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
     private final com.deker.cmm.util.CMMUtil CMMUtil;
-    private final ProductSession productSession;
 
     @Value("${tracking.key}")
     private String trackingKey;
@@ -706,6 +705,7 @@ public class ProductServiceImpl implements ProductService {
         }
         orderList.setTotalDeliveryPay(po.get(0).getDeliveryPay());
         orderList.setTotalPrice(totalPrice);
+        orderList.setProductOption(po);
 
         return orderList;
     }
