@@ -623,74 +623,34 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-    public Object nmbRegRecentProduct(String productId, HttpSession session){
+    public Object nmbRegRecentProduct(ProductCode pc, HttpSession session){
 
+        if(pc.getSessionId().equals("NONE")){
 
-            List myArr = (List) session.getAttribute("productId");
-            if(myArr!=null) {
-                int num = myArr.indexOf(productId);
-                if (num == -1) {
-                    myArr.add(productId);
-                } else {
-                    myArr.remove(num);
-                    myArr.add(productId);
+            pc.setRecentId(CMMUtil.nextId("mrpId"));
+            pc.setMemId(session.getId());
+            productMapper.insertNBRecentProduct(pc);
+        }
+        else{
 
-                }
-                session.setAttribute("productId", myArr);
-            }
-            else{
+            pc.setRecentId(CMMUtil.nextId("mrpId"));
+            pc.setMemId(pc.getSessionId());
+            productMapper.insertNBRecentProduct(pc);
 
-            myArr = new ArrayList<>();
-            myArr.add(productId);
-
-            int num = myArr.indexOf(productId);
-            if(num==-1){
-                myArr.add(productId);
-            }
-            else{
-                myArr.remove(num);
-                myArr.add(productId);
-
-            }
-            session.setAttribute("productId", myArr);
-
-             }
-
+        }
             return session.getId();
 
 
     }
 
 
-    public List<ProductDetailModel> nmbGetRecentProduct(HttpSession session) throws Exception {
+    public List<ProductDetailModel> nmbGetRecentProduct(ProductCode pc) throws Exception {
 
-        //HttpSession session = request.getSession(false);
-        List<ProductDetailModel> recentList = new ArrayList<>();
-
-        List<String> idArr = (List)session.getAttribute("productId");
-
-        if(idArr == null) throw new RecentProductNotFound();
-        else{
-
-            Collections.reverse(idArr);
-
-
-            for (int i =0; i<idArr.size(); i++){
-                if(recentList.size()==10){
-                    break;
-                }
-                else {
-                    ProductDetailModel pd = productMapper.getProductDetail(idArr.get(i));
-                    pd.setProductImg(CMMUtil.getImg(pd.getProductImg()));
-                    recentList.add(pd);
-                }
-            }
+        List<ProductDetailModel> myList= productMapper.GetNBRecentProduct(pc);
+        for(ProductDetailModel id: myList){
+            id.setProductImg(CMMUtil.getImg(id.getProductImg()));
         }
-
-
-
-        return recentList;
-
+        return myList;
     }
 
 

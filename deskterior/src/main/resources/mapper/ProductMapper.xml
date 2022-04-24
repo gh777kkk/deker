@@ -157,6 +157,20 @@
 
 
 
+    <select id="GetNBRecentProduct" resultType="ProductDetailModel">
+        select MKT_PRODUCT_ID AS mktProductId,
+               PRODUCT_NAME AS productName,
+               PRODUCT_PRICE AS productPrice,
+               PRODUCT_IMG AS productImg
+        from study_gh.MKT_PRODUCT p, study_gh.MKT_RECENT_PRODUCT m
+        where p.MKT_PRODUCT_ID = m.PRODUCT_ID and m.MEM_ID = #{sessionId}
+          and date(m.UPDATE_DT) >= date(subdate(now(), INTERVAL 1 DAY))
+        order by m.UPDATE_DT desc
+        limit 10
+    </select>
+
+
+
     <select id="getProductDetailOption" resultType="ProductDetailOption">
         select PRODUCT_PRICE AS productPrice,
                MKT_PRODUCT_OPTION_ID AS productOptionId,
@@ -368,6 +382,22 @@
         )
         VALUES (
                    #{mktRecentProductId},
+                   #{memId},
+                   #{productId}
+               )
+    </insert>
+
+
+
+    <insert id="insertNBRecentProduct" parameterType="ProductCode">
+        insert into study_gh.MKT_RECENT_PRODUCT
+        (
+            MKT_RECENT_PRODUCT_ID,
+            MEM_ID,
+            PRODUCT_ID
+        )
+        VALUES (
+                   #{recentId},
                    #{memId},
                    #{productId}
                )
