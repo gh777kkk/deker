@@ -630,6 +630,7 @@ public class ProductServiceImpl implements ProductService {
             pc.setRecentId(CMMUtil.nextId("mrpId"));
             pc.setMemId(session.getId());
             productMapper.insertNBRecentProduct(pc);
+            return session.getId();
         }
         else{
 
@@ -637,8 +638,9 @@ public class ProductServiceImpl implements ProductService {
             pc.setMemId(pc.getSessionId());
             productMapper.insertNBRecentProduct(pc);
 
+            return null;
         }
-            return session.getId();
+
 
 
     }
