@@ -634,9 +634,19 @@ public class ProductServiceImpl implements ProductService {
         }
         else{
 
-            pc.setRecentId(CMMUtil.nextId("mrpId"));
-            pc.setMemId(pc.getSessionId());
-            productMapper.insertNBRecentProduct(pc);
+            int check=0;
+            List<ProductDetailModel> myList= productMapper.GetNBRecentProduct(pc);
+            for(ProductDetailModel id: myList){
+                if(id.getMktProductId().equals(pc.getProductId())){
+                    check=1;
+                    productMapper.updateNBRecentProductDate(pc);
+                }
+            }
+            if(check==0){
+                pc.setRecentId(CMMUtil.nextId("mrpId"));
+                pc.setMemId(pc.getSessionId());
+                productMapper.insertNBRecentProduct(pc);
+            }
 
             return null;
         }
