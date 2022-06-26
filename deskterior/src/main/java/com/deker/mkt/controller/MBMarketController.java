@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -403,6 +404,13 @@ public class MBMarketController {
         );
     }
 
+    @RequestMapping(value = "/reg/product", method = RequestMethod.POST)
+    public ResponseEntity<?> registProduct(@RequestBody Map<Object, Object> paramMap) {
+//        productService.
+        return ResponseEntity.ok((
+                new Result("200", "상품 등록 성공")
+        ));
+    }
 
 
 

@@ -97,18 +97,12 @@ public class CMMServiceImpl implements CMMService {
 
 
     //메뉴
-
     public Menu getMenu(HttpServletRequest request){
-
-
-
-
         String authorityCode;
         String memId = jwtProvider.getMemIdFromJwtToken(request);
-        if(memId==null){
+        if (memId == null) {
             authorityCode = "ROLE_ANONYMOUS";
-        }
-        else{
+        } else {
             authorityCode = cmmMapper.getUserRole(memId);
         }
 
@@ -121,15 +115,12 @@ public class CMMServiceImpl implements CMMService {
         List<Menu> menus = cmmMapper.getMenu(authorityCode);
 
         for (Menu me : menus) {
-
-            if(me.getMenuParent() == 0){
+            if (me.getMenuParent() == 0) {
                 menu.add(me);
-            }
-            else{
-                if(me.getMenuParent() == 200000000){
+            } else {
+                if (me.getMenuParent() == 200000000) {
                     community.add(me);
-                }
-                else if(me.getMenuParent() == 300000000){
+                }  else if (me.getMenuParent() == 300000000) {
                     market.add(me);
                 }
             }
@@ -142,7 +133,6 @@ public class CMMServiceImpl implements CMMService {
         m.setMenuImgUrl(mainMenuImg);
 
         return m;
-
     }
 
 

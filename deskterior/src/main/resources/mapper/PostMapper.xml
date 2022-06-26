@@ -34,7 +34,7 @@
 
 
     <insert id="insertPost" parameterType="MyPost">
-        insert into study_gh.POST_LIST
+        insert into POST_LIST
         (
             POST_ID, MEM_ID, JOB_CODE, MOOD_CODE, MTRL_CODE
         )
@@ -46,7 +46,7 @@
 
 
     <update id="updatePost" parameterType="MyPost">
-        UPDATE  study_gh.POST_LIST
+        UPDATE  POST_LIST
         SET     JOB_CODE = #{jobCode}, MOOD_CODE = #{moodCode}, MTRL_CODE = #{materialCode}
         WHERE   POST_ID = #{communityId}
     </update>
@@ -54,14 +54,14 @@
 
     <select id="getPostDetailId" resultType="String">
         select d.POST_DETAIL_ID as postDetailId
-        from study_gh.POST_DETAIL d
+        from POST_DETAIL d
         where POST_ID = #{communityId}
     </select>
 
 
     <select id="getPostTagId" resultType="String">
         select t.POST_TAG_ID
-        from study_gh.POST_TAG t
+        from POST_TAG t
         where t.POST_DETAIL_ID = #{postDetailId} and USE_YN = 'Y'
     </select>
 
@@ -71,7 +71,7 @@
 
 
     <insert id="insertPostDetail" parameterType="MyPost">
-        insert into study_gh.POST_DETAIL
+        insert into POST_DETAIL
         (
             POST_DETAIL_ID, POST_ID, POST_IMG, CONTENTS, POST_TITLE
         )
@@ -83,7 +83,7 @@
 
 
     <update id="updatePostDetail" parameterType="MyPost">
-        UPDATE  study_gh.POST_DETAIL
+        UPDATE  POST_DETAIL
         SET     <if test="postImg != null">
                     POST_IMG = #{postImg},
                  </if>
@@ -96,7 +96,7 @@
 
 
     <insert id="insertPostTag" parameterType="MyPost">
-        insert into study_gh.POST_TAG
+        insert into POST_TAG
         (
             post_tag_id, post_detail_id, contents
         )
@@ -108,7 +108,7 @@
 
 
     <update id="updatePostTag" parameterType="MyPost">
-        UPDATE  study_gh.POST_TAG
+        UPDATE  POST_TAG
         SET     CONTENTS = #{tag}
         WHERE   POST_TAG_ID = #{postTagId}
     </update>
@@ -116,7 +116,7 @@
 
 
     <update id="updatePostTagNo" parameterType="MyPost">
-        UPDATE  study_gh.POST_TAG
+        UPDATE  POST_TAG
         SET     USE_YN = 'N'
         WHERE   POST_TAG_ID = #{postTagId}
     </update>
@@ -124,7 +124,7 @@
 
 
     <insert id="insertPostItem" parameterType="CommunityProducts">
-        insert into study_gh.POST_ITEM
+        insert into POST_ITEM
         (
             POST_ITEM_ID, POST_DETAIL_ID, PRODUCT_ID,  MAKET_CONTENTS, LOCATIONX, LOCATIONY
         )
@@ -136,7 +136,7 @@
 
 
     <update id="updatePostItem" parameterType="CommunityProducts">
-        UPDATE  study_gh.POST_ITEM
+        UPDATE  POST_ITEM
         SET     POST_ITEM_ID = #{id}, PRODUCT_ID = #{productId}, MAKET_CONTENTS = #{productDescription},
                                    LOCATIONX = #{offsetX}, LOCATIONY = #{offsetY}
         WHERE   POST_DETAIL_ID = #{postDetailId}
@@ -150,7 +150,7 @@
                m.NICKNAME AS userNick,
                m.PROFILE_IMG AS userProfileImg,
                post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d
+        from MEMBER m, POST_LIST l, POST_DETAIL d
         where l.POST_ID = #{communityId} and d.POST_ID = #{communityId}
           and m.MEM_ID = l.MEM_ID and l.USE_YN ='Y'
         group by d.POST_ID
@@ -160,8 +160,8 @@
     <select id="getPostLike" resultType="PostProperties">
         SELECT L.POST_ID AS communityId,
                 COUNT(K.MEM_ID) AS likeCount
-        FROM study_gh.POST_LIST L
-        LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
+        FROM POST_LIST L
+        LEFT OUTER JOIN POST_LIKE K ON K.POST_ID = L.POST_ID
         WHERE L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
         ORDER BY likeCount DESC, L.CREATE_DT DESC, L.POST_ID DESC
@@ -172,13 +172,13 @@
 
     <select id="getPostCommentCount" resultType="int">
         select count(POST_ID) as commentCount
-        from study_gh.POST_COMMENT c
+        from POST_COMMENT c
         where POST_ID = #{communityId}
     </select>
 
     <select id="getPostFollow" resultType="boolean">
         select if(count(FOLLOWING)=0, false, true) as followingCheck
-        from study_gh.FOLLOW
+        from FOLLOW
         where FOLLOWER = #{memId} and FOLLOWING = #{userId}
     </select>
 
@@ -189,7 +189,7 @@
                m.PROFILE_IMG AS writerProfileImgUrl,
                c.CONTENTS AS content,
                c.POST_COMMENT_ID AS postCommentId
-        from study_gh.MEMBER m, study_gh.POST_COMMENT c
+        from MEMBER m, POST_COMMENT c
         where  c.POST_ID = #{communityId}
           and m.MEM_ID = c.MEM_ID
         group by c.POST_COMMENT_ID, c.UPDATE_DT
@@ -199,7 +199,7 @@
 
 
     <insert id="insertPostComment" parameterType="PostComment">
-        insert into study_gh.POST_COMMENT
+        insert into POST_COMMENT
         (
            post_comment_id, post_id, pre_post_comment_id, contents, MEM_ID
         )
@@ -221,9 +221,9 @@
                d.POST_DETAIL_ID AS postDetailId,
                l.MEM_ID         AS memId,
                count(k.MEM_ID)  AS communityPostLikeCount
-        from study_gh.POST_DETAIL d,
-             study_gh.POST_LIST l
-             left join study_gh.POST_LIKE k on k.POST_ID = #{communityId}
+        from POST_DETAIL d,
+             POST_LIST l
+             left join POST_LIKE k on k.POST_ID = #{communityId}
         where d.POST_ID = #{communityId} AND l.POST_ID = #{communityId}
           and l.USE_YN = 'Y'
     </select>
@@ -232,7 +232,7 @@
 
     <select id="getSelectPostDetailLiked" resultType="String">
         select POST_ID
-        from study_gh.POST_LIKE k
+        from POST_LIKE k
         where k.POST_ID =#{communityId} and k.MEM_ID = #{memId}
     </select>
 
@@ -242,7 +242,7 @@
 
     <select id="getPostTag" resultType="MyPost">
         select t.CONTENTS AS tag
-        from study_gh.POST_TAG t
+        from POST_TAG t
         where t.POST_DETAIL_ID =#{postDetailId}
     </select>
 
@@ -254,7 +254,7 @@
                p.PRODUCT_IMG AS productImgUrl,
                locationx AS offsetX,
                locationy AS offsetY
-        from study_gh.POST_ITEM i, study_gh.MKT_PRODUCT p
+        from POST_ITEM i, MKT_PRODUCT p
         where i.POST_DETAIL_ID = #{postDetailId} and PRODUCT_ID = p.MKT_PRODUCT_ID
     </select>
 
@@ -262,8 +262,8 @@
 
     <select id="getMorePostCount" resultType="int">
         SELECT count(L.POST_ID)
-        FROM study_gh.POST_LIST L
-                 LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
+        FROM POST_LIST L
+                 LEFT OUTER JOIN POST_LIKE K ON K.POST_ID = L.POST_ID
     </select>
 
 
@@ -275,10 +275,10 @@
                m.PROFILE_IMG AS userProfileImg,
                post_img AS communityImage,
                COUNT(K.MEM_ID) AS likeCount
-        FROM study_gh.POST_LIST L
-                 left join study_gh.MEMBER m on L.MEM_ID = m.MEM_ID
-                 Left Join study_gh.POST_DETAIL d on L.POST_ID = d.POST_ID
-                 LEFT OUTER JOIN study_gh.POST_LIKE K ON K.POST_ID = L.POST_ID
+        FROM POST_LIST L
+                 left join MEMBER m on L.MEM_ID = m.MEM_ID
+                 Left Join POST_DETAIL d on L.POST_ID = d.POST_ID
+                 LEFT OUTER JOIN POST_LIKE K ON K.POST_ID = L.POST_ID
         where L.USE_YN ='Y'
         GROUP BY L.POST_ID, L.CREATE_DT
         ORDER BY likeCount DESC, L.CREATE_DT DESC, L.POST_ID desc
@@ -295,11 +295,11 @@
                m.NICKNAME    AS userNick,
                m.PROFILE_IMG AS userProfileImg,
                post_img      AS communityImage
-        from study_gh.MEMBER m,
-             study_gh.POST_LIST l,
-             study_gh.POST_DETAIL d,
+        from MEMBER m,
+             POST_LIST l,
+             POST_DETAIL d,
              (select FOLLOWING
-              from study_gh.FOLLOW
+              from FOLLOW
               where FOLLOWER = #{memId}) as f
         where l.POST_ID = d.POST_ID
           and l.MEM_ID in (f.FOLLOWING)
@@ -313,9 +313,9 @@
 
     <select id="getPostMyFollowCount" resultType="int">
         select count(d.POST_ID)
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+        from MEMBER m, POST_LIST l, POST_DETAIL d,
              (select FOLLOWING
-              from study_gh.FOLLOW
+              from FOLLOW
               where FOLLOWER = #{memId}) as f
         where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
@@ -329,9 +329,9 @@
                m.NICKNAME AS userNick,
                m.PROFILE_IMG AS userProfileImg,
                post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d,
+        from MEMBER m, POST_LIST l, POST_DETAIL d,
              (select FOLLOWING
-              from study_gh.FOLLOW
+              from FOLLOW
               where FOLLOWER = #{memId}) as f
         where l.POST_ID = d.POST_ID and l.MEM_ID in (f.FOLLOWING) and m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
@@ -349,10 +349,10 @@
             m.NICKNAME AS userNick,
             m.PROFILE_IMG AS userProfileImg,
             post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l
-            LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
-            LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
-            LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
+        from MEMBER m, POST_LIST l
+            LEFT JOIN POST_DETAIL d on  l.POST_ID = d.POST_ID
+            LEFT JOIN POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
+            LEFT JOIN MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
         where  m.MEM_ID = l.MEM_ID
           and l.USE_YN ='Y'
         group by  l.POST_ID, l.CREATE_DT
@@ -364,10 +364,10 @@
 
     <select id="getMorePostCustomCount" resultType="int">
         select COUNT(d.POST_ID)
-        from study_gh.MEMBER m, study_gh.POST_LIST l
-                                    LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
-                                    LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
-                                    LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
+        from MEMBER m, POST_LIST l
+                                    LEFT JOIN POST_DETAIL d on  l.POST_ID = d.POST_ID
+                                    LEFT JOIN POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
+                                    LEFT JOIN MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
         where l.USE_YN ='Y'
     </select>
 
@@ -380,10 +380,10 @@
                m.NICKNAME AS userNick,
                m.PROFILE_IMG AS userProfileImg,
                post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l
-                                    LEFT JOIN study_gh.POST_DETAIL d on  l.POST_ID = d.POST_ID
-                                    LEFT JOIN study_gh.POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
-                                    LEFT JOIN study_gh.MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
+        from MEMBER m, POST_LIST l
+                                    LEFT JOIN POST_DETAIL d on  l.POST_ID = d.POST_ID
+                                    LEFT JOIN POST_TAG t on d.POST_DETAIL_ID = t.POST_DETAIL_ID
+                                    LEFT JOIN MEMBER_TAG mt on mt.MEM_ID = #{memId} and t.CONTENTS = mt.CONTENTS
         where l.USE_YN ='Y'
         group by  l.POST_ID, l.CREATE_DT
         order by COUNT(mt.CONTENTS)desc , l.CREATE_DT desc, l.POST_ID desc
@@ -401,7 +401,7 @@
                m.NICKNAME AS userNick,
                m.PROFILE_IMG AS userProfileImg,
                post_img AS communityImage
-        from study_gh.MEMBER m, study_gh.POST_LIST l, study_gh.POST_DETAIL d
+        from MEMBER m, POST_LIST l, POST_DETAIL d
         where l.POST_ID = d.POST_ID and m.MEM_ID = l.MEM_ID and l.USE_YN ='Y'
         <if test="list!=null and list.size!=0">
             and d.POST_ID NOT IN
@@ -434,7 +434,7 @@
 
 
     <insert id="likePost" parameterType="Post">
-        insert into study_gh.POST_LIKE
+        insert into POST_LIKE
         (
             post_id, mem_id
         )
@@ -446,7 +446,7 @@
 
 
     <delete id="dislikePost" parameterType="Post">
-        delete from study_gh.POST_LIKE
+        delete from POST_LIKE
         where POST_ID = #{communityId} and MEM_ID = #{memId}
     </delete>
 

@@ -28,12 +28,12 @@ public class NMBMarketController {
     public final ProductService productService;
     private final JwtProvider jwtProvider;
     private final IamportService iamportService;
-    private final ProductSession productSession;
+//    private final ProductSession productSession;
 
     //reg, get, mod, del
 
     @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<?> getProduct() {
+    public ResponseEntity<?> getProduct(HttpServletRequest req) {
 
         return ResponseEntity.ok(
                 new Result("200", "스토어 메인",

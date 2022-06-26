@@ -9,8 +9,8 @@
                PRODUCT_PRICE AS productPrice,
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p
-                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+        from MKT_PRODUCT p
+                 left join MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
             and ORDER_CONFIRM = 'Y'
         group by MKT_PRODUCT_ID
         order by count(PRODUCT_ID), MKT_PRODUCT_ID desc
@@ -24,8 +24,8 @@
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg,
                count(PRODUCT_ID)
-        from study_gh.MKT_PRODUCT p
-                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+        from MKT_PRODUCT p
+                 left join MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
             and ORDER_CONFIRM = 'Y'
         group by MKT_PRODUCT_ID
         order by count(PRODUCT_ID), MKT_PRODUCT_ID desc
@@ -36,7 +36,7 @@
 
     <select id="getProductCount" resultType="int">
         select COUNT(MKT_PRODUCT_ID)
-        from study_gh.MKT_PRODUCT p
+        from MKT_PRODUCT p
     </select>
 
 
@@ -46,7 +46,7 @@
                PRODUCT_PRICE AS productPrice,
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p
+        from MKT_PRODUCT p
     </select>
 
 
@@ -55,7 +55,7 @@
         select CATEGORY_ID AS categoryId,
                CATEGORY_IMG AS categoryImg,
                CATEGORY_NAME AS categoryName
-        from study_gh.MKT_CATEGORY c
+        from MKT_CATEGORY c
 
     </select>
 
@@ -69,9 +69,9 @@
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p,
+        from MKT_PRODUCT p,
              (select PRODUCT_ID
-              from study_gh.MKT_ORDER
+              from MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
@@ -86,8 +86,8 @@
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg,
                count(PRODUCT_ID)
-        from study_gh.MKT_PRODUCT p
-                 left join study_gh.MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
+        from MKT_PRODUCT p
+                 left join MKT_ORDER o on p.MKT_PRODUCT_ID = o.PRODUCT_ID
             and ORDER_CONFIRM = 'Y'
         where PRODUCT_CATEGORY = #{categoryId}
         group by MKT_PRODUCT_ID
@@ -98,7 +98,7 @@
 
     <select id="getProductCategoryCount" resultType="int">
         select COUNT(MKT_PRODUCT_ID)
-        from study_gh.MKT_PRODUCT p
+        from MKT_PRODUCT p
         where PRODUCT_CATEGORY = #{categoryId}
     </select>
 
@@ -112,7 +112,7 @@
                PRODUCT_CATEGORY AS productCategory,
                PRODUCT_EXPLAIN AS productExplain,
                PRODUCT_NAME AS productName
-        from study_gh.MKT_PRODUCT p
+        from MKT_PRODUCT p
         where p.PRODUCT_CATEGORY=#{code}
         order by p.CREATE_DT desc limit 8
     </select>
@@ -125,19 +125,19 @@
                PRODUCT_NAME AS productName,
                PRODUCT_PRICE AS productPrice,
                PRODUCT_IMG AS productImg
-               from study_gh.MKT_PRODUCT
+               from MKT_PRODUCT
         where MKT_PRODUCT_ID=#{productId}
     </select>
 
 
     <select id="mbGetRecentProductCheck" resultType="RecentProduct">
         select MKT_RECENT_PRODUCT_ID AS mktRecentProductId
-        from  study_gh.MKT_RECENT_PRODUCT
+        from  MKT_RECENT_PRODUCT
         where MEM_ID = #{memId} and PRODUCT_ID = #{productId}
     </select>
 
     <update id="updateRecentProductDate" parameterType="RecentProduct">
-        UPDATE  study_gh.MKT_RECENT_PRODUCT
+        UPDATE  MKT_RECENT_PRODUCT
         SET     UPDATE_DT = sysdate()
         WHERE   MKT_RECENT_PRODUCT_ID = #{mktRecentProductId}
     </update>
@@ -148,7 +148,7 @@
                PRODUCT_NAME AS productName,
                PRODUCT_PRICE AS productPrice,
                PRODUCT_IMG AS productImg
-        from study_gh.MKT_PRODUCT p, study_gh.MKT_RECENT_PRODUCT m
+        from MKT_PRODUCT p, MKT_RECENT_PRODUCT m
         where  p.MKT_PRODUCT_ID = m.PRODUCT_ID and m.MEM_ID = #{memId}
         order by m.UPDATE_DT desc
         limit 10
@@ -169,7 +169,7 @@
                CODE_NAME('OPK',OPTION2) AS option2Name,
                MKT_OPTION_NAME(PRODUCT_ID,OPTION2,OPTION2_DATA) AS option2DataName,
                OPTION_QUANTITY AS productQuantity
-        from  study_gh.MKT_PRODUCT_OPTION
+        from  MKT_PRODUCT_OPTION
         where PRODUCT_ID=#{productId}
     </select>
 
@@ -183,14 +183,14 @@
         select SET_ID AS setId,
                DETAIL_EXPLAIN AS detailExplain,
                IMG_ID AS detailImg
-        from study_gh.MKT_DETAIL_PAGE
+        from MKT_DETAIL_PAGE
         where PRODUCT_ID=#{productId}
     </select>
 
 
     <select id="getCategoryId" resultType="String">
         select PRODUCT_CATEGORY
-        from study_gh.MKT_PRODUCT p
+        from MKT_PRODUCT p
         where MKT_PRODUCT_ID = #{productId}
     </select>
 
@@ -200,9 +200,9 @@
                PRODUCT_IMG AS productImg,
                PRODUCT_ID AS productId,
                PRODUCT_PRICE AS productPrice
-        from study_gh.MKT_PRODUCT p,
+        from MKT_PRODUCT p,
              (select PRODUCT_ID
-              from study_gh.MKT_ORDER
+              from MKT_ORDER
               where ORDER_CONFIRM = 'Y'
               group by PRODUCT_ID
               order by COUNT(PRODUCT_ID) desc) o
@@ -224,7 +224,7 @@
                r.PRO_REVIEW_IMG AS proReviewImg,
                MKT_OPTION_NAME(mpo.PRODUCT_ID, mpo.OPTION2, mpo.OPTION2_DATA) AS option2DataName,
                MKT_OPTION_NAME(mpo.PRODUCT_ID, mpo.OPTION1, mpo.OPTION1_DATA) AS option1DataName
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MEMBER m, study_gh.MKT_PRODUCT_OPTION mpo
+        from MKT_REVIEW r, MKT_PRODUCT p, MEMBER m, MKT_PRODUCT_OPTION mpo
         where r.PRODUCT_ID=#{productId} and p.MKT_PRODUCT_ID= #{productId}
           and mpo.MKT_PRODUCT_OPTION_ID = r.OPTION_ID and r.MEM_ID = m.MEM_ID
         limit #{startRowNo}, #{endRowNo}
@@ -232,7 +232,7 @@
 
     <select id="getProductReviewCount"  resultType="int">
         select count(*)
-        from study_gh.MKT_REVIEW r
+        from MKT_REVIEW r
         where r.PRODUCT_ID = #{productId}
     </select>
 
@@ -243,7 +243,7 @@
     <select id="getProductOptionId" parameterType="ProductOption" resultType="ProductOption">
     select MKT_PRODUCT_OPTION_ID AS productOptionId,
             PRODUCT_PRICE AS productPrice
-    from study_gh.MKT_PRODUCT_OPTION
+    from MKT_PRODUCT_OPTION
     where OPTION1 = #{option1} and OPTION1_DATA = #{option1Data} and PRODUCT_ID = #{mktProductId}
         <choose>
             <when test="option2 == null">
@@ -260,7 +260,7 @@
 
 
     <insert id="insertProductCart" parameterType="ProductOption">
-        insert into study_gh.MKT_CART
+        insert into MKT_CART
         (
          MKT_CART_ID,
          MEM_ID,
@@ -294,7 +294,7 @@
                poduct_option AS productOptionId,
                price AS totalPrice,
                'deker' AS productBrand
-        from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
+        from MKT_CART c, MKT_PRODUCT p
         where c.MEM_ID = #{memId} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
                 and c.USE_YN='N'
     </select>
@@ -306,7 +306,7 @@
                c.cart_quant AS productSelectedQuantity,
                c.poduct_option AS productOptionId,
                c.price AS totalPrice
-        from study_gh.MKT_CART c, study_gh.MKT_PRODUCT p
+        from MKT_CART c, MKT_PRODUCT p
         where c.MKT_CART_ID = #{id} and p.MKT_PRODUCT_ID = c.PRODUCT_ID
           and c.USE_YN='N'
     </select>
@@ -314,7 +314,7 @@
 
 
     <insert id="insertOrderItem" parameterType="ProductCartToOderItem">
-        insert into study_gh.MKT_ORDER
+        insert into MKT_ORDER
         (
             order_id,
             mem_id,
@@ -338,7 +338,7 @@
 
 
     <insert id="insertMyOrderItem" parameterType="ProductCartToOderItem">
-        insert into study_gh.MKT_MY_ORDER
+        insert into MKT_MY_ORDER
         (
          my_order_id,
          order_item_id,
@@ -360,7 +360,7 @@
 
 
     <insert id="insertRecentProduct" parameterType="RecentProduct">
-        insert into study_gh.MKT_RECENT_PRODUCT
+        insert into MKT_RECENT_PRODUCT
         (
             MKT_RECENT_PRODUCT_ID,
             MEM_ID,
@@ -380,7 +380,7 @@
            ADD_ZIP AS addZip,
            ADDRESS AS address,
            ADD_DETAIL AS addDetail
-    from study_gh.MKT_ADDRESS a
+    from MKT_ADDRESS a
     where a.MEM_ID = #{memId}
 </select>
 
@@ -404,16 +404,16 @@
                 ,   MA.ADD_ZIP                                                          addZip
                 ,   CONCAT(MA.ADDRESS,' ',MA.ADD_DETAIL)                                address
                 ,   MO.WAYBILL                                                          waybill
-        FROM study_gh.MKT_ORDER MO
-        LEFT OUTER JOIN study_gh.MKT_ADDRESS MA ON MO.ADD_ID = MA.ADD_ID
-        LEFT OUTER JOIN study_gh.MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
-        LEFT OUTER JOIN study_gh.MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
+        FROM MKT_ORDER MO
+        LEFT OUTER JOIN MKT_ADDRESS MA ON MO.ADD_ID = MA.ADD_ID
+        LEFT OUTER JOIN MKT_PRODUCT_OPTION MPO on MO.OPTION_ID = MPO.MKT_PRODUCT_OPTION_ID
+        LEFT OUTER JOIN MKT_PRODUCT MP on MO.PRODUCT_ID = MP.MKT_PRODUCT_ID
         WHERE   MO.ORDER_ID = #{orderId}
     </select>
 
     <select id="selectLevelCodeNm" parameterType="String" resultType="String">
         SELECT CODE_NM      levelNm
-        FROM study_gh.CODE_DETAIL
+        FROM CODE_DETAIL
         WHERE   CODE_ID='ODS'
         AND     CODE=#{level}
     </select>
@@ -423,14 +423,14 @@
         SELECT WAYBILL AS waybill,
                DELIVERY_CODE AS deliveryCode,
                ORDER_ID AS orderId
-        FROM study_gh.MKT_ORDER
+        FROM MKT_ORDER
         WHERE   ORDER_STATE in (1, 2, 3, 4, 5) and ORDER_CONFIRM = 'N'
     </select>
 
     <select id="selectMyShoppingOrderState" parameterType="MyShoppingConditions" resultType="MyShoppingOrderState">
         SELECT      ORDER_STATE             orderState
                 ,   COUNT(ORDER_STATE)      orderStateCount
-        FROM study_gh.MKT_ORDER
+        FROM MKT_ORDER
         WHERE   1=1
         AND     MEM_ID = #{memId}
         AND     USE_YN = 'Y'
@@ -503,7 +503,7 @@
 
     <update id="updateOrderState" parameterType="DeliveryUpdate">
 
-        UPDATE study_gh.MKT_ORDER
+        UPDATE MKT_ORDER
         SET ORDER_STATE =#{level}
         WHERE ORDER_ID = #{id}
 
@@ -512,7 +512,7 @@
 
 
     <update id="updateCompletedDate" parameterType="DeliveryUpdate">
-        UPDATE study_gh.MKT_ORDER
+        UPDATE MKT_ORDER
         SET COMPLETED_DT =#{timeString}
         WHERE ORDER_ID = #{id}
     </update>
@@ -521,14 +521,14 @@
     <select id="selectDeliveryComplete"  resultType="DeliveryUpdate">
         SELECT COMPLETED_DT AS timeString,
                ORDER_ID AS id
-        FROM study_gh.MKT_ORDER
+        FROM MKT_ORDER
         WHERE   ORDER_STATE = 6 and ORDER_CONFIRM = 'N'
     </select>
 
 
     <update id="updateOrderConfirm" parameterType="DeliveryUpdate">
 
-        UPDATE study_gh.MKT_ORDER
+        UPDATE MKT_ORDER
         SET ORDER_CONFIRM ='Y'
         WHERE ORDER_ID = #{id}
 
@@ -536,7 +536,7 @@
 
 
     <insert id="regReview" parameterType="ProductReview">
-        insert into study_gh.MKT_REVIEW
+        insert into MKT_REVIEW
         (
             MKT_REVIEW_ID,
             MEM_ID,
@@ -552,20 +552,20 @@
                    #{mktReviewId},
                    #{memId},
                    #{productId},
-                   ( SELECT IMG_ID FROM study_gh.MKT_PRODUCT
+                   ( SELECT IMG_ID FROM MKT_PRODUCT
                    WHERE MKT_PRODUCT_ID = #{productId}),
                    #{myStar},
                    #{reviewString},
                    #{proReviewImg},
                    #{orderId},
-                   ( SELECT OPTION_ID FROM study_gh.MKT_ORDER
+                   ( SELECT OPTION_ID FROM MKT_ORDER
                      WHERE MKT_ORDER.ORDER_ID = #{orderId})
                )
     </insert>
 
     <update id="modReview" parameterType="ProductReview">
 
-        UPDATE study_gh.MKT_REVIEW
+        UPDATE MKT_REVIEW
         SET <if test="myStar != null">
                 MY_STAR = #{myStar}
             </if>,
@@ -585,7 +585,7 @@
                PRODUCT_NAME AS productName,
                PRODUCT_IMG AS productImg,
                'deker' AS productBrand
-        from study_gh.MKT_PRODUCT
+        from MKT_PRODUCT
         where PRODUCT_NAME like CONCAT('%', #{keyword}, '%') or
               PRODUCT_EXPLAIN like CONCAT('%', #{keyword}, '%')
     </select>
@@ -599,13 +599,13 @@
                 ,   ADD_NAME                                addName
                 ,   PHONE_NUMBER                            phoneNumber
                 ,   ADD_MAIN                                addMain
-        FROM study_gh.MKT_ADDRESS
+        FROM MKT_ADDRESS
         WHERE   MEM_ID = #{memId}
         AND     ADD_DEFAULT = 'Y'
     </select>
 
     <insert id="insertMyAddress" parameterType="MyAddressConditions">
-        INSERT INTO study_gh.MKT_ADDRESS
+        INSERT INTO MKT_ADDRESS
         (
                 ADD_ID
             ,   MEM_ID
@@ -634,27 +634,27 @@
 
 
     <update id="deleteMyAddress" parameterType="MyAddressConditions">
-        UPDATE study_gh.MKT_ADDRESS
+        UPDATE MKT_ADDRESS
         SET ADD_DEFAULT = 'N'
         WHERE ADD_ID = #{addId}
     </update>
 
     <select id="selectMyAddressIdCount" parameterType="MyAddressConditions" resultType="Integer">
         SELECT COUNT(*)
-        FROM study_gh.MKT_ADDRESS
+        FROM MKT_ADDRESS
         WHERE   MEM_ID = #{memId}
         AND     ADD_ID = #{addId}
         AND     ADD_DEFAULT = 'Y'
     </select>
 
     <update id="deleteMyAddMain" parameterType="MyAddressConditions">
-        UPDATE study_gh.MKT_ADDRESS
+        UPDATE MKT_ADDRESS
         SET ADD_MAIN = 'N'
         WHERE MEM_ID = #{memId}
     </update>
 
     <update id="insertMyAddMain" parameterType="MyAddressConditions">
-        UPDATE study_gh.MKT_ADDRESS
+        UPDATE MKT_ADDRESS
         SET ADD_MAIN = 'Y'
         WHERE MEM_ID = #{memId}
         AND   ADD_ID = #{addId}
@@ -665,7 +665,7 @@
 
     <select id="getProductPrice" resultType="Integer">
         select PRODUCT_PRICE AS productPrice
-        from  study_gh.MKT_PRODUCT_OPTION
+        from  MKT_PRODUCT_OPTION
         where MKT_PRODUCT_OPTION_ID = #{productOptionId}
     </select>
 
@@ -680,7 +680,7 @@
                ADDRESS AS address,
                ADD_DETAIL AS addDetail,
                ADD_ID AS addId
-        from study_gh.MKT_ADDRESS a
+        from MKT_ADDRESS a
         where a.MEM_ID = #{memId} and a.ADD_MAIN = 'Y'
     </select>
 
@@ -700,9 +700,9 @@
                p.PRODUCT_NAME as productName,
                p.PRODUCT_IMG as productImg,
                p.MKT_PRODUCT_ID as mktProductId
-        from study_gh.MKT_MY_ORDER mo, study_gh.MKT_ORDER o
-            left join study_gh.MKT_PRODUCT_OPTION po on o.OPTION_ID = po.MKT_PRODUCT_OPTION_ID
-            left join study_gh.MKT_PRODUCT p on o.PRODUCT_ID = p.MKT_PRODUCT_ID
+        from MKT_MY_ORDER mo, MKT_ORDER o
+            left join MKT_PRODUCT_OPTION po on o.OPTION_ID = po.MKT_PRODUCT_OPTION_ID
+            left join MKT_PRODUCT p on o.PRODUCT_ID = p.MKT_PRODUCT_ID
         where mo.MY_ORDER_ID = #{orderId} and mo.ORDER_ITEM_ID = o.ORDER_ID
 
     </select>
@@ -725,18 +725,18 @@
 
 
     <delete id="deleteTest">
-        delete from study_gh.MKT_CART
+        delete from MKT_CART
         where MKT_CART_ID = #{id}
     </delete>
 
     <update id="insertAddress" parameterType="Payment">
-        UPDATE  study_gh.MKT_ORDER
+        UPDATE  MKT_ORDER
         SET     ADD_ID = #{addId}
         WHERE   ORDER_ID = ${itemOrderId}
     </update>
 
     <delete id="deletCartId">
-        delete from study_gh.MKT_CART
+        delete from MKT_CART
         where MKT_CART_ID = #{id}
     </delete>
 
@@ -756,7 +756,7 @@
                CODE_NAME('OPK',po.OPTION2) as option2Name,
                po.OPTION2_DATA AS option2Data,
                MKT_OPTION_NAME(po.PRODUCT_ID,po.OPTION2,po.OPTION2_DATA) as option2DataName
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MKT_ORDER o, study_gh.MKT_PRODUCT_OPTION po
+        from MKT_REVIEW r, MKT_PRODUCT p, MKT_ORDER o, MKT_PRODUCT_OPTION po
         where r.ORDER_ID = o.ORDER_ID and p.MKT_PRODUCT_ID = r.PRODUCT_ID and
             r.MEM_ID =#{memId} and o.OPTION_ID= po.MKT_PRODUCT_OPTION_ID
     </select>
@@ -777,7 +777,7 @@
                CODE_NAME('OPK',po.OPTION2) as option2Name,
                po.OPTION2_DATA AS option2Data,
                MKT_OPTION_NAME(po.PRODUCT_ID,po.OPTION2,po.OPTION2_DATA) as option2DataName
-        from study_gh.MKT_REVIEW r, study_gh.MKT_PRODUCT p, study_gh.MKT_ORDER o, study_gh.MKT_PRODUCT_OPTION po
+        from MKT_REVIEW r, MKT_PRODUCT p, MKT_ORDER o, MKT_PRODUCT_OPTION po
         where  p.MKT_PRODUCT_ID = o.PRODUCT_ID and r.MEM_ID =#{memId} and o.OPTION_ID= po.MKT_PRODUCT_OPTION_ID
           and date(o.CREATE_DT) >= date(subdate(now(), INTERVAL 30 DAY)) and o.ORDER_CONFIRM='Y'
           and o.ORDER_ID != r.ORDER_ID

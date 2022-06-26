@@ -69,21 +69,21 @@
                m.MENU_ID AS menuId,
                m.MENU_PARENT AS menuParent,
                m.MENU_IMG_URL AS menuImgUrl
-        from study_gh.MENU m, study_gh.MENU_AUTHORITY a
+        from MENU m, MENU_AUTHORITY a
         where a.AUTHORITY_CODE = #{authorityCode} and a.MENU_ID = m.MENU_ID
     </select>
 
 
     <select id="getUserRole" resultType="String">
         select AUTHORITY_CODE
-        from study_gh.AUTHORITY a
+        from AUTHORITY a
         where a.MEM_ID = #{memId}
     </select>
 
 
 
     <insert id="follow" parameterType="Follow">
-        insert into study_gh.FOLLOW
+        insert into FOLLOW
         (
          follower, following
         )
@@ -94,13 +94,13 @@
 
 
     <delete id="unFollow" parameterType="Follow">
-        delete from study_gh.FOLLOW
+        delete from FOLLOW
         where FOLLOWER = #{memId} and FOLLOWING = #{userId}
     </delete>
 
     <select id="getFollowingCount" resultType="int">
         select count(FOLLOWING)
-        from study_gh.FOLLOW f
+        from FOLLOW f
         where f.FOLLOWER = #{memId}
 
     </select>
@@ -108,7 +108,7 @@
     <select id="getFollowing" resultType="Follow">
         select m.NICKNAME AS nickNm,
                m.PROFILE_IMG AS profile_img
-        from study_gh.FOLLOW f, study_gh.MEMBER m
+        from FOLLOW f, MEMBER m
         where f.FOLLOWER = #{memId} and f.FOLLOWING = m.MEM_ID
         <if test="keyword != null">
           and m.NICKNAME like CONCAT('%', #{keyword}, '%')
@@ -120,7 +120,7 @@
 
     <select id="getFollowerCount" resultType="int">
         select count(FOLLOWER)
-        from study_gh.FOLLOW f
+        from FOLLOW f
         where f.FOLLOWING = #{userId}
 
     </select>
@@ -128,7 +128,7 @@
     <select id="getFollower" resultType="Follow">
         select m.NICKNAME AS nickNm,
         m.PROFILE_IMG AS profile_img
-        from study_gh.FOLLOW f, study_gh.MEMBER m
+        from FOLLOW f, MEMBER m
         where f.FOLLOWING = #{userId} and f.FOLLOWER = m.MEM_ID
         <if test="keyword != null">
             and m.NICKNAME like CONCAT('%', #{keyword}, '%')
@@ -137,7 +137,7 @@
     </select>
 
     <delete id="deleteFollowMe" parameterType="Follow">
-        DELETE FROM study_gh.FOLLOW
+        DELETE FROM FOLLOW
         WHERE   FOLLOWER = #{userId}
         AND     FOLLOWING = #{memId}
     </delete>
